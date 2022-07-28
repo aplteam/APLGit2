@@ -134,7 +134,7 @@
      
           c←⎕NS''
           c.Name←'Squash'
-          c.Desc←'Squashes some in the current branch into a single one'
+          c.Desc←'Squashes some commits in the current branch into a single one'
           c.Group←'APLGit2'
           c.Parse←'1s -m='
           c._Project←1
@@ -142,7 +142,7 @@
      
           c←⎕NS''
           c.Name←'Status'
-          c.Desc←'Reports all untracked files and/or all uncommited changes'
+          c.Desc←'Reports all untracked files and/or all uncommitted changes'
           c.Group←'APLGit2'
           c.Parse←'1s -short'
           c._Project←1
@@ -200,7 +200,7 @@
           :Case ⎕C'SetDefaultProject'
               r←G.SetDefaultProject{⍵/⍨0≠⍵}Args._1
           :Case ⎕C'Squash'
-              r←⍪Squash space folder Args
+              r←⍪Squash space folder Args.m
           :Case ⎕C'Status'
               r←⍪Status space folder Args
           :Case ⎕C'Version'
@@ -433,8 +433,8 @@
       r←short G.Status folder
     ∇
 
-    ∇ r←Squash(space folder args)
-      r←folder G.Squash{0≡⍵:'' ⋄ ⍵}args._1
+    ∇ r←Squash(space folder msg)
+      r←folder G.Squash{0≡⍵:'' ⋄ ⍵}msg
     ∇
 
     ∇ r←ListBranches(space folder args);parms
@@ -489,7 +489,7 @@
           :Case ⎕C'Status'
               r,←⊂']APLGit2.Status -short -path='
           :Case ⎕C'Squash'
-              r,←⊂']APLGit2.Squash [space|folder]'
+              r,←⊂']APLGit2.Squash [space|folder] -m=<message>'
           :Else
               r,←⊂'There is no help available'
           :EndSelect
@@ -618,11 +618,12 @@
               r,←⊂'Specify -short for getting just the essentials.'
               r,←AddLevel3HelpInfo'Status'
           :Case ⎕C'Squash'
-              r,←⊂'Squashes some commits exclusive for the current branch into a single commit.'
+              r,←⊂'Squashes some commits of the current branch into a single commit.'
               r,←⊂'The current branch MUST be neither "main" nor "master".'
               r,←⊂''
-              r,←⊂'You may specify a message with -m="my message", but if you don''t you will be given an edit'
-              r,←⊂'window for specifying a message.'
+              r,←⊂'-m    You may specify a message with -m="my message", but if you don''t you will be given an edit'
+              r,←⊂'      window for specifying a message. It will be populated with the messages from the commits'
+              r,←⊂'      about to be squashed.'
               r,←AddLevel3HelpInfo'Status'
           :Else
               r,←⊂'There is no additional help available'

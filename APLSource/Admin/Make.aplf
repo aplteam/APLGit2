@@ -13,7 +13,7 @@
      version←⍎'#.',name,'.',name,'.Version'
      M.RecreateFolder targetPath
      3 ⎕MKDIR tempFolder,'/APLGit2/APLSource'
-     :If ⎕NEXISTS myUCMDsFolder,'CompareFiles\CompareFiles_uc.dyalog'
+     :If ⎕NEXISTS myUCMDsFolder,'/CompareFiles/CompareFiles_uc.dyalog'
          M.CopyBetter(myUCMDsFolder,'/APLGit2/APLGit2_uc.dyalog')(C.HOME,'/',C.CIDER.source,'/APLGit2_uc.dyalog')'User command version' 'APL Code'
      :EndIf
      ('Project <',name,'> is not currently open')Assert(⊂'#.',name)∊{⍵[;1]}1↓⎕SE.Link.Status''

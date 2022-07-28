@@ -47,7 +47,7 @@ For example, the  `Commit` API function just does that: executing `git commit`. 
 ## Preconditions and assumptions
 
 * The Git bash must be installed, and available on the environment variable `%PATH%`
-* `]Git.GoToGitHub` requires you to host your project on GitHub, but all other commands are agnostic in this respect
+* `]APLGit2.GoToGitHub` requires you to host your project on GitHub, but all other commands are agnostic in this respect
 
 Note that `]APLGit2.*` works particularly well in conjunction with [Cider](https://github.com/aplteam/Cider), though this is not a requirement. 
 

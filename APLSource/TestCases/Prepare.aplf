@@ -3,7 +3,7 @@
  ⎕IO←1 ⋄ ⎕ML←1
  ##.APLGit2.InitializeGitUserCommand''
  T←⎕NEW Tester2 ⎕THIS
- testPath←(##.CiderConfig.HOME),'TestResults'
+ testPath←(##.CiderConfig.HOME),'/TestResults'
  testFilename←testPath,'/CodeCoverage'
  :If ⎕NEXISTS testPath
      :If ⎕NEXISTS testFilename,'.dcf'

@@ -26,7 +26,9 @@
  :EndIf
  ⍝ The following is a safety net: in case the user has already squashed some commits the RefLog is misleading!
  parms←⎕NS''
- parms.noOf←1+≢commits
+ commits←{' '(≠⊆⊢)⍵}¨,commits
+ commits←(↑3↑¨commits),⊃¨{⍺,' ',⍵}/¨3↓¨commits
+ parms.noOf←+/∧\'commit:'∘≡¨commits[;3]
  allCommits←(parms Log folder)[;1]
  r←≢commits←(commits[;1]∊allCommits)⌿commits
  :If 0=r
@@ -60,8 +62,7 @@
          msg←U.MassageMsg msg
          msg←'-m "',msg,'"'
          (rc more buff)←folder U.RunGitCommand('commit ',msg)
-         ∘∘∘   ⍝TODO⍝
-         U.Assert 0=rc
+         ('Committing after resetting failed, RC=',⍕rc)U.Assert 0=rc
      :EndIf
  :EndIf
 ⍝Done

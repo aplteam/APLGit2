@@ -1,6 +1,6 @@
- R←Test_UC_110(stopFlag batchFlag);⎕TRAP;stop;rc;msg;buff;was
+ R←Test_UC_110(stopFlag batchFlag);⎕TRAP;stop;rc;msg;buff;was;tempFolder;folder
 ⍝ Attempts to run "]CompareCommits" with BeyondCompare
- ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
  :If batchFlag
@@ -11,7 +11,7 @@
  :EndIf
 
  ⎕←' This test needs you: it will run the command ]CompareCommits which will use an external utiliy, BeyondCompare,'
- ⎕←' which needs to be installed and accessible on the PATH environment variable'
+ ⎕←' (which needs to be installed and accessible on the PATH environment variable) via the ]CompareFiles user command'
  :If 0=∆YesOrNo' Would you like to run this test?'
      →0,R←T._Inactive
  :EndIf

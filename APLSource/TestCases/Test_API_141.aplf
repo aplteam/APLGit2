@@ -1,0 +1,26 @@
+ R←Test_API_141(stopFlag batchFlag);⎕TRAP;tempFolder;folder;buff;rc;msg;qdmx
+⍝ Runs "Squash" on "main" (bound to fail)
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempFolder←FilesAndDirs.GetTempSubDir⊃⎕SI
+ folder←##.CiderConfig.HOME,'/TestData/TestProject/'
+ (tempFolder,'/')⎕NCOPY⍠('Wildcard' 1)⊣folder,'*'
+
+ (rc msg buff)←tempFolder ##.APLGit2.U.RunGitCommand'checkout main'
+ Assert 0=rc
+ Assert'main'≡##.APLGit2.CurrentBranch tempFolder
+
+ :Trap 11
+     tempFolder ##.APLGit2.Squash'All my changes'
+     →T.GoToTidyUp 1
+ :Else
+     qdmx←⎕DMX
+     →T.GoToTidyUp'No squashing of main'≢qdmx.EM
+ :EndTrap
+
+ R←T._OK
+
+∆TidyUp:
+ FilesAndDirs.RmDir tempFolder
+⍝Done
