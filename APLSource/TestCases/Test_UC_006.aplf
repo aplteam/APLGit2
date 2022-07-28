@@ -1,0 +1,16 @@
+ R←Test_UC_006(stopFlag batchFlag);⎕TRAP;rc;result;msg;stop
+⍝ Runs ]CurrentBranch
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ stop←0
+ (rc msg result)←stop ∆UCMD'CurrentBranch "',∆Folder1,'"'
+ msg Assert rc=0
+ →T.PassesIf'main'≡result
+
+ (rc msg result)←stop ∆UCMD'CurrentBranch #.Proj_1'
+ msg Assert rc=0
+ →T.PassesIf'main'≡result
+
+ R←T._OK
+⍝Done

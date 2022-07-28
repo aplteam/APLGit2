@@ -1,0 +1,12 @@
+ R←Test_API_100(stopFlag batchFlag);⎕TRAP;space;folder
+⍝ Runs "EstablishProject"
+⍝ Is tested implicitly practically everwhere but in order to satisfy Test_ZZZ_900 we call it once anyway
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ (space folder)←G.EstablishProject'#.APLGit2'
+ →T.PassesIf 0<≢space
+ →T.PassesIf 0<≢folder
+
+ R←T._OK
+⍝Done

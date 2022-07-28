@@ -1,0 +1,6 @@
+ yesOrNo←{default}∆YesOrNo question
+ :If 0=⎕NC'default'
+     yesOrNo←##.APLGit2.U.YesOrNo question
+ :Else
+     yesOrNo←default ##.APLGit2.U.YesOrNo question
+ :EndIf

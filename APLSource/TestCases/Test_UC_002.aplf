@@ -1,0 +1,19 @@
+ R←Test_UC_002(stopFlag batchFlag);⎕TRAP;result;msg;rc;stop
+⍝ Runs ]ListBranches
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ :If batchFlag
+     R←T._NoBatchTest
+     :Return
+ :EndIf
+
+ 0 0⍴⍞,0/⍞←'This test needs you: when given a list pick one and press <enter>. To continue press <enter> '
+
+ stop←0
+ (rc msg result)←stop ∆UCMD'ListBranches'
+ msg Assert rc=0
+ →T.PassesIf 0<≢result
+
+ R←T._OK
+⍝Done

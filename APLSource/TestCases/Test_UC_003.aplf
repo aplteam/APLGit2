@@ -1,0 +1,27 @@
+ R←Test_UC_003(stopFlag batchFlag);⎕TRAP;result;msg;rc;stop
+⍝ Runs ]Status
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ ∆ModifyCounter ∆Folder1
+
+ stop←0
+ (rc msg result)←stop ∆UCMD'Status ',∆Folder1
+ msg Assert rc=0
+ →T.PassesIf∨/'APLSource/Counter.aplf'⍷∊result
+
+ ∆ModifyCounter ∆Folder2
+ (rc msg result)←stop ∆UCMD'Status "',∆Folder2,'"'
+ msg Assert rc=0
+ →T.PassesIf∨/'APLSource/Counter.aplf'⍷∊result
+
+ (rc msg result)←stop ∆UCMD'Status #.Proj_2'
+ msg Assert rc=0
+ →T.PassesIf∨/'APLSource/help2.aplf'⍷∊result
+
+ (rc msg result)←stop ∆UCMD'Status #.Proj_2 -short'
+ msg Assert rc=0
+ →T.PassesIf 2=≢result
+
+ R←T._OK
+⍝Done

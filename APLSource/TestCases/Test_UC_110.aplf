@@ -1,0 +1,33 @@
+ R←Test_UC_110(stopFlag batchFlag);⎕TRAP;stop;rc;msg;buff;was
+⍝ Attempts to run "]CompareCommits" with BeyondCompare
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ :If batchFlag
+     →0,R←T._NoBatchTest
+ :EndIf
+ :If 0=⎕SE.⎕NC'CompareFiles'
+     →0,R←T._NotApplicable
+ :EndIf
+
+ ⎕←' This test needs you: it will run the command ]CompareCommits which will use an external utiliy, BeyondCompare,'
+ ⎕←' which needs to be installed and accessible on the PATH environment variable'
+ :If 0=∆YesOrNo' Would you like to run this test?'
+     →0,R←T._Inactive
+ :EndIf
+
+ was←⎕SE._CompareFiles.INI.Default
+ ⎕SE._CompareFiles.INI.Default←'BeyondCompare'
+
+ stop←0
+ (rc msg buff)←stop ∆UCMD'CompareCommits ''main'' ''dev'' -project=#.APLGit2 -with=BeyondCompare'
+ msg Assert rc=0
+ →T.GoToTidyUp 0≠≢msg
+
+ →T.GoToTidyUp 0=1 ∆YesOrNo'Did "BeyondCompare" show up?'
+
+ R←T._OK
+
+∆TidyUp:
+ ⎕SE._CompareFiles.INI.Default←was
+⍝Done

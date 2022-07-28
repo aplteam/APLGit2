@@ -1,0 +1,31 @@
+ path_←Init y;space;buff;msg;rc;path
+⍝ Initialize a folder as being managed by Git.
+⍝ `y` must be one of:
+⍝  * Empty: then `Git` tries to find an open Cider project and uses that
+⍝  * Fully qualfied name of a namespace of an opened Cider project
+⍝  * Fully qualified path to a Git-managed project
+⍝ Explicit result:
+⍝ `path` is the path to a folder what was (re-) initialized as a Git project and otherwise an empty text vector.
+ (space path)←EstablishProject y
+ :If IsGitProject path
+     :If U.YesOrNo space,' is already managed by Git; would you like to re-initialize it?'
+         (rc msg buff)←path U.RunGitCommand'init'
+         ('Init command files with RC=',(⍕rc),'; ',msg)Assert 0=rc
+         path_←path
+     :Else
+         :If IsGitProject'./'
+             :Return
+         :Else
+             :If U.YesOrNo'Would you like to initialize the current directory ',F.PWD,'?'
+                 path_←path←F.PWD
+                 (rc msg buff)←path U.RunGitCommand'init'
+                 ('Init command files with RC=',(⍕rc),'; ',msg)U.Assert 0=rc
+             :EndIf
+         :EndIf
+     :EndIf
+ :Else
+     (rc msg buff)←path U.RunGitCommand'init'
+     ('Init command files with RC=',(⍕rc),'; ',msg)U.Assert 0=rc
+     path_←path
+ :EndIf
+⍝Done

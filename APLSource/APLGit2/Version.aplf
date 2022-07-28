@@ -1,0 +1,3 @@
+ r←Version
+⍝ See also `History`
+ r←'APLGit2' '0.1.0+87' '2022-06-28'

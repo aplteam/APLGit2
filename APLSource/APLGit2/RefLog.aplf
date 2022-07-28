@@ -1,0 +1,15 @@
+ r←{x}RefLog dummy;space;folder;rc;more;branch;noOf;buff
+⍝ Execute Git's "reflog" command.
+⍝ Returns a matrix with zero or more rows and a single column with this information:
+⍝ [1] Hash
+⍝ [2] Committer
+⍝ [3] Commit date
+⍝ [3] Commit message
+⍝ For what `x` can actually be see `EstablishProject`.\\
+ r←⍬
+ x←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'x'
+ (space folder)←EstablishProject x
+ (rc more buff)←folder U.RunGitCommand'reflog '
+ U.Assert 0=rc
+ r←⍪buff
+⍝Doe

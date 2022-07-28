@@ -1,0 +1,11 @@
+ R←Test_API_012(stopFlag batchFlag);⎕TRAP;result
+⍝ Runs "Log"
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ result←G.Log ∆Folder2
+ →T.PassesIf 2=≡result
+ →T.PassesIf' '=1↑0⍴∊∊result
+
+ R←T._OK
+⍝Done

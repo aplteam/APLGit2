@@ -1,0 +1,18 @@
+ R←Test_API_120(stopFlag batchFlag);⎕TRAP
+⍝ Runs "GoToGitHub"
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ :If batchFlag
+     R←T._NoBatchTest
+     :Return
+ :EndIf
+
+ 0 0⍴⍞,0/⍞←'This test needs you: it opens a Browser window on the "APLGit2" project on GitHub; press <enter> to continue.'
+
+ G.GoToGitHub'aplteam/APLGit2'
+
+ →T.PassesIf 1 ∆YesOrNo'Did the "APLGit2" project show up on GitHub in your default browser?'
+
+ R←T._OK
+⍝Done

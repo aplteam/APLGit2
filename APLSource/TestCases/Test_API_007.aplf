@@ -1,0 +1,10 @@
+ R←Test_API_007(stopFlag batchFlag);⎕TRAP
+⍝ Runs "IsGitProject"
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ →T.PassesIf G.IsGitProject ∆Folder1
+ →T.PassesIf~G.IsGitProject F.GetTempPath
+
+ R←T._OK
+⍝Done

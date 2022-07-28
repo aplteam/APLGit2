@@ -1,0 +1,19 @@
+ R←Test_UC_009(stopFlag batchFlag);⎕TRAP;rc;msg;stop;result
+⍝ Runs ]IsGitProject
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ :If batchFlag
+     R←T._NoBatchTest
+     :Return
+ :EndIf
+
+ 0 0⍴⍞,0/⍞←'This test needs you: you will be given a choice: select #.Proj_2! Press <enter> to continue'
+
+ stop←0
+ (rc msg result)←stop ∆UCMD'IsGitProject'
+ msg Assert rc=0
+ →T.PassesIf 'yes'≡result
+
+ R←T._OK
+⍝Done

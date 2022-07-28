@@ -1,0 +1,16 @@
+ R←Test_UC_008(stopFlag batchFlag);⎕TRAP;rc;msg;stop;result
+⍝ Runs ]IsGitProject
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ stop←0
+ (rc msg result)←stop ∆UCMD'IsGitProject "',∆Folder1,'"'
+ msg Assert rc=0
+ →T.PassesIf 'yes'≡result
+
+ (rc msg result)←stop ∆UCMD'IsGitProject "',F.GetTempPath,'"'
+ msg Assert rc=0
+ →T.PassesIf 'no'≡result
+
+ R←T._OK
+⍝Done

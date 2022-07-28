@@ -1,0 +1,60 @@
+ r←{x}Squash msg;folder;currentBranch;buff;rc;more;commits;historyPath;space;noOf;parms;allCommits
+⍝ Squashes some or all commits of the current branch into a single one.\\
+⍝ You will be shown a list of all commits that are going to be squashed and prompted for confirmation.\\
+⍝ Returns the number of commits that were squashed as a shy result.\\
+⍝ You must provide a meaningful message but the check is performed only after all commits that are
+⍝ about to get squashed is printed to the session, and even then you are prompted for a message.
+⍝ Only when you still do not provide a meaningful message will the function throw an error.\\
+⍝ Note that for this to work in a meaningful way you should
+⍝ For what `x` can actually be see `EstablishProject`.\\
+⍝ Returns the number of commits squashed.
+ r←0
+ x←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'x'
+ (space folder)←EstablishProject x
+ currentBranch←CurrentBranch folder
+ 'No squashing of master'⎕SIGNAL 11/⍨currentBranch≡'master'
+ 'No squashing of main'⎕SIGNAL 11/⍨currentBranch≡'main'
+ :If IsDirty folder
+ :AndIf ~1 U.YesOrNo'There are uncommitted changes; continue anyway?'
+     r←0
+     :Return
+ :EndIf
+ r←≢commits←folder RefLog ''
+ →(0=r)/0
+ ⍝ The following is a safety net: in case the user has already squashed some commits the RefLog is misleading!
+ parms←⎕NS''
+ parms,noOf←1+≢commits
+ allCommits←(parms Log folder)[;1]
+ r←≢commits←(commits[;1]∊allCommits)⌿commits
+ →(0=r)/0
+ noOf←U.GetNumberOfCommits commits currentBranch folder'How many commits would you like to squash? (0=quit) '
+ :If 0<noOf
+     :If 0=≢msg
+         ⍞←'Provide a meaningful commit message in the editor:'
+         ⎕SE.⎕SHADOW'TEMP'
+         'TEMP'⎕SE.⎕NS''
+         :If 0=≢⎕SE.TEMP.CommitMsg←⊃{⍺,(⎕UCS 13),⍵}/{⍵/⍨0<≢¨⍵~¨⊂' .'}commits[;4]
+         :AndIf 0<⎕NC historyPath←(({⍵,'.',(⍵⍳'.')↓⍵}1⊃project)),'.History'
+             ⎕SE.TEMP.CommitMsg←{1↓⍵↑⍨1++/∧\'*'≠1↓⊃¨⍵}⍎historyPath
+         :EndIf
+         ⎕SE.TEMP.⎕ED'CommitMsg'
+         msg←⎕SE.TEMP.CommitMsg
+         :If 2=≡msg
+             msg←1↓⊃,/';',¨msg
+         :Else
+             msg←(~(⎕UCS 13 13)⍷msg)/msg
+             msg←(-(⎕UCS 13)=¯1↑msg)↓msg
+         :EndIf
+     :EndIf
+     'Sqash requires a meaningful message'⎕SIGNAL 11/⍨0=≢msg~' .'
+     (rc more buff)←folder U.RunGitCommand('reset --soft HEAD~',⍕noOf)
+     U.Assert 0=rc
+     :If 0<≢buff
+         ⎕←buff
+     :EndIf
+     msg←U.MassageMsg msg
+     msg←'-m "',msg,'"'
+     (rc more r)←folder U.RunGitCommand('commit ',msg)
+     U.Assert 0=rc
+ :EndIf
+⍝Done

@@ -1,0 +1,10 @@
+ R←Test_API_102(stopFlag batchFlag);⎕TRAP;space
+⍝ Runs "GetProjectFromPath"
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ space←G.GetProjectFromPath ##.CiderConfig.HOME
+ →T.PassesIf 0<≢space
+
+ R←T._OK
+⍝Done

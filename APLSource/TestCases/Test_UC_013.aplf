@@ -1,0 +1,36 @@
+ R←Test_UC_013(stopFlag batchFlag);⎕TRAP;rc;msg;stop;result;flag;noOf
+⍝ Runs ]GoToGitHub
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ :If batchFlag
+     R←T._NoBatchTest
+     :Return
+ :EndIf
+
+ 0 0⍴⍞,0/⍞←'This test needs you: Please open an empty browser window and then press <enter> to continue'
+
+ stop←0
+ (rc msg result)←stop ∆UCMD'GoToGitHub aplteam/APLGit2'
+ msg Assert rc=0
+
+ (rc msg result)←stop ∆UCMD'GoToGitHub https://github.com/aplteam/APLGit2'
+ msg Assert rc=0
+
+ (rc msg result)←stop ∆UCMD'GoToGitHub #.APLGit2'
+ msg Assert rc=0
+
+ 0 0⍴⍞,0/⍞←'When asked to select a project choose APLGit2; press <enter> to continue'
+ (rc msg result)←stop ∆UCMD'GoToGitHub'
+ msg Assert rc=0
+
+ :If flag←(⊂'git')∊{⍵[;4]}⎕SE.Cider.ListOpenProjects 1  ⍝ There might well be no such alias!
+     (rc msg result)←stop ∆UCMD'GoToGitHub [git]'
+     msg Assert rc=0
+ :EndIf
+
+ noOf←4+flag
+ →T.PassesIf 1 ∆YesOrNo'Was https://github.com/aplteam/APLGit2 opened ',(⍕noOf),' times in your default browser?'
+
+ R←T._OK
+⍝Done

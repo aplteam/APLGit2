@@ -1,0 +1,24 @@
+ R←Test_UC_004(stopFlag batchFlag);⎕TRAP;rc;result;msg;stop
+⍝ Runs ]Commit
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ stop←0
+ (rc msg result)←stop ∆UCMD'Commit Does-not-exist'
+ →T.PassesIf∨/'<Does-not-exist> not found on disk'⍷msg
+
+ result←stop ∆UCMD'Add . -project="',∆Folder1,'"'
+
+ (rc msg result)←stop ∆UCMD'Commit "',∆Folder1,'" -m="It''s a message" -add'
+ msg Assert rc=0
+ →T.PassesIf 2≤≢result
+ →T.PassesIf 0∧.<≢¨result
+
+ ∆ModifyCounter ∆Folder1
+ (rc msg result)←stop ∆UCMD'Commit #.Proj_1  -m="It is another message" -add'
+ msg Assert rc=0
+ →T.PassesIf 2≤≢result
+ →T.PassesIf 0∧.<≢¨result
+
+ R←T._OK
+⍝Done

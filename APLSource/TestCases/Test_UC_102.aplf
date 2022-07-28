@@ -1,0 +1,81 @@
+ R←Test_UC_102(stopFlag batchFlag);⎕TRAP;stop;rc;msg;buff;tempDir
+⍝ Runs all user commands on a Git-managed folder that is NOT a Cider project
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←##.FilesAndDirs.GetTempSubDir'APLGit2-Tests'
+ (⊂'This' 'and that')⎕NPUT tempDir,'/foo.txt'
+ (⊂'r←Hello' 'r←''World''')⎕NPUT tempDir,'/Hello.aplf'
+ {}⎕SH'git -C "',(##.FilesAndDirs.EnforceSlash tempDir),'" init '
+ ⎕SE._APLGit2.APLSource.⎕EX'DEFAULT_PROJECT'
+
+ stop←0
+
+ (rc msg buff)←stop ∆UCMD'GetDefaultProject'
+ msg Assert rc=0
+ →T.GoToTidyUp 0<≢msg
+ →T.GoToTidyUp 0≠≢buff
+
+ (rc msg buff)←stop ∆UCMD'SetDefaultProject "',tempDir,'"'
+ msg Assert rc=0
+ →T.GoToTidyUp 0<≢msg
+ →T.GoToTidyUp tempDir≡∊buff
+
+ (rc msg buff)←stop ∆UCMD'GetDefaultProject'
+ msg Assert rc=0
+ →T.GoToTidyUp 0<≢msg
+ →T.GoToTidyUp tempDir≡∊buff
+
+ (rc msg buff)←stop ∆UCMD'IsGitProject'
+ msg Assert rc=0
+ →T.GoToTidyUp 0<≢msg
+ →T.GoToTidyUp'yes'≢buff
+
+ (rc msg buff)←stop ∆UCMD'IsDirty'
+ msg Assert rc=0
+ →T.GoToTidyUp 0<≢msg
+ →T.GoToTidyUp'Dirty'≢buff
+
+ (rc msg buff)←stop ∆UCMD'Status'
+ msg Assert rc=0
+ →T.GoToTidyUp 0<≢msg
+
+ (rc msg buff)←stop ∆UCMD'Add .'
+ msg Assert rc=0
+ →T.GoToTidyUp 0<≢msg
+
+ (rc msg buff)←stop ∆UCMD'Commit -m="firlefanz" -add'
+ msg Assert rc=0
+ →T.GoToTidyUp 0<≢msg
+
+ (rc msg buff)←stop ∆UCMD'IsDirty'
+ msg Assert rc=0
+ →T.GoToTidyUp 0<≢msg
+ →T.GoToTidyUp'Clean'≢buff
+
+ (rc msg buff)←stop ∆UCMD'CurrentBranch'
+ msg Assert rc=0
+ →T.GoToTidyUp 0<≢msg
+ →T.GoToTidyUp'main'≢buff
+
+ (rc msg buff)←stop ∆UCMD'ListBranches'
+ msg Assert rc=0
+ →T.GoToTidyUp 0<≢msg
+ →T.GoToTidyUp'* main'≢∊buff
+
+ (rc msg buff)←stop ∆UCMD'Log'
+ msg Assert rc=0
+ →T.GoToTidyUp 0<≢msg
+ →T.GoToTidyUp'firlefanz'{⍺≢(-≢⍺)↑⍵}∊buff
+
+ (rc msg buff)←stop ∆UCMD'Diff'
+ msg Assert rc=0
+ →T.GoToTidyUp 0<≢msg
+ →T.GoToTidyUp 0≠≢buff
+
+ R←T._OK
+
+∆TidyUp:
+ {}⎕SH'rmdir /s /q "',tempDir,'"'
+ ⎕SE._APLGit2.APLSource.⎕EX'DEFAULT_PROJECT'
+⍝Done

@@ -1,0 +1,28 @@
+ R←Test_API_003(stopFlag batchFlag);⎕TRAP;result;qdmx
+⍝ Runs "Add" and "Commit"
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ :Trap 0
+     {}G.Commit'Does-not-exist'
+     →T.FailsIf 1
+ :Else
+     qdmx←⎕DMX
+     →T.PassesIf'Is not a namespace'≡qdmx.EM
+ :EndTrap
+
+ result←G.Add ∆Folder1
+
+ result←'It''s a message' G.Commit ∆Folder1
+ →T.PassesIf 2≤≢result
+ →T.PassesIf 0∧.<≢¨result
+
+ ∆ModifyCounter ∆Folder1
+
+(∆Folder1,'/APLSource/Counter.aplf') G.Add ∆Folder1
+ result←'It''s another message'G.Commit #.Proj_1
+ →T.PassesIf 2≤≢result
+ →T.PassesIf 0∧.<≢¨result
+
+ R←T._OK
+⍝Done

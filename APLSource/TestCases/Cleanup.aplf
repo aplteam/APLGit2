@@ -1,0 +1,21 @@
+ Cleanup;openProjects;rc;msg;buff
+ G.∆TestFlag←0
+ ⎕SE.Link.NOTIFY←∆LINK_NOTIFY_WAS
+ openProjects←⎕SE.Cider.ListOpenProjects 0
+ openProjects←('#.Proj_'∘{⍺≡(≢⍺)↑⍵}¨openProjects[;1])⌿openProjects
+ {}⎕SE.Cider.CloseProject¨openProjects[;1]
+
+⍝ At the time of writing (2021-12-17) ⎕NDELETE refuses to delete read-only files
+⍝ while "rmdir" does work with /Q (otherwise the user will be prompted for confirmation)
+⍝ However, admin rights are required in any case.
+ :If 0<⎕NC'∆TempDir'
+     {}⎕SH'rmdir /s /q "',∆TempDir,'"'
+⍝     (rc buff msg)←F.RmDir ∆TempDir
+⍝     ('Removing ',∆TempDir,' failed with ',msg,'; rc=',⍕buff)Assert 0=rc
+ :EndIf
+
+ ⎕EX¨'AF'
+ ⎕EX¨'∆Folder1' '∆Folder2' '∆TempDir'
+ #.⎕EX¨'Proj_1' 'Proj_2'
+ ⎕EX'∆LINK_NOTIFY_WAS'
+⍝Done

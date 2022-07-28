@@ -1,0 +1,17 @@
+ R←Test_API_006(stopFlag batchFlag);⎕TRAP
+⍝ Runs "OpenGitShell"
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ :If batchFlag
+     R←T._NoBatchTest
+     :Return
+ :EndIf
+
+ 0 0⍴⍞,0/⍞←'This test needs you: it opens a Git shell in Git''s project directory. Press <enter> to continue'
+
+ {}G.OpenGitShell #.APLGit2
+ →T.PassesIf 1 ∆YesOrNo'Was the shell opened in ',##.CiderConfig.HOME,'?'
+
+ R←T._OK
+⍝Done
