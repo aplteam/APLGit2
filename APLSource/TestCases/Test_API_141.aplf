@@ -1,11 +1,11 @@
- R←Test_API_141(stopFlag batchFlag);⎕TRAP;tempFolder;folder;buff;rc;msg;qdmx
+ R←Test_API_141(stopFlag batchFlag);⎕TRAP;tempFolder;buff;rc;msg;qdmx;zipfile
 ⍝ Runs "Squash" on "main" (bound to fail)
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
  tempFolder←FilesAndDirs.GetTempSubDir⊃⎕SI
- folder←##.CiderConfig.HOME,'/TestData/TestProject/'
- (tempFolder,'/')⎕NCOPY⍠('Wildcard' 1)⊣folder,'*'
+ zipfile←##.CiderConfig.HOME,'/TestData/TestProject.zip'
+ zipfile ZipArchive.UnzipTo tempFolder
 
  (rc msg buff)←tempFolder ##.APLGit2.U.RunGitCommand'checkout main'
  Assert 0=rc

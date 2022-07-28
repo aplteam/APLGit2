@@ -3,10 +3,11 @@
 ⍝ In case the right argument is empty the last commit is compared with the first commit that cannot be found in `RefLog.
 ⍝ For this to make sense the current branch must not be "main" (or the deprecated "master").\\
 ⍝ Instead one can specify two commits explicitly via the right argument.
-⍝ (For comparing the work dir with the current branch see `???????????????`.\\
+⍝ (For comparing the work dir with the current branch see `???????????????`.\\  ⍝TODO⍝
 ⍝ For what `x` can actually be see `EstablishProject`.\\
 ⍝ Returns either two empty vectors in case no differences were detected or two filenames otherwise.\\
 ⍝ If the user command `CompareFiles` and one of its comparison utilities is available the two files are compared straight away.
+ x←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'x'
  (space folder)←EstablishProject x
  filename1←filename2←''
  currentBranch←CurrentBranch folder

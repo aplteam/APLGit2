@@ -1,4 +1,4 @@
- R←Test_UC_121(stopFlag batchFlag);⎕TRAP;stop;rc;msg;buff;was;tempFolder;folder;allCommits2;allCommits1
+ R←Test_UC_121(stopFlag batchFlag);⎕TRAP;stop;rc;msg;buff;was;tempFolder;allCommits2;allCommits1;zipfile
 ⍝ Attempts a Squash operation without a message
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -13,8 +13,8 @@
  0 0⍴⍞,0/⎕←' To continue press <enter>'
 
  tempFolder←FilesAndDirs.GetTempSubDir(⊃⎕SI),' with spaces'
- folder←##.CiderConfig.HOME,'/TestData/TestProject/'
- (tempFolder,'/')⎕NCOPY⍠('Wildcard' 1)⊣folder,'*'
+ zipfile←##.CiderConfig.HOME,'/TestData/TestProject.zip'
+ zipfile ZipArchive.UnzipTo tempFolder
 
  allCommits1←##.APLGit2.Log tempFolder
  stop←0
