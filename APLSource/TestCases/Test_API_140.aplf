@@ -1,4 +1,4 @@
- R←Test_API_140(stopFlag batchFlag);⎕TRAP;tempFolder;allCommits1;allCommits2;zipfile
+ R←Test_API_140(stopFlag batchFlag);⎕TRAP;tempFolder;allCommits1;allCommits2;zipfile;noOf
 ⍝ Runs "Squash"
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -16,7 +16,8 @@
  zipfile ZipArchive.UnzipTo tempFolder
 
  allCommits1←##.APLGit2.Log tempFolder
- tempFolder ##.APLGit2.Squash'All my changes'
+ noOf←tempFolder ##.APLGit2.Squash'All my changes'
+ Assert 2=noOf  ⍝ If that fails the user did not enter "2"
  allCommits2←##.APLGit2.Log tempFolder
 
  →T.GoToTidyUp 0≠+/allCommits1[1 2;4]∊allCommits2[;4]

@@ -1,4 +1,4 @@
-:Class APLGit2_uc
+﻿:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
 ⍝ Version 0.1.0 ⋄ 2022-07-28
@@ -40,7 +40,7 @@
           c.Name←'CompareCommits'
           c.Desc←'Compares two different commits'
           c.Group←'APLGit2'
-          c.Parse←'2s -project= -with='
+          c.Parse←'2s -project= -with= -view'
           c._Project←0
           r,←c
      
@@ -222,66 +222,29 @@
       r←parms G.Log folder
     ∇
 
-    ∇ r←CompareCommits(space folder args);branch1;branch2;b;branches;ind
-      :If 0∊args.(_1 _2)                        ⍝ Any of the two required branch names undefined?
-          branches←2↓¨G.ListBranches folder
-          branches←{⍵/⍨~∨/¨'/\'∘∊¨⍵}branches    ⍝ Drop any path
-          :If 2>≢branches
-              r←'There is no branch to compare with'
-              :Return
-          :Else
-              :If ∧/args.(_1 _2)≡¨0                 ⍝ Both undefined?
-                  branch1←G.CurrentBranch folder    ⍝ The first one is then the current one
-                  :If (⊂branch1)∊'main' 'master'    ⍝ When the current one is either "main" or "master"...
-                      :If 2=≢branches               ⍝ ... and there are just two branches anyway...
-                          branch1←branches⊃⍨(branches⍳'main' 'master')~1+≢branches
-                          branch2←⊃branches~'main' 'master'
-                      :Else
-                          ind←'Select a branch:'Select branches
-                          :If 0=≢ind
-                              r←'Cancelled by user'
-                              :Return
-                          :Else
-                              branch2←ind⊃branches
-                          :EndIf
-                      :EndIf
-                  :Else
-                      branch2←branch1               ⍝ Current one is neither "main" nor "master", so we swap them
-                      branch1←branches⊃⍨(branches⍳'main' 'master')~1+≢branches
-                  :EndIf
-              :Else
-                  branch1←args._1
-                  :If (⊂branch1)∊'main' 'master'
-                      branch2←G.CurrentBranch folder    ⍝ The second one is then the current one
-                      :If (⊂branch2)∊'main' 'master'    ⍝ When the current one is either "main" or "master"...
-                          :If 2=≢branches               ⍝ ... and there are just two branches anyway...
-                              branch2←⊃branches~'main' 'master'
-                          :Else
-                              ind←'Select a branch:'Select branches~⊂branch1
-                              :If 0=≢ind
-                                  r←'Cancelled by user'
-                                  :Return
-                              :Else
-                                  branch2←ind⊃branches
-                              :EndIf
-                          :EndIf
-                      :Else
-                          branch2←branch1               ⍝ Current one is neither "main" nor "master", so we swap them
-                          branch1←branches⊃⍨(branches⍳'main' 'master')~1+≢branches
-                      :EndIf
-                  :Else
-                      branch2←branch1
-                      branch1←branches⊃⍨(branches⍳'main' 'master')~1+≢branches
-                  :EndIf
-              :EndIf
+    ∇ {(filename1 filename2)}←CompareCommits(space folder args);hash1;hash2;flag;exe;alias;parms
+      (hash1 hash2)←{0≡⍵:'' ⋄ ⍵}¨args.(_1 _2)
+      (filename1 filename2)←folder G.CompareCommits hash1 hash2
+      :If args.view
+          :If (,0)≢,args.with
+              {}⎕SE.CompareFiles.Use args.with
           :EndIf
-      :Else
-          (branch1 branch2)←args.(_1 _2)
+          :If flag←9=⎕SE.⎕NC'CompareFiles'
+              :Trap 911
+                  (exe alias)←⎕SE.CompareFiles.EstablishCompareEXE''
+              :Else
+                  ⎕←'Comparison with ]CompareFiles crashed'
+              :EndTrap
+          :AndIf 0<≢exe
+              parms←⎕SE.CompareFiles.ComparisonTools.⍎'CreateParmsFor',alias
+              parms.(file1 file2)←filename1 filename2
+              parms.(use name)←exe alias
+              parms.(caption1 caption2)←hash1 hash2
+              {}⎕SE.CompareFiles.Compare parms
+              ⎕NDELETE filename1 filename2
+              (filename1 filename2)←⊂''
+          :EndIf
       :EndIf
-      :If (,0)≢,Args.with
-          ⎕SE.CompareFiles.Use Args.with
-      :EndIf
-      r←folder G.CompareCommits branch1 branch2
     ∇
 
     ∇ (r space folder)←GetSpaceAndFolder(Cmd Args)
@@ -461,7 +424,7 @@
           :Case ⎕C'Commit'
               r,←⊂']APLGit2.Commit [space|folder] -m= -add'
           :Case ⎕C'CompareCommits'
-              r,←⊂']APLGit2.CompareCommits [hash1] [hash2] =project='
+              r,←⊂']APLGit2.CompareCommits [hash1] [hash2] -project= -with= -view'
           :Case ⎕C'CurrentBranch'
               r,←⊂']APLGit2.CurrenBranch [space|folder]'
           :Case ⎕C'Diff'
@@ -533,16 +496,23 @@
               r,←⊂''
               r,←AddLevel3HelpInfo'Commit'
           :Case ⎕C'CompareCommits'
-              r,←⊂'Compare all changes between two commits.'
+              r,←⊂'Compare changes between two commits.'
               r,←⊂''
-              r,←⊂'You may specify two commits, but you may also specify just one branch, say "foo".'
-              r,←⊂'In that case "foo" is compared with "main".'
-              r,←⊂'You may also omit both branches; in that case "main" is compared with "dev". If "dev"'
-              r,←⊂'does not exist an error is thrown.'
+              r,←⊂'You may specify none, one or two hashes as argument:'
+              r,←⊂' * No argument means "compare last commit with checkout commit of current branch'
+              r,←⊂' * One argument means "compare that commit with the latest one"'
+              r,←⊂' * Two arguments mean "compare those commits with each other"'
+              r,←⊂'By default two filenames are returned that can be fed into a comparison tool.'
+              r,←⊂'Those files will be created in the temp folder of the current OS.'
+              r,←⊂''
+              r,←⊂'-view   If the user command ]CompareFiles is available you may use this in order'
+              r,←⊂'        to compare those two files straight away.'
+              r,←⊂'-with=  If the user command ]CompareFiles is available you may use this to specify'
+              r,←⊂'        the comparison utility to be used. See ]CompareFiles for details.'
               r,←⊂''
               r,←⊂' * If there is just one open Cider project it is taken'
               r,←⊂' * If there are several open Cider projects the user is interrogated'
-              r,←⊂' * You may specify a particular project with =project=[ProjectName|ProjectFolder]'
+              r,←⊂' * You may specify a particular project with -project=[ProjectName|ProjectFolder]'
           :Case ⎕C'CurrentBranch'
               r,←⊂'Returns the name of the current branch'
               r,←⊂''
@@ -601,7 +571,7 @@
               r,←⊂'current directory if that carries a folder .git/. If it does not an error is thrown'
               r,←⊂''
               r,←AddLevel3HelpInfo'OpenGitShell'
-          :Case ⎕C'RefLog'                       
+          :Case ⎕C'RefLog'
               r,←⊂'Lists the reference logs.'
               r,←⊂''
               r,←⊂'Reference logs, or "reflogs", record when the tips of branches and other references were'

@@ -26,8 +26,6 @@
  :EndIf
  ⍝ The following is a safety net: in case the user has already squashed some commits the RefLog is misleading!
  parms←⎕NS''
- commits←{' '(≠⊆⊢)⍵}¨,commits
- commits←(↑3↑¨commits),⊃¨{⍺,' ',⍵}/¨3↓¨commits
  parms.noOf←+/∧\'commit:'∘≡¨commits[;3]
  allCommits←(parms Log folder)[;1]
  r←≢commits←(commits[;1]∊allCommits)⌿commits
