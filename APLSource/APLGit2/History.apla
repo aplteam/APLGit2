@@ -1,4 +1,8 @@
 (
+ '* 0.2.2 ⋄ 2022-08-03'
+ '  * Bug fix in Squash: when there is only one commit and its message are just dots it crashed'
+ '* 0.2.1 ⋄ 2022-08-01'
+ '  * Bug fix in `CompareCommits_`: did not always recognize missing files'
  '* 0.2.0 ⋄ 2022-07-29'
  '  * CompareCommits polished & test cases polished/added'
  '* 0.1.0 ⋄ 2022-01-04'

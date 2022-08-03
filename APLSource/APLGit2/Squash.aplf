@@ -38,7 +38,7 @@
              ⍞←'Provide a meaningful commit message in the editor:'
              ⎕SE.⎕SHADOW'TEMP'
              'TEMP'⎕SE.⎕NS''
-             :If 0=≢⎕SE.TEMP.CommitMsg←⊃{⍺,(⎕UCS 13),⍵}/{⍵/⍨0<≢¨⍵~¨⊂' .'}commits[;4]
+             :If 0=≢⎕SE.TEMP.CommitMsg←{0=≢⍵:⍵ ⋄ ⊃{⍺,(⎕UCS 13),⍵}/⍵}{⍵/⍨0<≢¨⍵~¨⊂' .'}commits[;4]
              :AndIf 0<⎕NC historyPath←(({⍵,'.',(⍵⍳'.')↓⍵}1⊃project)),'.History'
                  ⎕SE.TEMP.CommitMsg←{1↓⍵↑⍨1++/∧\'*'≠1↓⊃¨⍵}⍎historyPath
              :EndIf
