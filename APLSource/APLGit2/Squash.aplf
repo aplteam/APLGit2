@@ -32,15 +32,23 @@
  :If 0=r
      r←'Nothing to squash'
  :Else
-     noOf←U.GetNumberOfCommits commits currentBranch folder'How many commits would you like to squash? (0=quit) '
+     noOf←U.GetNumberOfCommits commits currentBranch folder'How many commits would you like to squash? (empty=quit) '
      :If 0<noOf
          :If 0=≢msg
              ⍞←'Provide a meaningful commit message in the editor:'
              ⎕SE.⎕SHADOW'TEMP'
              'TEMP'⎕SE.⎕NS''
              :If 0=≢⎕SE.TEMP.CommitMsg←{0=≢⍵:⍵ ⋄ ⊃{⍺,(⎕UCS 13),⍵}/⍵}{⍵/⍨0<≢¨⍵~¨⊂' .'}commits[;4]
-             :AndIf 0<⎕NC historyPath←(({⍵,'.',(⍵⍳'.')↓⍵}1⊃project)),'.History'
-                 ⎕SE.TEMP.CommitMsg←{1↓⍵↑⍨1++/∧\'*'≠1↓⊃¨⍵}⍎historyPath
+                 historyPath←(({⍵,'.',(⍵⍳'.')↓⍵}space)),'.History'
+                 :If 0<⎕NC historyPath
+                     ⎕SE.TEMP.CommitMsg←{1↓⍵↑⍨1++/∧\'*'≠1↓⊃¨⍵}⍎historyPath
+                 :ElseIf 0<|⎕NC⊂historyPath
+                     :Trap 0
+                         ⍝ Assumes something like "* Foo 1.2.3 from xx.xx.xxx" with an indented sub list:
+                         ⎕SE.TEMP.CommitMsg←{(1↓⍵)↑⍨+/∧\' '=1↓,1↑[2]⍵}2↓[2]A.DLB 2↓180⌶historyPath
+                         ⎕SE.TEMP.CommitMsg←,{⍵↓[2]⍨⌊/+/∧\' '=⍵}⎕SE.TEMP.CommitMsg
+                     :EndTrap
+                 :EndIf
              :EndIf
              ⎕SE.TEMP.⎕ED'CommitMsg'
              msg←⎕SE.TEMP.CommitMsg
