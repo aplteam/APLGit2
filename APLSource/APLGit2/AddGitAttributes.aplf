@@ -1,0 +1,14 @@
+ {r}←AddGitAttributes path;buff
+ r←⍬
+ :If U.YesOrNo'Add .gitattributes for APLers to ',path,' ?'
+     buff←''
+     buff,←⊂'# Auto detect text files (for EOL-auto conversion)'
+     buff,←⊂'* text=auto'
+     buff,←⊂''
+     buff,←⊂'*.apl? linguist-language=apl'
+     buff,←⊂'*.dyapp linguist-language=apl'
+     buff,←⊂'*.dyalog linguist-language=apl'
+     buff,←⊂'*.dws linguist-language=apl'
+     (⊂buff)⎕NPUT path,'/.gitignore'
+     ⎕←'.gitattributes created in ',path,' but check content!'
+ :EndIf

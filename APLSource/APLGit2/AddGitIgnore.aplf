@@ -1,0 +1,7 @@
+ {r}←AddGitIgnore path;buff
+ r←⍬
+ :If U.YesOrNo'Add .gitignore for APLers to ',path,' ?'
+     buff←'aplcore' 'CONTINUE.dws' 'conga.crash'
+     (⊂buff)⎕NPUT path,'/.gitignore'
+     ⎕←'.gitignore created in ',path,' but check content!'
+ :EndIf
