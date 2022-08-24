@@ -222,7 +222,7 @@
       r←parms G.Log folder
     ∇
 
-    ∇ {(filename1 filename2)}←CompareCommits(space folder args);hash1;hash2;flag;exe;alias;parms
+    ∇ {(filename1 filename2)}←CompareCommits(space folder args);hash1;hash2;flag;exe;alias;parms;qdmx
       (hash1 hash2)←{0≡⍵:'' ⋄ ⍵}¨args.(_1 _2)
       (filename1 filename2)←folder G.CompareCommits hash1 hash2
       :If args.view
@@ -233,7 +233,9 @@
               :Trap 911
                   (exe alias)←⎕SE.CompareFiles.EstablishCompareEXE''
               :Else
-                  ⎕←'Comparison with ]CompareFiles crashed'
+                  qdmx←⎕DMX
+                  ⎕←'Comparison with ]CompareFiles crashed'{0=≢⍵:⍺ ⋄ ⍺,' with "',⍵,'"'}qdmx.EM
+                  :Return
               :EndTrap
           :AndIf 0<≢exe
               parms←⎕SE.CompareFiles.ComparisonTools.⍎'CreateParmsFor',alias

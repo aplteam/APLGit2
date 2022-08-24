@@ -1,6 +1,6 @@
 (
- '* 0.3.0 ⋄ 2022-08-07'
- '  * `Init` now asks for adding .gitignore and .gitattributes with content designed for APLers'
+ '* 0.3.0 ⋄ 2022-08-24'
+ '  * New function `Init` now asks for adding .gitignore and .gitattributes with content designed for APLers'
  '* 0.2.1 ⋄ 2022-08-05'
  '  * Bug fixes'
  '    * `CompareCommits_`: did not always recognize missing files'

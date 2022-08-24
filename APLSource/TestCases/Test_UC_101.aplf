@@ -40,12 +40,12 @@
  (rc msg buff)←stop ∆UCMD'CurrentBranch "',tempDir,'"'
  msg Assert rc=0
  →T.GoToTidyUp 0<≢msg
- →T.GoToTidyUp'main'≢buff
+ →T.GoToTidyUp~(⊂buff)∊'master' 'main'
 
  (rc msg buff)←stop ∆UCMD'ListBranches "',tempDir,'"'
  msg Assert rc=0
  →T.GoToTidyUp 0<≢msg
- →T.GoToTidyUp'* main'≢∊buff
+ →T.GoToTidyUp~(⊂∊buff)∊'* main' '* master'
 
  (rc msg buff)←stop ∆UCMD'Log "',tempDir,'"'
  msg Assert rc=0

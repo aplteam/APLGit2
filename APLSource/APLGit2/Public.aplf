@@ -11,6 +11,7 @@
  r,←⊂'GetPathFromProject'
  r,←⊂'GetProjectFromPath'
  r,←⊂'GoToGitHub'
+ r,←⊂'Init'
  r,←⊂'InitializeGitUserCommand'
  r,←⊂'IsDirty'
  r,←⊂'IsGitProject'
