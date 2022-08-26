@@ -1,4 +1,6 @@
 (
+ '* 0.3.1 ⋄ 2022-08-26'
+ '  * ]APLGit2.CompareCommits did not work as intended when just one hash was provided.'
  '* 0.3.0 ⋄ 2022-08-24'
  '  * New function `Init` now asks for adding .gitignore and .gitattributes with content designed for APLers'
  '* 0.2.1 ⋄ 2022-08-05'

@@ -18,7 +18,7 @@
          reflog←folder RefLog''
          hash2←⊃reflog[reflog[;3]⍳⊂'checkout:';]
      :ElseIf 1=≢y
-     :OrIf 1=+/≢¨y
+     :OrIf 1=+/0=≢¨y
          hash1←GetLastCommit folder
          hash2←1⊃,y
      :Else
