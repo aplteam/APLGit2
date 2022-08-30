@@ -1,7 +1,7 @@
-﻿:Class APLGit2_uc
+:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
-⍝ Version 0.1.0 ⋄ 2022-07-28
+⍝ Version 0.2.0 ⋄ 2022-08-29
 
     ⎕IO←1 ⋄ ⎕ML←1
     MinimumVersionOfDyalog←'18.0'
@@ -71,6 +71,14 @@
           c←⎕NS''
           c.Name←'GoToGitHub'
           c.Desc←'For a project "Foo/Goo" this opens https://github.com/Foo/Goo'
+          c.Group←'APLGit2'
+          c.Parse←'1s'
+          c._Project←1
+          r,←c
+     
+          c←⎕NS''
+          c.Name←'Init'
+          c.Desc←'Initialises a folder for managing it by Git'
           c.Group←'APLGit2'
           c.Parse←'1s'
           c._Project←1
@@ -185,6 +193,8 @@
               :Else
                   r←space GoToGitHub Args
               :EndIf
+          :Case ⎕C'Init'
+              r←Init
           :Case ⎕C'IsDirty'
               r←IsDirty space folder Args
           :Case ⎕C'IsGitProject'
@@ -313,6 +323,10 @@
 
     ∇ r←GoToGithub(space folder args);msg
       r←⎕SE.APLGit2.GoToGithub folder msg
+    ∇
+
+    ∇ r←Init(space folder args)
+      r←⎕SE.APLGit2.Init folder
     ∇
 
     ∇ r←IsDirty(space folder args)

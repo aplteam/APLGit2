@@ -1,14 +1,17 @@
  R←Test_UC_101(stopFlag batchFlag);⎕TRAP;stop;rc;msg;buff;tempDir
-⍝ Runs all user commands on a Git-managed folder that is NOT a Cider project
+⍝ Runs all user commands on a Git-managed folder that is NOT a Cider project with a space in its name
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- tempDir←##.FilesAndDirs.GetTempSubDir'APLGit2-Tests'
+ tempDir←##.FilesAndDirs.GetTempSubDir'APLGit2 Tests'
  (⊂'This' 'and that')⎕NPUT tempDir,'/foo.txt'
  (⊂'r←Hello' 'r←''World''')⎕NPUT tempDir,'/Hello.aplf'
- {}⎕SH'git -C "',(##.FilesAndDirs.EnforceSlash tempDir),'" init '
 
  stop←0
+ (rc msg buff)←stop ∆UCMD'Init "',tempDir,'" -quiet'
+ msg Assert rc=0
+ →T.GoToTidyUp 0<≢msg
+ ∘∘∘
 
  (rc msg buff)←stop ∆UCMD'IsGitProject "',tempDir,'"'
  msg Assert rc=0

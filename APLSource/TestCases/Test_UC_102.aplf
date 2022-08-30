@@ -6,10 +6,14 @@
  tempDir←##.FilesAndDirs.GetTempSubDir'APLGit2-Tests'
  (⊂'This' 'and that')⎕NPUT tempDir,'/foo.txt'
  (⊂'r←Hello' 'r←''World''')⎕NPUT tempDir,'/Hello.aplf'
- {}⎕SH'git -C "',(##.FilesAndDirs.EnforceSlash tempDir),'" init '
  ⎕SE._APLGit2.APLSource.⎕EX'DEFAULT_PROJECT'
 
  stop←0
+
+ (rc msg buff)←stop ∆UCMD'Init "',tempDir,'" -quiet'
+ msg Assert rc=0
+ →T.GoToTidyUp 0<≢msg
+ ∘∘∘
 
  (rc msg buff)←stop ∆UCMD'GetDefaultProject'
  msg Assert rc=0
@@ -34,7 +38,7 @@
  (rc msg buff)←stop ∆UCMD'IsDirty'
  msg Assert rc=0
  →T.GoToTidyUp 0<≢msg
- →T.GoToTidyUp'Dirty'≢buff
+ →T.GoToTidyUp'Clean'≢buff
 
  (rc msg buff)←stop ∆UCMD'Status'
  msg Assert rc=0
