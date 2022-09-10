@@ -11,7 +11,7 @@
  :EndIf
 
  ⎕←' This test needs you: it will run the command ]CompareCommits which will use an external'
- ⎕←' comparison utiliy via the ]CompareFiles user command'
+ ⎕←' comparison utility via the ]CompareFiles user command'
  :If 0=1 ∆YesOrNo' Would you like to run this test?'
      →0,R←T._Inactive
  :EndIf

@@ -1,7 +1,8 @@
- {r}←AddGitAttributes path;buff
+ {r}←{quiet}AddGitAttributes path;buff
  r←⍬
- :If 0=⎕NEXISTS path,'/.gitattributes'
- :AndIf U.YesOrNo'Add .gitattributes for APLers to ',path,' ?'
+ quiet←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'quiet'
+ :If quiet
+ :OrIf U.YesOrNo'Add .gitattributes for APLers to ',path,' ?'
      buff←''
      buff,←⊂'# Auto detect text files (for EOL-auto conversion)'
      buff,←⊂'* text=auto'
@@ -11,5 +12,7 @@
      buff,←⊂'*.dyalog linguist-language=apl'
      buff,←⊂'*.dws linguist-language=apl'
      (⊂buff)⎕NPUT path,'/.gitattributes'
-     ⎕←'.gitattributes created in ',path,' but check content'
+     :If ~quiet
+         ⎕←'.gitattributes created in ',path,' but check content!'
+     :EndIf
  :EndIf

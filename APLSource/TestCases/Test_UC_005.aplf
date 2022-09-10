@@ -12,7 +12,10 @@
  (rc msg buff)←stop ∆UCMD'Init "',tempDir,'" -quiet'
  msg Assert rc=0
  →T.GoToTidyUp 0<≢msg
- ∘∘∘
+ →T.GoToTidyUp≢/FilesAndDirs.NormalizePath¨buff tempDir
+ →T.GoToTidyUp~⎕NEXISTS tempDir,'/.git'
+ →T.GoToTidyUp~⎕NEXISTS tempDir,'/.gitignore'
+ →T.GoToTidyUp~⎕NEXISTS tempDir,'/.gitattributes'
 
  R←T._OK
 

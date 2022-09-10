@@ -1,4 +1,4 @@
-:Class APLGit2_uc
+﻿:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
 ⍝ Version 0.2.0 ⋄ 2022-08-29
@@ -80,7 +80,7 @@
           c.Name←'Init'
           c.Desc←'Initialises a folder for managing it by Git'
           c.Group←'APLGit2'
-          c.Parse←'1s'
+          c.Parse←'1s -quiet'
           c._Project←1
           r,←c
      
@@ -194,7 +194,7 @@
                   r←space GoToGitHub Args
               :EndIf
           :Case ⎕C'Init'
-              r←Init
+              r←Init space folder Args
           :Case ⎕C'IsDirty'
               r←IsDirty space folder Args
           :Case ⎕C'IsGitProject'
@@ -326,7 +326,11 @@
     ∇
 
     ∇ r←Init(space folder args)
-      r←⎕SE.APLGit2.Init folder
+      'This folder is already managed by Git'Assert~⎕SE.APLGit2.IsGitProject  folder
+      :If args.quiet
+      :Orif YesOrNo'Sure that you want to make ',folder,' a Git-managed folder?'
+          r←args.quiet ⎕SE.APLGit2.Init folder
+      :EndIf
     ∇
 
     ∇ r←IsDirty(space folder args)
@@ -450,7 +454,7 @@
           :Case ⎕C'GoToGitHub'
               r,←⊂']APLGit2.OpenGitHub [space|folder|<group>/<project-name>|[alias]]'
           :Case ⎕C'Init'
-              r,←⊂']APLGit2.Init [folder]'
+              r,←⊂']APLGit2.Init [folder] -quiet'
           :Case ⎕C'IsDirty'
               r,←⊂']APLGit2.IsDirty [space|folder]'
           :Case ⎕C'IsGitProject'
@@ -554,7 +558,12 @@
               r,←⊂' * A Cider alias of an opened Cider project like [git]'
               r,←AddLevel3HelpInfo'GoToGitHub'
           :Case ⎕C'Init'
-              r,←⊂'Useful to initialize a folder for being managed by Git'
+              r,←⊂'Useful to initialize a folder for being managed by Git.'
+              r,←⊂''
+              r,←⊂'You may add the path to a folder as argument; if you do not then APLGit2 tries to'
+              r,←⊂'figure it out.'
+              r,←⊂''
+              r,←⊂'-quiet is useful to prevent Init to ask any questions, mostly for tests.'
           :Case ⎕C'IsDirty'
               r,←⊂'Returns one of:'
               r,←⊂' * "Clean"'

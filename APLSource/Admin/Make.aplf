@@ -18,7 +18,7 @@
      :EndIf
      ('Project <',name,'> is not currently open')Assert(⊂'#.',name)∊{⍵[;1]}1↓⎕SE.Link.Status''
      {}M.IncreaseBuildID'#.',name,'.',name,'.Version'
-     M.CreateAPI('#.',name,'.',name)#.APLGit2.APLGit2.Public
+     M.CreateAPI(⍎'#.',name,'.',name)#.APLGit2.APLGit2.Public
      (C.HOME,'/',C.CIDER.source,'/APLGit2/*')M.CopyTo tempFolder,'/APLGit2/',C.CIDER.source,'/'
      (C.HOME,'/',C.CIDER.source,'/APLGit2_uc.dyalog')M.CopyTo tempFolder,'/APLGit2/'
      (C.HOME,'/packages')M.CopyTo tempFolder,'/APLGit2/'

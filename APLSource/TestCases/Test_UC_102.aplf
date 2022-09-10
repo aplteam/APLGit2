@@ -13,7 +13,10 @@
  (rc msg buff)←stop ∆UCMD'Init "',tempDir,'" -quiet'
  msg Assert rc=0
  →T.GoToTidyUp 0<≢msg
- ∘∘∘
+ →T.GoToTidyUp≢/FilesAndDirs.NormalizePath¨buff tempDir
+ →T.GoToTidyUp~⎕NEXISTS tempDir,'/.git'
+ →T.GoToTidyUp~⎕NEXISTS tempDir,'/.gitignore'
+ →T.GoToTidyUp~⎕NEXISTS tempDir,'/.gitattributes'
 
  (rc msg buff)←stop ∆UCMD'GetDefaultProject'
  msg Assert rc=0
@@ -38,7 +41,7 @@
  (rc msg buff)←stop ∆UCMD'IsDirty'
  msg Assert rc=0
  →T.GoToTidyUp 0<≢msg
- →T.GoToTidyUp'Clean'≢buff
+ →T.GoToTidyUp'Dirty'≢buff
 
  (rc msg buff)←stop ∆UCMD'Status'
  msg Assert rc=0

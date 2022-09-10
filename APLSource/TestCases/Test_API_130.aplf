@@ -5,6 +5,7 @@
 
  (fn1 fn2)←#.APLGit2 ##.APLGit2.CompareCommits'main' 'dev'
 
+ 'Working dir is dirty - commit and then continue'Assert 0<+/≢¨fn1 fn2
  →T.GoToTidyUp~∧/⎕NEXISTS fn1 fn2
 
  R←T._OK
