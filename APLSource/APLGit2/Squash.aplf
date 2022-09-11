@@ -61,7 +61,7 @@
          :EndIf
          'Sqash requires a meaningful message'⎕SIGNAL 11/⍨0=≢msg~' .'
          (rc more buff)←folder U.RunGitCommand('reset --soft HEAD~',⍕noOf)
-         U.Assert 0=rc
+         more U.Assert 0=rc
          :If 0<≢buff
              ⎕←buff
          :EndIf

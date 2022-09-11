@@ -8,5 +8,5 @@
  short←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'short'
  (space path)←EstablishProject y
  (rc more r)←path U.RunGitCommand('status',short/' --short')
- U.Assert 0=rc
+ more U.Assert 0=rc
 ⍝Done

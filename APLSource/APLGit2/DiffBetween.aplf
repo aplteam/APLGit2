@@ -12,6 +12,6 @@
      (d1 d2)←y
  :EndIf
  (rc more buff)←folder U.RunGitCommand('diff --name-status ',d1,'..',d2)
- U.Assert 0=rc
+ more U.Assert 0=rc
  r←↑{i←⍵⍳' ' ⋄ ((i-1)↑⍵)(A.DLB i↓⍵)}¨buff
 ⍝Done

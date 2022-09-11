@@ -1,4 +1,6 @@
 (
+ '* 0.3.3 ⋄ 2022-09-111'
+ '  * Left argument added to several Assert calls '
  '* 0.3.2 ⋄ 2022-09-10'
  '  * Bug fixes'
  '    * ]APLGit2.CompareCommits did not work as intended when just one hash was provided.'

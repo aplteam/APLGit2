@@ -26,6 +26,6 @@
      :EndIf
  :EndIf
  (rc msg buff)←path U.RunGitCommand'diff ',branch1,'..',branch2
- U.Assert 0=rc
+ msg U.Assert 0=rc
  r←buff
 ⍝Done
