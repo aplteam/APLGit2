@@ -1,4 +1,4 @@
-﻿:Class APLGit2_uc
+:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
 ⍝ Version 0.2.0 ⋄ 2022-08-29
@@ -128,7 +128,7 @@
           c.Name←'RefLog'
           c.Desc←'List reference log entries (RefLogs)'
           c.Group←'APLGit2'
-          c.Parse←'1s -max= -branch= -project='
+          c.Parse←'1s -max= -all -branch= -project='
           c._Project←1
           r,←c
      
@@ -326,9 +326,9 @@
     ∇
 
     ∇ r←Init(space folder args)
-      'This folder is already managed by Git'Assert~⎕SE.APLGit2.IsGitProject  folder
+      'This folder is already managed by Git'Assert~⎕SE.APLGit2.IsGitProject folder
       :If args.quiet
-      :Orif YesOrNo'Sure that you want to make ',folder,' a Git-managed folder?'
+      :OrIf YesOrNo'Sure that you want to make ',folder,' a Git-managed folder?'
           r←args.quiet ⎕SE.APLGit2.Init folder
       :EndIf
     ∇
@@ -353,9 +353,10 @@
           branch←args.branch
       :EndIf
       :If (,0)≡,args.max
-          r←folder ⎕SE.APLGit2.RefLog branch
+          r←folder ⎕SE.APLGit2.RefLog args.all
       :Else
-          r←folder ⎕SE.APLGit2.RefLog branch args.max
+          r←folder ⎕SE.APLGit2.RefLog 0
+          ∘∘∘
       :EndIf
     ∇
 
@@ -466,7 +467,7 @@
           :Case ⎕C'OpenGitShell'
               r,←⊂']APLGit2.OpenGitShell [space|folder]'
           :Case ⎕C'RefLog'
-              r,←⊂']APLGit2.RefLog [space|folder] -max= -branch= -project='
+              r,←⊂']APLGit2.RefLog [space|folder] -max= -all -branch= -project='
           :Case ⎕C'SetDefaultProject'
               r,←⊂']APLGit2.SetDefaultProject [space|folder]'
           :Case ⎕C'Status'
@@ -599,10 +600,17 @@
           :Case ⎕C'RefLog'
               r,←⊂'Lists the reference logs.'
               r,←⊂''
+              r,←⊂'By default the command lists all log entries up to the last checkout.'
+              r,←⊂''
               r,←⊂'Reference logs, or "reflogs", record when the tips of branches and other references were'
               r,←⊂'updated in the local repository. Reflogs are useful in various Git commands, to specify'
               r,←⊂'the old value of a reference.'
-              r,←AddLevel3HelpInfo'OpenGitShell'
+              r,←⊂''
+              r,←⊂'-all   If you want all specifiy the -all flag.'
+              r,←⊂'-max   If you want a specific number specify the max= flag with an integer.'
+              r,←⊂''
+              r,←⊂''
+              r,←AddLevel3HelpInfo'RefLog'
           :Case ⎕C'SetDefaultProject'
               r,←⊂'Use this to specify a default project.'
               r,←⊂'Commands that require a project will act on the default project in case it was set.'
@@ -645,9 +653,9 @@
     ∇ r←AddProjectOptions flag
       r←''
       r,←⊂'The ]APLGit2.* user commands are particularly useful when used in conjunction with the project'
-      r,←⊂'management tool Cider, but it can be used without Cider. For that to work you must specify the'
-      r,←⊂'folder you wish the user command to act on. APLGit2 does not accept URLs pointing to GitHub, it'
-      r,←⊂'works only locally.'
+      r,←⊂'manager Cider, but it can be used without Cider as well, but then you must specify the folder'
+      r,←⊂'you wish the user command to act on. APLGit2 does not accept URLs pointing to GitHub, it works'
+      r,←⊂'only locally.'
       r,←⊂''
       r,←⊂'By default a user command will act on the currently opened Cider project if there is just one.'
       r,←⊂'If there are multiple open Cider projects the user will be asked which one to act on.'

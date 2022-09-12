@@ -19,7 +19,7 @@
      r←0
      :Return
  :EndIf
- r←≢commits←folder RefLog''
+ r←≢commits←folder RefLog 0
  :If 0=r
      r←'Nothing to squash'
      :Return

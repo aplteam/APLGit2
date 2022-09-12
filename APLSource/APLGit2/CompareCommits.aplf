@@ -15,7 +15,7 @@
      :If 0=≢y
      :OrIf 0=+/≢¨y
          hash1←GetLastCommit folder
-         reflog←folder RefLog''
+         reflog←folder RefLog 0
          hash2←⊃reflog[reflog[;3]⍳⊂'checkout:';]
      :ElseIf 1=≢y
      :OrIf 1=+/0=≢¨y

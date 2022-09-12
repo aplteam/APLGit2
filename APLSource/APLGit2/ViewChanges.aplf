@@ -1,6 +1,6 @@
  (filename1 filename2)←{x}ViewChanges y;space;folder;currentBranch;hashList;branchHashes;firstHash;ind;beforeHash;lastHash;list;noofBytes
 ⍝ Puts all changes on display since the current branch was created.
-⍝ Note that for this to work best one should consider deleting and re-creating a branch after merging it with "main".
+⍝ Note that for this to work one should consider deleting and re-creating a branch after merging it with "main".
 ⍝ `y` might be one of:
 ⍝ * Empty vector; The current state (work dir!) is viewed against where the current branch started from.
 ⍝ * A two-element vector ; each item must then be a hash of a commit. The two commits are the input.
@@ -11,7 +11,7 @@
  x←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'x'
  (space folder)←EstablishProject x
  'Is dirty'U.Assert 0=IsDirty space
- hashList←space RefLog 200
+ hashList←space RefLog 0
  :If 0=≢y
      currentBranch←CurrentBranch space
      branchHashes←space LogForBranch currentBranch
