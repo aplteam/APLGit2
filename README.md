@@ -21,6 +21,12 @@ All functions are also available via an API which lives in `⎕SE.APLGit2`. Howe
 
 For example, the  `Commit` API function just does that: executing `git commit`. The user command on the other hand first checks whether the project is currently dirty, and if it is it asks the user whether `git add .` should be executed first. Also, it opens an edit window for the user to create a message in case the `-m=` option was not set.
 
+## Installation
+
+Download a release and put the contents of the ZIP file into one of the folders Dyalog APL scans for user commands.
+
+For details refer to the Dyalog User Commands User Guide.
+
 ## Methods
 
 ```
