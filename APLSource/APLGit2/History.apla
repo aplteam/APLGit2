@@ -1,7 +1,9 @@
 (
- '* 0.3.3 ⋄ 2022-09-12'
- '  * ]RefLog is now listing only entries up to the first checkout'
- '  * Left argument added to several Assert calls '
+ '* 0.4.0 ⋄ 2022-09-12'
+ '  * ]RefLog is now by default listing only entries up to the first checkout'
+ '  * ]RefLog has an additional flag -all'
+ '  * ]Log''s "noOf" parameter was renamed to "max" in order to bring it in line with ]RefLog'
+ '  * Left argument added to several Assert calls for more useful messages'
  '* 0.3.2 ⋄ 2022-09-10'
  '  * Bug fixes'
  '    * ]APLGit2.CompareCommits did not work as intended when just one hash was provided.'

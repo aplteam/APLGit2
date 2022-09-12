@@ -112,7 +112,7 @@
           c.Name←'Log'
           c.Desc←'Shows the commit logs'
           c.Group←'APLGit2'
-          c.Parse←'1s -since= -verbose -noOf='
+          c.Parse←'1s -since= -verbose -max='
           c._Project←1
           r,←c
      
@@ -225,10 +225,10 @@
       parms←⎕NS''
       parms.verbose←args.verbose
       parms.since←{0≡⍵:'' ⋄ ⍵}args.since
-      :If 0≡args.noOf
-          args.noOf←¯1
+      :If 0≡args.max
+          args.max←¯1
       :EndIf
-      parms.noOf←args.noOf
+      parms.max←args.max
       r←parms G.Log folder
     ∇
 
