@@ -1,4 +1,4 @@
-:Class APLGit2_uc
+﻿:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
 ⍝ Version 0.2.0 ⋄ 2022-08-29
@@ -346,17 +346,19 @@
       r←⎕SE.APLGit2.OpenGitShell folder
     ∇
 
-    ∇ r←RefLog(space folder args);branch
+    ∇ r←RefLog(space folder args);branch;value;flag
       :If (,0)≡args.branch
           branch←''
       :Else
           branch←args.branch
       :EndIf
       :If (,0)≡,args.max
-          r←folder ⎕SE.APLGit2.RefLog args.all
+          r←folder ⎕SE.APLGit2.RefLog~args.all
       :Else
           r←folder ⎕SE.APLGit2.RefLog 0
-          ∘∘∘
+          (flag value)←⎕VFI args.max
+          '"max" must be a positive integer'Assert flag
+          r←value↑r
       :EndIf
     ∇
 

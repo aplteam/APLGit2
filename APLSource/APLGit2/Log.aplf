@@ -21,7 +21,7 @@
  parms.since←''
  parms.verbose←0
  parms.branch←''
- parms.noOf←¯1
+ parms.max←¯1
  :If 9=⎕NC'parms_'
      'parms'⎕NS parms_
  :EndIf
@@ -29,7 +29,7 @@
  :AndIf 0=1↑0⍴parms.since
      parms.since←{(4↑⍵),'-',(2↑4↓⍵),'-',(2↑6↓⍵)}⍕⌊parms.since
  :EndIf
- :If ~∧/(parms.⎕NL-2)∊list←'since' 'verbose' 'branch' 'noOf'
+ :If ~∧/(parms.⎕NL-2)∊list←'since' 'verbose' 'branch' 'max'
      811 ⎕SIGNAL⍨'Invalid parameters: ',⊃{⍺,',',⍵}/(parms.⎕NL-2)~list
  :EndIf
  cmd←'log '
@@ -38,8 +38,8 @@
      unwantedBranches←((⊂' *')~⍨¨ListBranches folder)~⊂parms.branch
      cmd,←⊃,/{'--not ',⍵,' '}¨unwantedBranches
  :EndIf
- :If ¯1≢parms.noOf
-     cmd,←' -n ',(⍕parms.noOf),' '
+ :If ¯1≢parms.max
+     cmd,←' -n ',(⍕parms.max),' '
  :EndIf
  cmd,←(0<≢parms.since)/'--since=',(⍕parms.since),' '
  :If 0=parms.verbose
