@@ -235,7 +235,8 @@
     ∇ {(filename1 filename2)}←CompareCommits(space folder args);hash1;hash2;flag;exe;alias;parms;qdmx
       (hash1 hash2)←{0≡⍵:'' ⋄ ⍵}¨args.(_1 _2)
       (filename1 filename2)←folder G.CompareCommits hash1 hash2
-      :If args.view
+      :If 0<+/⎕NEXISTS filename1 filename2
+      :AndIf args.view
           :If (,0)≢,args.with
               {}⎕SE.CompareFiles.Use args.with
           :EndIf
