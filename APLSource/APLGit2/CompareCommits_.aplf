@@ -22,7 +22,7 @@
                  :If ∨/∨/¨'does not exist' 'exists on disk, but not' 'unknown revision or path not in the working tree'⍷¨⊂∊more
                      buff1←''
                  :Else
-                     ∘∘∘ ⍝ It appears that the file does not exist but we fail to analyze the error message correclty in this respect
+                     ∘∘∘ ⍝ It appears that the file does not exist but we fail to analyze the error message correctly in this respect
                  :EndIf
              :EndIf
          :EndIf

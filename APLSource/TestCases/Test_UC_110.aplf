@@ -17,7 +17,7 @@
  :EndIf
 
  stop←0
- (rc msg buff)←stop ∆UCMD'CompareCommits ''main'' ''dev'' -project=#.APLGit2 -view'
+ (rc msg buff)←stop ∆UCMD'CompareCommits -project=#.APLGit2 -view'
  msg Assert rc=0
  →T.PassesIf 0=≢msg
 

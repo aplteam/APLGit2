@@ -2,7 +2,7 @@
 ⍝ Returns the last commit.
 ⍝ Useful to compare it with the working tree
  parms←⎕NS''
- parms.noOf←1
+ parms.max←1
  commit←parms Log folder
  hash←⊃commit
 ⍝Done

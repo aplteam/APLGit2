@@ -1,4 +1,6 @@
 (
+ '* 0.4.1 ⋄ 2022-09-21'
+ '  * Bug fix: Log used -noOf rather than -max'
  '* 0.4.0 ⋄ 2022-09-12'
  '  * ]RefLog is now by default listing only entries up to the first checkout'
  '  * ]RefLog has an additional flag -all'

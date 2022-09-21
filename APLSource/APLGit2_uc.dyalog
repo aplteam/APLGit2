@@ -1,7 +1,7 @@
 ﻿:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
-⍝ Version 0.2.0 ⋄ 2022-08-29
+⍝ Version 0.2.1 ⋄ 2022-09-21
 
     ⎕IO←1 ⋄ ⎕ML←1
     MinimumVersionOfDyalog←'18.0'
@@ -465,7 +465,7 @@
           :Case ⎕C'ListBranches'
               r,←⊂']APLGit2.ListBranches [space|folder] -a -r'
           :Case ⎕C'Log'
-              r,←⊂']APLGit2.Log [space|folder] -since= -verbose -noOf='
+              r,←⊂']APLGit2.Log [space|folder] -since= -verbose -max='
           :Case ⎕C'OpenGitShell'
               r,←⊂']APLGit2.OpenGitShell [space|folder]'
           :Case ⎕C'RefLog'
@@ -591,7 +591,7 @@
               r,←⊂''
               r,←⊂'-since=  Use this to get all commits after a specific date (YYYY-MM-DD)'
               r,←⊂'-verbose By default a short report is provided. Overwrite with -verbose for a detailed report'
-              r,←⊂'-noOf=   Allows you to specify the maximum number of commits you want to be returned'
+              r,←⊂'-max=    Allows you to specify the maximum number of commits you want to be returned'
               r,←⊂''
               r,←AddLevel3HelpInfo'Log'
           :Case ⎕C'OpenGitShell'
