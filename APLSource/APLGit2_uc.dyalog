@@ -40,7 +40,7 @@
           c.Name←'CompareCommits'
           c.Desc←'Compares two different commits'
           c.Group←'APLGit2'
-          c.Parse←'2s -project= -with= -view'
+          c.Parse←'2s -project= -use= -view'
           c._Project←0
           r,←c
      
@@ -232,26 +232,23 @@
       r←parms G.Log folder
     ∇
 
-    ∇ {(filename1 filename2)}←CompareCommits(space folder args);hash1;hash2;flag;exe;alias;parms;qdmx
+    ∇ {(filename1 filename2)}←CompareCommits(space folder args);hash1;hash2;flag;exe;parms;qdmx;name
       (hash1 hash2)←{0≡⍵:'' ⋄ ⍵}¨args.(_1 _2)
       (filename1 filename2)←folder G.CompareCommits hash1 hash2
       :If 0<+/⎕NEXISTS filename1 filename2
-      :AndIf args.view
-          :If (,0)≢,args.with
-              {}⎕SE.CompareFiles.Use args.with
-          :EndIf
+      :AndIf (args.view)∨{((,0)≢,⍵)∧0<≢⍵}args.use
           :If flag←9=⎕SE.⎕NC'CompareFiles'
               :Trap 911
-                  (exe alias)←⎕SE.CompareFiles.EstablishCompareEXE''
+                  (exe name)←⎕SE.CompareFiles.EstablishCompareEXE{(,0)≡,⍵:'' ⋄ ⍵}args.use
               :Else
                   qdmx←⎕DMX
                   ⎕←'Comparison with ]CompareFiles crashed'{0=≢⍵:⍺ ⋄ ⍺,' with "',⍵,'"'}qdmx.EM
                   :Return
               :EndTrap
           :AndIf 0<≢exe
-              parms←⎕SE.CompareFiles.ComparisonTools.⍎'CreateParmsFor',alias
+              parms←⎕SE.CompareFiles.ComparisonTools.⍎'CreateParmsFor',name
               parms.(file1 file2)←filename1 filename2
-              parms.(use name)←exe alias
+              parms.(use name)←exe name
               parms.(caption1 caption2)←hash1 hash2
               {}⎕SE.CompareFiles.Compare parms
               ⎕NDELETE filename1 filename2
@@ -448,7 +445,7 @@
           :Case ⎕C'Commit'
               r,←⊂']APLGit2.Commit [space|folder] -m= -add'
           :Case ⎕C'CompareCommits'
-              r,←⊂']APLGit2.CompareCommits [hash1] [hash2] -project= -with= -view'
+              r,←⊂']APLGit2.CompareCommits [hash1] [hash2] -project= -use=[name|?] -view'
           :Case ⎕C'CurrentBranch'
               r,←⊂']APLGit2.CurrenBranch [space|folder]'
           :Case ⎕C'Diff'
@@ -531,8 +528,10 @@
               r,←⊂''
               r,←⊂'-view   If the user command ]CompareFiles is available you may use this in order'
               r,←⊂'        to compare those two files straight away.'
-              r,←⊂'-with=  If the user command ]CompareFiles is available you may use this to specify'
-              r,←⊂'        the comparison utility to be used. See ]CompareFiles for details.'
+              r,←⊂'-use=   If the user command ]CompareFiles is available you may use this to specify'
+              r,←⊂'        the comparison utility to be used. Must be either a name or a "?".'
+              r,←⊂'        See ]CompareFiles for details.'
+              r,←⊂'        Note that specifying -use implies the -view flag'
               r,←⊂''
               r,←⊂' * If there is just one open Cider project it is taken'
               r,←⊂' * If there are several open Cider projects the user is interrogated'

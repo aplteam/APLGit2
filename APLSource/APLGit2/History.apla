@@ -1,5 +1,6 @@
 (
- '* 0.4.1 ⋄ 2022-09-21'
+ '* 0.5.0 ⋄ 2022-09-21'
+ '  * Breaking change: -max= renamed to -use= in CompareCommits to keep it in line with ]CompareFiles'
  '  * Bug fix: Log used -noOf rather than -max'
  '* 0.4.0 ⋄ 2022-09-12'
  '  * ]RefLog is now by default listing only entries up to the first checkout'
