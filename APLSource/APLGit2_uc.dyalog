@@ -1,4 +1,4 @@
-﻿:Class APLGit2_uc
+:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
 ⍝ Version 0.2.1 ⋄ 2022-09-21
@@ -712,18 +712,18 @@
     ∇
 
     ∇ yesOrNo←{default}YesOrNo question;isOkay;answer;add;dtb;answer2
-    ⍝ Ask a simple question and allows just "Yes" or "No" as answers.
+    ⍝ Asks a simple question and allows just "Yes" or "No" as answers.
     ⍝ You may specify a default via the optional left argument which when specified
     ⍝ rules what happens when the user just presses <enter>.
     ⍝ `default` must be either 1 (yes) or 0 (no).
-    ⍝ Note that this function does not work as expected when traced!
+    ⍝ Note that this function does NOT work as expected when traced!
       isOkay←0
       default←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'default'
       isOkay←0
       :If 0≠≢default
-          'Left argument must be a scalar'⎕SIGNAL _errno/⍨1≠≢default
+          'Left argument must be a scalar'⎕SIGNAL 11/⍨1≠≢default
       :AndIf ~default∊0 1
-          'The left argument. if specified, must be a Boolean or empty'⎕SIGNAL _errno
+          'The left argument. if specified, must be a Boolean or empty'⎕SIGNAL 11
       :EndIf
       :If 0=≢default
           add←' (y/n) '
@@ -741,14 +741,17 @@
           question←question,add
       :EndIf
       :Repeat
+          ⎕←''
           ⍞←question
           answer←⍞
-          :If answer≡question                        ⍝ Did...  (since version 18.0 trailing blanks are not removed anynmore)
-          :OrIf (≢answer)=¯1+≢question               ⍝ ..the ...
-          :OrIf 0=≢answer                            ⍝ ...user just...
+          :If answer≡question                        ⍝ Did ...  (since version 18.0 trailing blanks are not removed anymore)
+          :OrIf (≢answer)=¯1+≢question               ⍝ ... the ...
+          :OrIf 0=≢answer                            ⍝ ... user ...
+          :OrIf question≡(-≢question)↑answer         ⍝ ... just ...
               dtb←{⍵↓⍨-+/∧\' '=⌽⍵}
               answer2←dtb answer
-          :OrIf answer2≡((-≢answer2)↑(⎕UCS 10){~⍺∊⍵:⍵ ⋄ ' ',dtb ⍺{⌽⍵↑⍨1+⍵⍳⍺}⌽⍵}question)   ⍝ ...press <enter>?
+          :OrIf answer2≡((-≢answer2)↑(⎕UCS 10){~⍺∊⍵:⍵ ⋄ ' ',dtb ⍺{⌽⍵↑⍨1+⍵⍳⍺}⌽⍵}question)   ⍝ ... press ...
+          :OrIf answer≡{1↓⊃¯1↑(⍵∊⎕UCS 10 13)⊂⍵}(⎕UCS 10),question ⍝ ... <enter>?
               :If 0≠≢default
                   yesOrNo←default
                   isOkay←1
@@ -761,6 +764,7 @@
               :EndIf
           :EndIf
       :Until isOkay
+    ⍝Done
     ∇
 
 
