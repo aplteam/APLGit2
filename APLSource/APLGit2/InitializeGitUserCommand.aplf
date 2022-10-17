@@ -6,8 +6,8 @@
      U.F←F
  :Else                                          ⍝ It's the Git project
      :If '⎕'=⊃⊃⎕XSI
-         U.A←A←⎕SE._APLGit2.APLSource.APLTreeUtils2
-         U.F←F←⎕SE._APLGit2.APLSource.FilesAndDirs
+         U.A←A←⎕SE.APLTreeUtils2
+         U.F←F←⎕SE.FilesAndDirs
      :Else
          U.A←A←##.APLTreeUtils2
          U.F←F←##.FilesAndDirs

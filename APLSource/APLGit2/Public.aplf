@@ -10,6 +10,7 @@
  r,←⊂'GetDefaultProject'
  r,←⊂'GetPathFromProject'
  r,←⊂'GetProjectFromPath'
+ r,←⊂'GetTagOfLatestRelease'
  r,←⊂'GoToGitHub'
  r,←⊂'Init'
  r,←⊂'InitializeGitUserCommand'

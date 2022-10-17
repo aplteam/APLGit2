@@ -1,7 +1,7 @@
 :Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
-⍝ Version 0.2.1 ⋄ 2022-09-21
+⍝ Version 0.3.0 ⋄ 2022-10-10
 
     ⎕IO←1 ⋄ ⎕ML←1
     MinimumVersionOfDyalog←'18.0'
@@ -66,6 +66,14 @@
           c.Group←'APLGit2'
           c.Parse←'0'
           c._Project←0
+          r,←c
+     
+          c←⎕NS''
+          c.Name←'GetTagOfLatestRelease'
+          c.Desc←'Returns the tag of the latest release'
+          c.Group←'APLGit2'
+          c.Parse←'1s -verbose -username='
+          c._Project←1
           r,←c
      
           c←⎕NS''
@@ -144,7 +152,7 @@
           c.Name←'Squash'
           c.Desc←'Squashes some commits in the current branch into a single one'
           c.Group←'APLGit2'
-          c.Parse←'1s -m='
+          c.Parse←'1s -m= -noOf='
           c._Project←1
           r,←c
      
@@ -169,7 +177,11 @@
     ∇ r←Run(Cmd Args);folder;G;space
       :Access Shared Public
       G←LoadCode ⍬
-      (r space folder)←GetSpaceAndFolder Cmd Args
+      :If (⊂⎕C Cmd)∊⎕C'Version' 'GetTagOfLatestRelease'
+          r←''
+      :Else
+          (r space folder)←GetSpaceAndFolder Cmd Args
+      :EndIf
       :If 0=≢r
           :Select ⎕C Cmd
           :Case ⎕C'Add'
@@ -186,6 +198,8 @@
               r←Diff space folder Args
           :Case ⎕C'GetDefaultProject'
               r←GetDefaultProject ⍬
+          :Case ⎕C'GetTagOfLatestRelease'
+              r←GetTagOfLatestRelease Args
           :Case ⎕C'GoToGitHub'
               :If 0=⎕NC'space'
               :OrIf 0=≢space
@@ -210,15 +224,45 @@
           :Case ⎕C'SetDefaultProject'
               r←G.SetDefaultProject{⍵/⍨0≠⍵}Args._1
           :Case ⎕C'Squash'
-              r←⍪Squash space folder Args.m
+              r←⍪Squash space folder Args.m Args.noOf
           :Case ⎕C'Status'
               r←⍪Status space folder Args
           :Case ⎕C'Version'
-              r←⊃{⍺,' from ',⍵}/1↓⎕SE._APLGit2.APLSource.Version
+              r←⊃{⍺,' from ',⍵}/1↓⎕SE._APLGit2.Version
           :Else
               ∘∘∘ ⍝ Huh?!
           :EndSelect
       :EndIf
+    ∇
+
+    ∇ r←GetTagOfLatestRelease args;username;path;wsPathRef;project;l
+      project←args._1
+      :If 0≡args.username
+          :If 0≡args._1
+          :OrIf 0=≢args._1
+              path←⎕SE.Cider.GetProjectPath''
+              wsPathRef←⍎{l←⎕SE.Cider.ListOpenProjects 0 ⋄ ⊃l[l[;2]⍳⊂⍵;]}path
+              username←wsPathRef.CiderConfig.CIDER.githubUsername
+          :Else
+              :If 0=≢args._1
+                  _errno ⎕SIGNAL⍨'Could not determine GitHub username'
+              :Else
+                  l←⎕SE.Cider.ListOpenProjects 0
+                  :Trap 0
+                      wsPathRef←⍎1⊃l[({{⌽⍵↑⍨¯1+⍵⍳'.'}⌽⍵}¨{⍵[;1]}l)⍳⊂{{⌽⍵↑⍨¯1+⍵⍳'.'}⌽⍵}project;]
+                  :Else
+                      _errno ⎕SIGNAL⍨'Could not determine GitHub username'
+                  :EndTrap
+                  username←wsPathRef.CiderConfig.CIDER.githubUsername
+              :EndIf
+          :EndIf
+      :Else
+          username←args.username
+      :EndIf
+      :If 0≡project
+          project←wsPathRef.CiderConfig.CIDER.projectSpace
+      :EndIf
+      r←args.verbose G.GetTagOfLatestRelease username project
     ∇
 
     ∇ r←Log(space folder args);parms
@@ -417,8 +461,8 @@
       r←short G.Status folder
     ∇
 
-    ∇ r←Squash(space folder msg)
-      r←folder G.Squash{0≡⍵:'' ⋄ ⍵}msg
+    ∇ r←Squash(space folder msg noOf)
+      r←folder G.Squash({0≡⍵:'' ⋄ ⍵}msg)noOf
     ∇
 
     ∇ r←ListBranches(space folder args);parms
@@ -452,6 +496,8 @@
               r,←⊂']APLGit2.Diff [space|folder] -verbose'
           :Case ⎕C'GetDefaultProject'
               r,←⊂']GetDefaultProject'
+          :Case ⎕C'GetTagOfLatestRelease'
+              r,←⊂']APLGit2.GetTagOfLatestRelease [space|folder]'
           :Case ⎕C'GoToGitHub'
               r,←⊂']APLGit2.OpenGitHub [space|folder|<group>/<project-name>|[alias]]'
           :Case ⎕C'Init'
@@ -473,7 +519,7 @@
           :Case ⎕C'Status'
               r,←⊂']APLGit2.Status -short -path='
           :Case ⎕C'Squash'
-              r,←⊂']APLGit2.Squash [space|folder] -m=<message>'
+              r,←⊂']APLGit2.Squash [space|folder] -m=<message> -noOf=<integer>'
           :Else
               r,←⊂'There is no help available'
           :EndSelect
@@ -578,6 +624,12 @@
               r,←⊂'Project <name> (<path) is [not] managed by Git'
               r,←⊂''
               r,←AddLevel3HelpInfo'IsGitProject'
+          :Case ⎕C'GetTagOfLatestRelease'
+              r,←⊂'Returns the tag number of the latest release.'
+              r,←⊂'Drafts are ignored.'
+              r,←⊂''
+              r,←⊂'-verbose If specified the date of the commit and the caption of the release are returned as well.'
+              r,←AddLevel3HelpInfo'IsGitProject'
           :Case ⎕C'ListBranches'
               r,←⊂'List all branches, by default local ones.'
               r,←⊂''
@@ -629,6 +681,8 @@
               r,←⊂'-m    You may specify a message with -m="my message", but if you don''t you will be given an edit'
               r,←⊂'      window for specifying a message. It will be populated with the messages from the commits'
               r,←⊂'      about to be squashed.'
+              r,←⊂'-noOf By default all commits until the first "commit" are listed. By assigning a positive integer'
+              r,←⊂'      to -noOf one can force Squash to list more than that. Of course you must be careful!'
               r,←AddLevel3HelpInfo'Status'
           :Else
               r,←⊂'There is no additional help available'
@@ -686,7 +740,7 @@
       r←⊃min≤currentVersion
     ∇
 
-    Assert←{⍺←'' ⋄ (,1)≡,⍵:r←1 ⋄ ⍺ ⎕SIGNAL 1↓(⊃∊⍵),_errno}
+    Assert←{⍺←'' ⋄ (,1)≡,⍵:r←1 ⋄ (∊⍺) ⎕SIGNAL 1↓(⊃∊⍵),_errno}
 
     ∇ r←r AddTitles titles
     ⍝ `r` is a matrix with data. `titles` is put on top of that matrix, followed by a row with `-` matching the lengths of each title
@@ -698,14 +752,15 @@
       path,←(~(¯1↑path)∊'/\')/'/'
     ∇
 
-    ∇ G←LoadCode dummy;res;folder;msg
+    ∇ G←LoadCode dummy;res;msg;folder
       :If 0=⎕SE.⎕NC'_APLGit2'
           G←'_APLGit2'⎕SE.⎕NS''
           folder←¯1↓1⊃⎕NPARTS ##.SourceFile
+          folder,←'/APLSource'
           res←({⍵.overwrite←1 ⋄ ⍵}⎕NS'')⎕SE.Link.Import G folder
           'Could not import the Git application code'Assert∨/'Imported:'⍷res
-          ⎕SE.Tatin.LoadDependencies((1⊃⎕NPARTS ##.SourceFile),'packages')'⎕se._APLGit2.APLSource'
-          ⎕SE.APLGit2←⎕SE._APLGit2.APLSource.API          ⍝ Establish the API
+          ⎕SE.Tatin.LoadDependencies((1⊃⎕NPARTS ##.SourceFile),'packages')'⎕se'
+          ⎕SE.APLGit2←⎕SE._APLGit2.API          ⍝ Establish the API
           {}⎕SE.APLGit2.InitializeGitUserCommand''
       :EndIf
       G←⎕SE.APLGit2

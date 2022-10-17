@@ -1,4 +1,6 @@
 (
+ '* 0.5.2 ⋄ 2022-10-??'
+ '  * `Status` now emphasizes the current branch in case it is neither "main" nor "master"'
  '* 0.5.1 ⋄ 2022-10-08'
  '  `Assert` is now more flexible: left argument might be nested'
  '* 0.5.0 ⋄ 2022-09-21'
