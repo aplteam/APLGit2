@@ -16,7 +16,7 @@
  'No squashing of master'⎕SIGNAL 11/⍨currentBranch≡'master'
  'No squashing of main'⎕SIGNAL 11/⍨currentBranch≡'main'
  :If IsDirty folder
- :AndIf ~1 U.YesOrNo'There are uncommitted changes; continue anyway?'
+ :AndIf ~1 ##.CommTools.YesOrNo'There are uncommitted changes; continue anyway?'
      →r←0
  :EndIf
  :If 0≡noOf

@@ -1,7 +1,7 @@
-:Class APLGit2_uc
+﻿:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
-⍝ Version 0.3.0 ⋄ 2022-10-10
+⍝ Version 0.4.0 ⋄ 2022-10-23
 
     ⎕IO←1 ⋄ ⎕ML←1
     MinimumVersionOfDyalog←'18.0'
@@ -370,7 +370,7 @@
     ∇ r←Init(space folder args)
       'This folder is already managed by Git'Assert~⎕SE.APLGit2.IsGitProject folder
       :If args.quiet
-      :OrIf YesOrNo'Sure that you want to make ',folder,' a Git-managed folder?'
+      :OrIf ⎕SE.CommTools.YesOrNo'Sure that you want to make ',folder,' a Git-managed folder?'
           r←args.quiet ⎕SE.APLGit2.Init folder
       :EndIf
     ∇
@@ -412,7 +412,7 @@
       branch←⎕SE.APLGit2.CurrentBranch folder
       :If ⎕SE.APLGit2.IsDirty folder ⍝ 0<'?'+.=⊃∘∪¨2↑¨1 ⎕SE.Git.Status folder
           :If 1=args.add
-          :OrIf 1 YesOrNo'Branch "',branch,'" is dirty - shall Git''s "Add ." command be executed?'
+          :OrIf 1 ⎕SE.CommTools.YesOrNo'Branch "',branch,'" is dirty - shall Git''s "Add ." command be executed?'
               (rc msg data)←folder ⎕SE.APLGit2.##.U.RunGitCommand'add .'
               msg Assert 0=rc
           :Else
@@ -436,11 +436,11 @@
                   msg←ref.msg{⍺/⍨~(⌽∧\0=⌽⍵)∨(∧\0=⍵)}≢¨ref.msg
                   :If (⊂branch)∊'main' 'master'
                   :AndIf 0=≢(∊msg)~'.'
-                      :If 0=1 YesOrNo'You MUST specify a meaningful message for "',branch,'"; try again (no=cancel) ?'
+                      :If 0=1 ⎕SE.CommTools.YesOrNo'You MUST specify a meaningful message for "',branch,'"; try again (no=cancel) ?'
                           r←'Commit cancelled by user'
                           :Return
                       :EndIf
-                  :ElseIf YesOrNo'Sure you don''t want to provide a message? ("No" cancells the whole operation)'
+                  :ElseIf ⎕SE.CommTools.YesOrNo'Sure you don''t want to provide a message? ("No" cancells the whole operation)'
                       flag←1
                   :Else
                       r←'Operation cancelled by user'
@@ -683,7 +683,7 @@
               r,←⊂'      about to be squashed.'
               r,←⊂'-noOf By default all commits until the first "commit" are listed. By assigning a positive integer'
               r,←⊂'      to -noOf one can force Squash to list more than that. Of course you must be careful!'
-              r,←AddLevel3HelpInfo'Status'
+              r,←AddLevel3HelpInfo'Squash'
           :Else
               r,←⊂'There is no additional help available'
           :EndSelect
@@ -764,113 +764,6 @@
           {}⎕SE.APLGit2.InitializeGitUserCommand''
       :EndIf
       G←⎕SE.APLGit2
-    ∇
-
-    ∇ yesOrNo←{default}YesOrNo question;isOkay;answer;add;dtb;answer2
-    ⍝ Asks a simple question and allows just "Yes" or "No" as answers.
-    ⍝ You may specify a default via the optional left argument which when specified
-    ⍝ rules what happens when the user just presses <enter>.
-    ⍝ `default` must be either 1 (yes) or 0 (no).
-    ⍝ Note that this function does NOT work as expected when traced!
-      isOkay←0
-      default←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'default'
-      isOkay←0
-      :If 0≠≢default
-          'Left argument must be a scalar'⎕SIGNAL 11/⍨1≠≢default
-      :AndIf ~default∊0 1
-          'The left argument. if specified, must be a Boolean or empty'⎕SIGNAL 11
-      :EndIf
-      :If 0=≢default
-          add←' (y/n) '
-      :Else
-          :If default
-              add←' (Y/n) '
-          :Else
-              add←' (y/N) '
-          :EndIf
-      :EndIf
-      :If 1<≡question
-          ((≢question)⊃question)←((≢question)⊃question),add
-          question←⍪question
-      :Else
-          question←question,add
-      :EndIf
-      :Repeat
-          ⎕←''
-          ⍞←question
-          answer←⍞
-          :If answer≡question                        ⍝ Did ...  (since version 18.0 trailing blanks are not removed anymore)
-          :OrIf (≢answer)=¯1+≢question               ⍝ ... the ...
-          :OrIf 0=≢answer                            ⍝ ... user ...
-          :OrIf question≡(-≢question)↑answer         ⍝ ... just ...
-              dtb←{⍵↓⍨-+/∧\' '=⌽⍵}
-              answer2←dtb answer
-          :OrIf answer2≡((-≢answer2)↑(⎕UCS 10){~⍺∊⍵:⍵ ⋄ ' ',dtb ⍺{⌽⍵↑⍨1+⍵⍳⍺}⌽⍵}question)   ⍝ ... press ...
-          :OrIf answer≡{1↓⊃¯1↑(⍵∊⎕UCS 10 13)⊂⍵}(⎕UCS 10),question ⍝ ... <enter>?
-              :If 0≠≢default
-                  yesOrNo←default
-                  isOkay←1
-              :EndIf
-          :Else
-              answer←¯1↑{⍵↓⍨-+/∧\' '=⌽⍵}answer
-              :If answer∊'YyNn'
-                  isOkay←1
-                  yesOrNo←answer∊'Yy'
-              :EndIf
-          :EndIf
-      :Until isOkay
-    ⍝Done
-    ∇
-
-
-    ∇ index←{x}Select options;flag;answer;question;value;bool;⎕ML;⎕IO;manyFlag;mustFlag;caption
-    ⍝ Presents `options` as a numbered list and allows the user to select either exactly one or multiple ones.\\
-    ⍝ One is the default.\\
-    ⍝ The optional left argument allows you to specify more options:
-    ⍝ * `manyFlag` defaults to 0 (meaning just one item might be selected) or 1, in which case multiple items can be specified.
-    ⍝ * `mustFlag` forces the user to select at least one  option.
-    ⍝ * `caption` is shown above the options.
-    ⍝ `options` must not have more than 999 items.
-    ⍝ If the user aborts by entering nothing or a "q" (for "quit") `index will be `⍬`.
-      x←{0<⎕NC ⍵:⊆⍎⍵ ⋄ ''}'x'
-      (caption manyFlag mustFlag)←x,(⍴,x)↓'' 0 0
-      ⎕IO←1 ⋄ ⎕ML←1
-      manyFlag←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'manyFlag'
-      'Invalid right argument; must be a vector of text vectors.'⎕SIGNAL _errno/⍨2≠≡options
-      'Right argument has more than 999 items'⎕SIGNAL _errno/⍨999<≢options
-      flag←0
-      :Repeat
-          ⎕←{⍵↑'--- ',caption,((0≠≢caption)/' '),⍵⍴'-'}⎕PW-1
-          ⎕←⍪{((⊂'. '),¨⍨(⊂3 0)⍕¨⍳⍴⍵),¨⍵}options
-          ⎕←''
-          question←'Select one ',(manyFlag/'or more '),'item',((manyFlag)/'s'),' '
-          question,←((manyFlag∨~mustFlag)/'('),((~mustFlag)/'q=quit'),((manyFlag∧~mustFlag)/', '),(manyFlag/'a=all'),((manyFlag∨~mustFlag)/')'),' :'
-          :If 0<≢answer←⍞,0/⍞←question
-              answer←(⍴question)↓answer
-              :If 1=≢answer
-              :AndIf answer∊'Qq',manyFlag/'Aa'
-                  :If answer∊'Qq'
-                      :If 0=mustFlag
-                          index←⍬
-                          flag←1
-                      :EndIf
-                  :Else
-                      index←⍳≢options
-                      flag←1
-                  :EndIf
-              :Else
-                  (bool value)←⎕VFI answer
-                  :If ∧/bool
-                  :AndIf manyFlag∨1=+/bool
-                      value←bool/value
-                  :AndIf ∧/value∊⍳⍴options
-                      index←value
-                      flag←0≠≢index
-                  :EndIf
-              :EndIf
-          :EndIf
-      :Until flag
-      index←{1<≢⍵:⍵ ⋄ ⊃⍵}⍣(⍬≢index)⊣index
     ∇
 
     ∇ (space folder)←GetSpaceAndFolder_ data

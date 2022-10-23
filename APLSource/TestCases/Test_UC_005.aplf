@@ -6,7 +6,7 @@
  tempDir←##.FilesAndDirs.GetTempSubDir'APLGit2-Tests'
  (⊂'This' 'and that')⎕NPUT tempDir,'/foo.txt'
  (⊂'r←Hello' 'r←''World''')⎕NPUT tempDir,'/Hello.aplf'
- ⎕SE._APLGit2.APLSource.⎕EX'DEFAULT_PROJECT'
+ ⎕SE._APLGit2.⎕EX'DEFAULT_PROJECT'
 
  stop←0
  (rc msg buff)←stop ∆UCMD'Init "',tempDir,'" -quiet'

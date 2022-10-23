@@ -9,12 +9,14 @@
  (space path)←EstablishProject y
  (rc more r)←path U.RunGitCommand('status',short/' --short')
  more U.Assert 0=rc
- ind←⍸∨/¨'On branch'∘⍷¨r
- branch←⊃¯1↑' '(≠⊆⊢)ind⊃r
- :If (⊂branch)∊'main' 'master'
-     msg←U.Box{⍵{(⍵⍴'⌹')⍺(⍵⍴'⌹')}≢⍵}'⌹ On branch ',branch,' ⌹'
- :Else
-     msg←'On branch ',branch
+ :If ~short
+     ind←⍸∨/¨'On branch'∘⍷¨r
+     branch←⊃¯1↑' '(≠⊆⊢)ind⊃r
+     :If (⊂branch)∊'main' 'master'
+         msg←U.Box{⍵{(⍵⍴'⌹')⍺(⍵⍴'⌹')}≢⍵}'⌹ On branch ',branch,' ⌹'
+     :Else
+         msg←'On branch ',branch
+     :EndIf
+     (ind⊃r)←msg
  :EndIf
- (ind⊃r)←msg
 ⍝Done

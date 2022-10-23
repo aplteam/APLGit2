@@ -13,7 +13,7 @@
  :EndTrap
  :If 90=rc
      :If ∨/'(404)'⍷∊msg
-         U.ErrNo ⎕SIGNAL⍨'Repo <',repoName,'> not found'
+         U.ErrNo ⎕SIGNAL⍨'Repo <',repoName,'> not found (404)'
      :Else
          msg U.Assert rc≠90
      :EndIf

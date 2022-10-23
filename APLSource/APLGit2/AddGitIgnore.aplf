@@ -2,7 +2,7 @@
  r←⍬
  quiet←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'quiet'
  :If quiet
- :OrIf U.YesOrNo'Add .gitignore for APLers to ',path,' ?'
+ :OrIf ##.CommTools.YesOrNo'Add .gitignore for APLers to ',path,' ?'
      buff←'aplcore' 'CONTINUE.dws' 'conga.crash'
      (⊂buff)⎕NPUT path,'/.gitignore'
      :If ~quiet

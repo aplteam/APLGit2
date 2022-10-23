@@ -13,7 +13,7 @@
  (space path)←EstablishProject y
  :If IsGitProject path
      :If quiet
-     :OrIf U.YesOrNo space,' is already managed by Git; would you like to re-initialize it?'
+     :OrIf ##.CommTools.YesOrNo space,' is already managed by Git; would you like to re-initialize it?'
          (rc msg buff)←path U.RunGitCommand'init'
          ('Init command files with RC=',(⍕rc),'; ',msg)Assert 0=rc
          quiet AddGitIgnore path
@@ -22,7 +22,7 @@
  :Else
      :If 0<≢path
          :If quiet
-         :OrIf U.YesOrNo'Would you like to initialize ',path,' for Git?'
+         :OrIf ##.CommTools.YesOrNo'Would you like to initialize ',path,' for Git?'
              (rc msg buff)←path U.RunGitCommand'init'
              ('Init command files with RC=',(⍕rc),'; ',msg)U.Assert 0=rc
              quiet AddGitIgnore path
@@ -30,7 +30,7 @@
          :EndIf
      :Else
          :If quiet
-         :OrIf U.YesOrNo'Would you like to initialize the current directory ',F.PWD,' for Git?'
+         :OrIf ##.CommTools.YesOrNo'Would you like to initialize the current directory ',F.PWD,' for Git?'
              path←F.PWD
              (rc msg buff)←path U.RunGitCommand'init'
              ('Init command files with RC=',(⍕rc),'; ',msg)U.Assert 0=rc

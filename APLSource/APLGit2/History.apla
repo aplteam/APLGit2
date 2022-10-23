@@ -1,6 +1,7 @@
 (
- '* 0.5.2 ⋄ 2022-10-??'
+ '* 0.6.0 ⋄ 2022-10-23'
  '  * `Status` now emphasizes the current branch in case it is neither "main" nor "master"'
+ '  * `YesOrNo` comes now from dependency `CommTools`'
  '* 0.5.1 ⋄ 2022-10-08'
  '  `Assert` is now more flexible: left argument might be nested'
  '* 0.5.0 ⋄ 2022-09-21'
@@ -30,6 +31,4 @@
  '  * CompareCommits polished & test cases polished/added'
  '* 0.1.0 ⋄ 2022-01-04'
  '  * First version'
- ''
- ''
 )
