@@ -1,7 +1,7 @@
-﻿:Class APLGit2_uc
+:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
-⍝ Version 0.4.0 ⋄ 2022-10-23
+⍝ Version 0.4.1 ⋄ 2022-11-09
 
     ⎕IO←1 ⋄ ⎕ML←1
     MinimumVersionOfDyalog←'18.0'
@@ -440,7 +440,8 @@
                           r←'Commit cancelled by user'
                           :Return
                       :EndIf
-                  :ElseIf ⎕SE.CommTools.YesOrNo'Sure you don''t want to provide a message? ("No" cancells the whole operation)'
+                  :ElseIf 0<≢(∊msg)~'.'
+                  :OrIf ⎕SE.CommTools.YesOrNo'Sure you don''t want to provide a message? ("No" cancells the whole operation)'
                       flag←1
                   :Else
                       r←'Operation cancelled by user'
