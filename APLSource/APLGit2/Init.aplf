@@ -15,7 +15,7 @@
      :If quiet
      :OrIf ##.CommTools.YesOrNo space,' is already managed by Git; would you like to re-initialize it?'
          (rc msg buff)←path U.RunGitCommand'init'
-         ('Init command files with RC=',(⍕rc),'; ',msg)Assert 0=rc
+         ('Init command files with RC=',(⍕rc),'; ',msg)U.Assert 0=rc
          quiet AddGitIgnore path
          quiet AddGitAttributes path
      :EndIf

@@ -10,7 +10,7 @@
          branch1←currentBranch
          branch2←⊃branches~⊂currentBranch
      :Else
-         'It''s not clear which branches you want to diff'Assert~(⊂currentBranch)∊'main' 'master'
+         'It''s not clear which branches you want to diff'U.Assert~(⊂currentBranch)∊'main' 'master'
          branch1←currentBranch
          branch2←⊃branches~⊂currentBranch
      :EndIf

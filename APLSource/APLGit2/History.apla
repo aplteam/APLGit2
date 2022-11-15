@@ -1,4 +1,6 @@
 (
+ '* 0.6.2 ⋄ 2022-11-15'
+ '  * Bug fixes: two calls to `Assert` caused VALUE ERRORs (Assert rather than U.Assert)'
  '* 0.6.1 ⋄ 2022-11-09'
  '  * Bug fix in "Commit"'
  '* 0.6.0 ⋄ 2022-10-23'
