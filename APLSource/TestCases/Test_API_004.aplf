@@ -16,5 +16,5 @@
  R←T._OK
 
 ∆TidyUp:
- {}⎕SH'rmdir /s /q "',tempDir,'"'
+ Assert 0=⊃buff←FilesAndDirs.RmDir tempDir
 ⍝Done

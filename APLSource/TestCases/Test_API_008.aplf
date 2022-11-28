@@ -1,0 +1,33 @@
+ R←Test_API_008(stopFlag batchFlag);⎕TRAP;tempFolder;buff;res;parms;data;expected
+⍝ Runs "AddGitIgnore"
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ :If batchFlag
+     →0 ⋄ R←T._NoBatchTest
+ :EndIf
+
+ ⎕←'This test needs you: when questioned always answer "Y", select "merge", and do no change anything in ⎕ED; to continue press <enter>' ⋄ 0 0⍴⍞
+
+ tempFolder←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ (tempFolder,'/')⎕NCOPY⍠('Wildcard' 1)⊢##.CiderConfig.HOME,'/TestData/CiderProject/*'
+ parms←⎕SE.Cider.CreateOpenParms''
+ parms.quietFlag←1
+ parms.folder←tempFolder
+ parms.watch←'ns'
+ {}⎕SE.Cider.OpenProject parms
+
+ res←1 G.AddGitIgnore tempFolder
+ →T.GoToTidyUp~∨/'.gitignore created in'⍷res
+ →T.GoToTidyUp~⎕NEXISTS tempFolder,'/.gitignore'
+ data←⊃FilesAndDirs.NGET(tempFolder,'/.gitignore')1
+ expected←'aplcore' 'CONTINUE.dws' 'conga.crash' '/packages_dev//*' '!/packages_dev//apl-dependencies.txt' '!/packages_dev//apl-buildlist.json'
+ →T.GoToTidyUp expected≢data
+
+ R←T._OK
+
+∆TidyUp:
+ {}⎕SE.Cider.CloseProject'#.BooBoo'
+ Assert 0=⊃buff←FilesAndDirs.RmDir tempFolder
+ #.⎕EX'BooBoo'
+⍝Done

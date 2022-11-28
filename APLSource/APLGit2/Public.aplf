@@ -1,6 +1,7 @@
  r←Public
  r←''
  r,←⊂'Add'
+ r,←⊂'AddGitIgnore'
  r,←⊂'ChangeLog'
  r,←⊂'Commit'
  r,←⊂'CompareCommits'

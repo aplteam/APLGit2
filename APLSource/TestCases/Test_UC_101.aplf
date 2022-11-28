@@ -13,7 +13,7 @@
  →T.GoToTidyUp 0<≢msg
  →T.GoToTidyUp≢/FilesAndDirs.NormalizePath¨buff tempDir
  →T.GoToTidyUp~⎕NEXISTS tempDir,'/.git'
- →T.GoToTidyUp~⎕NEXISTS tempDir,'/.gitignore'
+→T.GoToTidyUp 0=⎕NEXISTS tempDir,'/.gitignore'
  →T.GoToTidyUp~⎕NEXISTS tempDir,'/.gitattributes'
 
  (rc msg buff)←stop ∆UCMD'IsGitProject "',tempDir,'"'
@@ -66,5 +66,5 @@
  R←T._OK
 
 ∆TidyUp:
- {}⎕SH'rmdir /s /q "',tempDir,'"'
+ Assert 0=⊃buff←FilesAndDirs.RmDirByForce tempDir
 ⍝Done

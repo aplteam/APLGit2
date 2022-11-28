@@ -25,8 +25,8 @@
          :OrIf ##.CommTools.YesOrNo'Would you like to initialize ',path,' for Git?'
              (rc msg buff)←path U.RunGitCommand'init'
              ('Init command files with RC=',(⍕rc),'; ',msg)U.Assert 0=rc
-             quiet AddGitIgnore path
              quiet AddGitAttributes path
+             {}quiet AddGitIgnore path
          :EndIf
      :Else
          :If quiet
@@ -34,8 +34,8 @@
              path←F.PWD
              (rc msg buff)←path U.RunGitCommand'init'
              ('Init command files with RC=',(⍕rc),'; ',msg)U.Assert 0=rc
-             quiet AddGitIgnore path
              quiet AddGitAttributes path
+             {}quiet AddGitIgnore path
          :EndIf
      :EndIf
  :EndIf

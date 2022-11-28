@@ -1,7 +1,7 @@
-:Class APLGit2_uc
+﻿:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
-⍝ Version 0.4.1 ⋄ 2022-11-09
+⍝ Version 0.5.0 ⋄ 2022-11-26
 
     ⎕IO←1 ⋄ ⎕ML←1
     MinimumVersionOfDyalog←'18.0'
@@ -17,6 +17,14 @@
           c.Desc←'Executes the git "Add" commands'
           c.Group←'APLGit2'
           c.Parse←'1 -project='
+          c._Project←0
+          r,←c
+     
+          c←⎕NS''
+          c.Name←'AddGitIgnore'
+          c.Desc←'Create a file .gitignore, or merge default values with existing one'
+          c.Group←'APLGit2'
+          c.Parse←'1s'
           c._Project←0
           r,←c
      
@@ -186,6 +194,8 @@
           :Select ⎕C Cmd
           :Case ⎕C'Add'
               r←Add space folder Args
+          :Case ⎕C'AddGitIgnore'
+              r←AddGitIgnore folder
           :Case ⎕C'ChangeLog'
               r←ChangeLog space folder Args
           :Case ⎕C'Commit'
@@ -263,6 +273,10 @@
           project←wsPathRef.CiderConfig.CIDER.projectSpace
       :EndIf
       r←args.verbose G.GetTagOfLatestRelease username project
+    ∇
+
+    ∇ r←AddGitIgnore folder
+      r←⎕SE.APLGit2.AddGitIgnore folder
     ∇
 
     ∇ r←Log(space folder args);parms
@@ -485,6 +499,8 @@
           :Select ⎕C Cmd
           :Case ⎕C'Add'
               r,←⊂']APLGit2.add <filter> -project='
+          :Case ⎕C'AddGitIgnore'
+              r,←⊂']APLGit2.AddGitIgnore [space|folder]'
           :Case ⎕C'ChangeLog <apl-name> -project='
               r,←⊂']APLGit2.ChangeLog <filter> -project='
           :Case ⎕C'Commit'
@@ -531,7 +547,6 @@
       :Case 1
           :Select ⎕C Cmd
           :Case ⎕C'Add'
-              ⎕TRAP←0 'S'
               r,←⊂'Add files to the index.'
               r,←⊂''
               r,←⊂'You may specify one of:'
@@ -540,6 +555,12 @@
               r,←⊂' * A "." (dot), meaning that all so far untracked files should be added'
               r,←⊂''
               r,←AddLevel3HelpInfo'Add'
+          :Case ⎕C'AddGitIgnore'
+              r,←⊂'Add a file .gitignore to a particular path or project, or merges an existing file with'
+              r,←⊂'default values.'
+              r,←⊂''
+              r,←⊂'The user will be asked a couple of questions, and she will be able to edit the result'
+              r,←⊂'of her choices before it is written to file.'
           :Case ⎕C'ChangeLog'
               r,←⊂'Takes an APL name and returns a matrix with zero or more rows and 4 columns with'
               r,←⊂'information regarding all commits the given APL object was changed:'
