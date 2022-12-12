@@ -31,14 +31,20 @@ For details refer to the Dyalog User Commands User Guide.
 
 ```
  Add                    Execute the Git "Add" commands                                         
+ AddGitIgnore           Adds a file `.gitignore` to a path with defaults useful for APLers
  ChangeLog              Takes an APL name and list all commits the object was part of          
  Commit                 Performs a commit on the current branch                                
  CompareCommits         Takes two hashes and compares all changes between them
  CurrentBranch          Returns the name of the current branch            
  Diff                   Returns files in the working directory that are different from HEAD
+ EstablishProjects      Works out (or asks the user) in order to establish the project to act on
  GetDefaultProject      Returns namespace and folder of the current default project, if any     
+ GetPathFromProject     Takes a project (namespace or alias) and returns its path on disk
+ GetProjectFromPath     Take a project path and returns the project's name
  GoToGitHub             For a project "Foo/Goo" this opens https://github.com/Foo/Goo
+ Init                   Initialize a project for being managed by Git, including `.gitignore` & `.gitattributes`
  IsDirty                Reports whether there are uncommitted changes and/or untracked files
+ IsGitInstalled         Check whether the Git bash is installed and returns a Boolean
  IsGitProject           Returns "yes" or "no" depending on whether there is a ./.git folder    
  ListBranches           Lists all branches for a Git-managed project                            
  Log                    Returns the log of commits.\\
