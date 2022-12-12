@@ -1,4 +1,8 @@
 (
+ '* 0.8.0 ⋄ 2022-12-12'
+ '  * New command "Branch" added but just as a synonym for `ListBranches`'
+ '  * Readability of "Methods" improved'
+ '  * Bug fix: AddGitIgnore did not preserve the original order of the content of a .gitignore file'
  '* 0.7.0 ⋄ 2022-11-28'
  '  * Function `AddGitIgnore` added to the API'
  '  * User command ]APLGit2.AddGitIgnore added'

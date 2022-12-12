@@ -15,14 +15,15 @@
          cfg←⎕JSON⍠('Dialect' 'JSON5')⊣⊃F.NGET ref.CiderConfig.HOME,'/cider.config'
      :AndIf 0<≢cfg.CIDER.tatinFolder
          installFolders←{1⊃'='(≠⊆⊢)⍵}¨','(≠⊆⊢)cfg.CIDER.tatinFolder
+         installFolders←{⍵,(~(¯1↑⍵)∊'/\')/'/'}¨installFolders
          q←'Install folders: ',⊃{⍺,'/ and ',⍵,'/'}/installFolders
          q,←(⎕UCS 13),'  Add special statements for them?'
          :If quiet
          :OrIf ##.CommTools.YesOrNo q
              buff,←⊃,/{r←''
-                 r,←⊂'/',⍵,'/*'
-                 r,←⊂'!/',⍵,'/apl-dependencies.txt'
-                 r,←⊂'!/',⍵,'/apl-buildlist.json'
+                 r,←⊂'/',⍵,'*'
+                 r,←⊂'!/',⍵,'apl-dependencies.txt'
+                 r,←⊂'!/',⍵,'apl-buildlist.json'
                  r
              }¨installFolders
          :EndIf
@@ -31,11 +32,11 @@
          :If quiet
              ind←2          ⍝ Merge
          :Else
-             ind←('Selection action on ',path,'/.gitignore')0 1 ##.CommTools.Select'Replace' 'Merge' 'Quit'
+             ind←('Select desired action on ',path,'/.gitignore')0 1 ##.CommTools.Select'Replace' 'Merge' 'Quit'
          :EndIf
          →(ind=3)/0
          :If ind=2
-             buff←∪buff,⊃F.NGET(path,'/.gitignore')1
+             buff←∪(⊃F.NGET(path,'/.gitignore')1),buff
          :EndIf
      :EndIf
      :If ~quiet

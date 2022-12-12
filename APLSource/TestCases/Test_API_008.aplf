@@ -7,26 +7,36 @@
      →0 ⋄ R←T._NoBatchTest
  :EndIf
 
- ⎕←'This test needs you: when questioned always answer "Y", select "merge", and do no change anything in ⎕ED; to continue press <enter>' ⋄ 0 0⍴⍞
+ {}⍞,0/⎕←'This test needs you: when a ⎕ED pops up (twice!) just close it without a change; to continue press <enter>'
 
  tempFolder←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
  (tempFolder,'/')⎕NCOPY⍠('Wildcard' 1)⊢##.CiderConfig.HOME,'/TestData/CiderProject/*'
  parms←⎕SE.Cider.CreateOpenParms''
- parms.quietFlag←1
  parms.folder←tempFolder
+ parms.quietFlag←1
  parms.watch←'ns'
  {}⎕SE.Cider.OpenProject parms
 
- res←1 G.AddGitIgnore tempFolder
+ ##.CommTools.YesOrNo_Answers←1 2⍴'Add .gitignore for APLers to ' 'Y'
+ ##.CommTools.YesOrNo_Answers⍪←'Add special statements for them?' 'N'
+ res←G.AddGitIgnore tempFolder
  →T.GoToTidyUp~∨/'.gitignore created in'⍷res
  →T.GoToTidyUp~⎕NEXISTS tempFolder,'/.gitignore'
  data←⊃FilesAndDirs.NGET(tempFolder,'/.gitignore')1
- expected←'aplcore' 'CONTINUE.dws' 'conga.crash' '/packages_dev//*' '!/packages_dev//apl-dependencies.txt' '!/packages_dev//apl-buildlist.json'
+ expected←'aplcore' 'CONTINUE.dws' 'conga.crash'
+ →T.GoToTidyUp expected≢data
+
+ ##.CommTools.YesOrNo_Answers[2;]←'Add special statements for them?' 'Y'
+ ##.CommTools.Select_Choices←1 2⍴'Select desired action on' 2
+ res←G.AddGitIgnore tempFolder
+ expected←'aplcore' 'CONTINUE.dws' 'conga.crash' '/packages_dev/*' '!/packages_dev/apl-dependencies.txt' '!/packages_dev/apl-buildlist.json'
+ data←⊃FilesAndDirs.NGET(tempFolder,'/.gitignore')1
  →T.GoToTidyUp expected≢data
 
  R←T._OK
 
 ∆TidyUp:
+ ##.CommTools.Cleanup
  {}⎕SE.Cider.CloseProject'#.BooBoo'
  Assert 0=⊃buff←FilesAndDirs.RmDir tempFolder
  #.⎕EX'BooBoo'

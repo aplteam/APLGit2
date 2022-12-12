@@ -8,7 +8,7 @@
      :Return
  :EndIf
 
- 0 0⍴⍞,0/⍞←'This test needs you: it opens a Git shell in Git''s project directory. Press <enter> to continue'
+ 0 0⍴⍞,0/⍞←'This test needs you: it opens a Git shell in Git''s project directory; press <enter> to continue'
 
  {}G.OpenGitShell #.APLGit2
  →T.PassesIf 1 ∆YesOrNo'Was the shell opened in ',##.CiderConfig.HOME,'?'

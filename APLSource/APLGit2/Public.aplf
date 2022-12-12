@@ -2,6 +2,7 @@
  r←''
  r,←⊂'Add'
  r,←⊂'AddGitIgnore'
+ r,←⊂'Branch'
  r,←⊂'ChangeLog'
  r,←⊂'Commit'
  r,←⊂'CompareCommits'

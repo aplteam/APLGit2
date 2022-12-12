@@ -1,7 +1,7 @@
 ﻿:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
-⍝ Version 0.5.0 ⋄ 2022-11-26
+⍝ Version 0.6.0 ⋄ 2022-12-10
 
     ⎕IO←1 ⋄ ⎕ML←1
     MinimumVersionOfDyalog←'18.0'
@@ -25,6 +25,14 @@
           c.Desc←'Create a file .gitignore, or merge default values with existing one'
           c.Group←'APLGit2'
           c.Parse←'1s'
+          c._Project←0
+          r,←c
+     
+          c←⎕NS''
+          c.Name←'Branch'
+          c.Desc←'Lists all branches for a Git-managed project'
+          c.Group←'APLGit2'
+          c.Parse←'1s -a -r'
           c._Project←0
           r,←c
      
@@ -198,6 +206,8 @@
               r←AddGitIgnore folder
           :Case ⎕C'ChangeLog'
               r←ChangeLog space folder Args
+          :Case ⎕C'Branch'
+              r←ListBranches space folder Args
           :Case ⎕C'Commit'
               r←Commit space folder Args
           :Case ⎕C'CompareCommits'
@@ -501,6 +511,8 @@
               r,←⊂']APLGit2.add <filter> -project='
           :Case ⎕C'AddGitIgnore'
               r,←⊂']APLGit2.AddGitIgnore [space|folder]'
+          :Case ⎕C'Branch'
+              r,←⊂']APLGit2.Branch [space|folder] -a -r'
           :Case ⎕C'ChangeLog <apl-name> -project='
               r,←⊂']APLGit2.ChangeLog <filter> -project='
           :Case ⎕C'Commit'
@@ -561,6 +573,13 @@
               r,←⊂''
               r,←⊂'The user will be asked a couple of questions, and she will be able to edit the result'
               r,←⊂'of her choices before it is written to file.'
+          :Case ⎕C'Branch'
+              r,←⊂'List all branches, by default local ones.'
+              r,←⊂''
+              r,←⊂'You may specify two mutually exclusive options in order to change its behaviour:'
+              r,←⊂' * -a stands for "all": list all local and remote branches'
+              r,←⊂' * -r stands for "remote": list just remote branches'
+              r,←AddLevel3HelpInfo'ListBranches'
           :Case ⎕C'ChangeLog'
               r,←⊂'Takes an APL name and returns a matrix with zero or more rows and 4 columns with'
               r,←⊂'information regarding all commits the given APL object was changed:'
