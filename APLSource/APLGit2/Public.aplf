@@ -1,6 +1,8 @@
  r←Public
  r←''
  r,←⊂'Add'
+ r,←⊂'AddGitIgnore'
+ r,←⊂'Branch'
  r,←⊂'ChangeLog'
  r,←⊂'Commit'
  r,←⊂'CompareCommits'
@@ -10,7 +12,9 @@
  r,←⊂'GetDefaultProject'
  r,←⊂'GetPathFromProject'
  r,←⊂'GetProjectFromPath'
+ r,←⊂'GetTagOfLatestRelease'
  r,←⊂'GoToGitHub'
+ r,←⊂'Init'
  r,←⊂'InitializeGitUserCommand'
  r,←⊂'IsDirty'
  r,←⊂'IsGitProject'

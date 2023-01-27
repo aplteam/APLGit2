@@ -1,0 +1,41 @@
+ R←Test_API_150(stopFlag batchFlag);⎕TRAP;data;qdmx
+⍝ Runs "GetTagOfLatestRelease"
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ data←##.APLGit2.GetTagOfLatestRelease'aplteam' 'APLGit2'
+
+ →T.PassesIf 1=≡data
+ →T.PassesIf 0<≢data
+ →T.PassesIf' '=1↑0⍴data
+
+ data←1 ##.APLGit2.GetTagOfLatestRelease'aplteam' 'APLGit2'
+
+ →T.PassesIf 3≡≢data
+
+ :Trap 0
+     data←##.APLGit2.GetTagOfLatestRelease'doesnotexist' 'APLGit2'
+     →T.FailsIf 1
+ :Else
+     qdmx←⎕DMX
+     →T.PassesIf∨/'(404)'⍷∊qdmx.EM
+ :EndTrap
+
+ :Trap 0
+     data←##.APLGit2.GetTagOfLatestRelease'aplteam' 'doesnotexist'
+     →T.FailsIf 1
+ :Else
+     qdmx←⎕DMX
+     →T.PassesIf∨/'(404)'⍷∊qdmx.EM
+ :EndTrap
+
+ :Trap 0
+     data←##.APLGit2.GetTagOfLatestRelease'' ''
+     →T.FailsIf 1
+ :Else
+     qdmx←⎕DMX
+     →T.PassesIf'Both "username" and "repoName" must not be empty'≡qdmx.EM
+ :EndTrap
+
+ R←T._OK
+⍝Done

@@ -12,12 +12,12 @@
  :EndTrap
 
  result←1 G.Status ∆Folder1
- →T.PassesIf∨/'?? APLSource/help.aplf'⍷∊result
+ →T.PassesIf∨/'M  APLSource/help.aplf'⍷∊result
  result←1 G.Status'#.Proj_2'
  →T.PassesIf∨/'?? APLSource/help2.aplf'⍷∊result
 
  result←G.Status ∆Folder1
- →T.PassesIf 5≤≢result
+ →T.PassesIf 4≤≢result
 
  R←T._OK
 ⍝Done

@@ -3,13 +3,20 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- tempDir←##.FilesAndDirs.GetTempSubDir'APLGit2-Tests'
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-Tests'
  (⊂'This' 'and that')⎕NPUT tempDir,'/foo.txt'
  (⊂'r←Hello' 'r←''World''')⎕NPUT tempDir,'/Hello.aplf'
- {}⎕SH'git -C "',(##.FilesAndDirs.EnforceSlash tempDir),'" init '
- ⎕SE._APLGit2.APLSource.⎕EX'DEFAULT_PROJECT'
+ ⎕SE.APLGit2.##.⎕EX'DEFAULT_PROJECT'
 
  stop←0
+
+ (rc msg buff)←stop ∆UCMD'Init "',tempDir,'" -quiet'
+ msg Assert rc=0
+ →T.GoToTidyUp 0<≢msg
+ →T.GoToTidyUp≢/FilesAndDirs.NormalizePath¨buff tempDir
+ →T.GoToTidyUp~⎕NEXISTS tempDir,'/.git'
+ →T.GoToTidyUp 0=⎕NEXISTS tempDir,'/.gitignore'
+ →T.GoToTidyUp~⎕NEXISTS tempDir,'/.gitattributes'
 
  (rc msg buff)←stop ∆UCMD'GetDefaultProject'
  msg Assert rc=0
@@ -56,12 +63,12 @@
  (rc msg buff)←stop ∆UCMD'CurrentBranch'
  msg Assert rc=0
  →T.GoToTidyUp 0<≢msg
- →T.GoToTidyUp'main'≢buff
+ →T.GoToTidyUp~(⊂buff)∊'main' 'master'
 
  (rc msg buff)←stop ∆UCMD'ListBranches'
  msg Assert rc=0
  →T.GoToTidyUp 0<≢msg
- →T.GoToTidyUp'* main'≢∊buff
+ →T.GoToTidyUp~(⊂∊buff)∊'* main' '* master'
 
  (rc msg buff)←stop ∆UCMD'Log'
  msg Assert rc=0
@@ -76,6 +83,6 @@
  R←T._OK
 
 ∆TidyUp:
- {}⎕SH'rmdir /s /q "',tempDir,'"'
- ⎕SE._APLGit2.APLSource.⎕EX'DEFAULT_PROJECT'
+ Assert 0=⊃buff←FilesAndDirs.RmDirByForce tempDir
+ ⎕SE.APLGit2.##.⎕EX'DEFAULT_PROJECT'
 ⍝Done

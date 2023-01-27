@@ -11,10 +11,10 @@
  (space folder)←EstablishProject y
  :If verbose
      (rc more r)←folder U.RunGitCommand'diff HEAD'
-     U.Assert 0=rc
+     more U.Assert 0=rc
  :Else
      (rc more buff)←folder U.RunGitCommand'diff HEAD --name-only'
-     U.Assert 0=rc
+     more U.Assert 0=rc
      r←(⎕SE.Link.GetItemName(⊂folder,'/'),¨buff),[1.5]buff
  :EndIf
 ⍝Done

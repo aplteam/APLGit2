@@ -1,9 +1,16 @@
- R←Test_API_130(stopFlag batchFlag);⎕TRAP
+ R←Test_API_130(stopFlag batchFlag);⎕TRAP;fn2;fn1
 ⍝ Runs "CompareCommits"
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- ⍝ ⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹⌹  ⍝TODO⍝
+ (fn1 fn2)←#.APLGit2 ##.APLGit2.CompareCommits'ac76e76' '627fa88'
+
+ 'Working dir is dirty - commit and then continue'Assert 0<+/≢¨fn1 fn2
+ →T.GoToTidyUp~∧/⎕NEXISTS fn1 fn2
 
  R←T._OK
+
+∆TidyUp:
+ :Trap 0 ⋄ FilesAndDirs.DeleteFile fn1 ⋄ :EndTrap
+ :Trap 0 ⋄ FilesAndDirs.DeleteFile fn2 ⋄ :EndTrap
 ⍝Done

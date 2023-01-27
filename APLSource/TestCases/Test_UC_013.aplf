@@ -8,7 +8,7 @@
      :Return
  :EndIf
 
- 0 0⍴⍞,0/⍞←'This test needs you: Please open an empty browser window and then press <enter> to continue'
+ 0 0⍴⍞,0/⍞←'This test needs you: open an empty browser window and then press <enter> to continue'
 
  stop←0
  (rc msg result)←stop ∆UCMD'GoToGitHub aplteam/APLGit2'
@@ -20,8 +20,9 @@
  (rc msg result)←stop ∆UCMD'GoToGitHub #.APLGit2'
  msg Assert rc=0
 
- 0 0⍴⍞,0/⍞←'When asked to select a project choose APLGit2; press <enter> to continue'
+ ⎕SE.CommTools.Select_Choices←1 2⍴∆SelectCaption '#.APLGit2'
  (rc msg result)←stop ∆UCMD'GoToGitHub'
+ ⎕SE.CommTools.Cleanup
  msg Assert rc=0
 
  :If flag←(⊂'git')∊{⍵[;4]}⎕SE.Cider.ListOpenProjects 1  ⍝ There might well be no such alias!
@@ -33,4 +34,5 @@
  →T.PassesIf 1 ∆YesOrNo'Was https://github.com/aplteam/APLGit2 opened ',(⍕noOf),' times in your default browser?'
 
  R←T._OK
+
 ⍝Done

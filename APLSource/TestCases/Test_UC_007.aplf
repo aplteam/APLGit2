@@ -8,7 +8,7 @@
      :Return
  :EndIf
 
- 0 0⍴⍞,0/⍞←'This test needs you: it opens a Git shell in APLGit2''s project directory. Press <enter> to continue'
+ 0 0⍴⍞,0/⍞←'This test needs you: it will open a Git shell in APLGit2''s project directory. Press <enter> to continue'
 
  stop←0
  (rc msg buff)←stop ∆UCMD'OpenGitShell "',∆Folder2,'"'
@@ -19,9 +19,11 @@
  msg Assert rc=0
  →T.PassesIf 1 ∆YesOrNo'Was the shell opened in ',#.APLGit2.CiderConfig.HOME,'?'
 
- 0 0⍴⍞,0/⍞←'Next you will be given a choice: select #.Proj_1! Press <enter> to continue'
+ ⎕SE.CommTools.Select_Choices←1 2⍴∆SelectCaption'#.Proj_1'
  (rc msg buff)←∆UCMD'OpenGitShell'
+ ⎕SE.CommTools.Cleanup
  msg Assert rc=0
+
  →T.PassesIf 1 ∆YesOrNo'Was the shell opened in ',#.Proj_1.CiderConfig.HOME,'?'
 
  R←T._OK

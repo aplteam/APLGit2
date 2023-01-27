@@ -1,5 +1,5 @@
  R←Test_API_001(stopFlag batchFlag);⎕TRAP;qdmx;buff
-⍝ Runs "ListBranches"
+⍝ Runs both "ListBranches" and "Branch"
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
@@ -15,6 +15,19 @@
  →T.PassesIf(,⊂'* main')≡buff←G.ListBranches'#.Proj_2'
  →T.PassesIf(,⊂'* main')≡buff←'a'G.ListBranches'#.Proj_2'
  →T.PassesIf 0=≢buff←'r'G.ListBranches'#.Proj_2'
+
+ :Trap 0
+     {}G.Branch'Does-not-exist'
+     →T.FailsIf 1
+ :Else
+     qdmx←⎕DMX
+     →T.PassesIf'Is not a namespace'≡qdmx.EM
+ :EndTrap
+
+ →T.PassesIf(,⊂'* main')≡buff←G.Branch ∆Folder1
+ →T.PassesIf(,⊂'* main')≡buff←G.Branch'#.Proj_2'
+ →T.PassesIf(,⊂'* main')≡buff←'a'G.Branch'#.Proj_2'
+ →T.PassesIf 0=≢buff←'r'G.Branch'#.Proj_2'
 
  R←T._OK
 ⍝Done

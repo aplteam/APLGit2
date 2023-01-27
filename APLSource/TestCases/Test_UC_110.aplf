@@ -1,6 +1,6 @@
- R←Test_UC_110(stopFlag batchFlag);⎕TRAP;stop;rc;msg;buff;was;tempFolder;folder
-⍝ Attempts to run "]CompareCommits" with BeyondCompare
-⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←Test_UC_110(stopFlag batchFlag);⎕TRAP;stop;rc;msg;buff;tempFolder;folder;q
+⍝ Attempts to run "]CompareCommits" (uses ]CompareFiles for putting diffs on display)
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
  :If batchFlag
@@ -10,24 +10,20 @@
      →0,R←T._NotApplicable
  :EndIf
 
- ⎕←' This test needs you: it will run the command ]CompareCommits which will use an external utiliy, BeyondCompare,'
- ⎕←' (which needs to be installed and accessible on the PATH environment variable) via the ]CompareFiles user command'
- :If 0=∆YesOrNo' Would you like to run this test?'
+ q←''
+ q,←⊂' This test needs you: it will run the command ]CompareCommits which will use an external'
+ q,←⊂' comparison utility via the ]CompareFiles user command'
+ q,←⊂' Would you like to run this test?'
+ :If 0=1 ∆YesOrNo q
      →0,R←T._Inactive
  :EndIf
 
- was←⎕SE._CompareFiles.INI.Default
- ⎕SE._CompareFiles.INI.Default←'BeyondCompare'
-
  stop←0
- (rc msg buff)←stop ∆UCMD'CompareCommits ''main'' ''dev'' -project=#.APLGit2 -with=BeyondCompare'
+ (rc msg buff)←stop ∆UCMD'CompareCommits -project=#.APLGit2'
  msg Assert rc=0
- →T.GoToTidyUp 0≠≢msg
+ →T.PassesIf 0=≢msg
 
- →T.GoToTidyUp 0=1 ∆YesOrNo'Did "BeyondCompare" show up?'
+ →T.PassesIf 1 ∆YesOrNo'Did a comparison utility show up?'
 
  R←T._OK
-
-∆TidyUp:
- ⎕SE._CompareFiles.INI.Default←was
 ⍝Done

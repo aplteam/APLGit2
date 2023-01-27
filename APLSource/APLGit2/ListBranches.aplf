@@ -9,6 +9,6 @@
  (space path)←EstablishProject y
  'Invalid left argument: must be empty or "a" (all) or "r" (remote)'U.Assert(⊂option)∊''⍬'a' 'r' '-a' '-r'
  (rc more buff)←path U.RunGitCommand('branch --list',{0=≢⍵:⍵ ⋄ ' -',⍵~'-'}option)
- U.Assert 0=rc
+ more U.Assert 0=rc
  r←{⍵/⍨0<≢¨⍵}⍣(0≠≢buff)⊣buff
 ⍝Done

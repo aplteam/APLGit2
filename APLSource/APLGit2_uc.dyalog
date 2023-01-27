@@ -1,7 +1,7 @@
-:Class APLGit2_uc
+﻿:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
-⍝ Version 0.1.0 ⋄ 2022-07-28
+⍝ Version 0.9.0 ⋄ 2023-01-26
 
     ⎕IO←1 ⋄ ⎕ML←1
     MinimumVersionOfDyalog←'18.0'
@@ -18,6 +18,22 @@
           c.Group←'APLGit2'
           c.Parse←'1 -project='
           c._Project←0
+          r,←c
+     
+          c←⎕NS''
+          c.Name←'AddGitIgnore'
+          c.Desc←'Create a file .gitignore, or merge default values with existing one'
+          c.Group←'APLGit2'
+          c.Parse←'1s'
+          c._Project←0
+          r,←c
+     
+          c←⎕NS''
+          c.Name←'Branch'
+          c.Desc←'Lists all branches for a Git-managed project'
+          c.Group←'APLGit2'
+          c.Parse←'1s -a -r'
+          c._Project←1
           r,←c
      
           c←⎕NS''
@@ -40,7 +56,7 @@
           c.Name←'CompareCommits'
           c.Desc←'Compares two different commits'
           c.Group←'APLGit2'
-          c.Parse←'2s -project= -with='
+          c.Parse←'2s -project= -use= -files'
           c._Project←0
           r,←c
      
@@ -69,10 +85,26 @@
           r,←c
      
           c←⎕NS''
+          c.Name←'GetTagOfLatestRelease'
+          c.Desc←'Returns the tag of the latest release'
+          c.Group←'APLGit2'
+          c.Parse←'1s -verbose -username='
+          c._Project←1
+          r,←c
+     
+          c←⎕NS''
           c.Name←'GoToGitHub'
           c.Desc←'For a project "Foo/Goo" this opens https://github.com/Foo/Goo'
           c.Group←'APLGit2'
           c.Parse←'1s'
+          c._Project←1
+          r,←c
+     
+          c←⎕NS''
+          c.Name←'Init'
+          c.Desc←'Initialises a folder for managing it by Git'
+          c.Group←'APLGit2'
+          c.Parse←'1s -quiet'
           c._Project←1
           r,←c
      
@@ -104,7 +136,7 @@
           c.Name←'Log'
           c.Desc←'Shows the commit logs'
           c.Group←'APLGit2'
-          c.Parse←'1s -since= -verbose -noOf='
+          c.Parse←'2s -verbose'
           c._Project←1
           r,←c
      
@@ -120,7 +152,7 @@
           c.Name←'RefLog'
           c.Desc←'List reference log entries (RefLogs)'
           c.Group←'APLGit2'
-          c.Parse←'1s -max= -branch= -project='
+          c.Parse←'1s -max= -all -branch= -project='
           c._Project←1
           r,←c
      
@@ -136,7 +168,7 @@
           c.Name←'Squash'
           c.Desc←'Squashes some commits in the current branch into a single one'
           c.Group←'APLGit2'
-          c.Parse←'1s -m='
+          c.Parse←'2s -m='
           c._Project←1
           r,←c
      
@@ -158,16 +190,34 @@
       :EndIf
     ∇
 
-    ∇ r←Run(Cmd Args);folder;G;space
+    ∇ r←Run(Cmd Args);folder;G;space;max;ns;msg;noOf
       :Access Shared Public
-      G←LoadCode ⍬
-      (r space folder)←GetSpaceAndFolder Cmd Args
+      G←⎕SE.APLGit2
+      :Select ⎕C Cmd
+      :CaseList ⎕C'Version' 'GetTagOfLatestRelease'
+          r←''
+      :CaseList ⎕C'Log' 'Squash'
+          :If 0≢Args._1
+          :AndIf ~⊃⊃⎕VFI Args._1~'-'  ⍝ Neither a positive integer nor "yyyy-mm-dd"
+              (r space folder)←GetSpaceAndFolder Cmd Args
+          :Else
+              ns←⎕NS''
+              ns._1←0
+              (r space folder)←GetSpaceAndFolder Cmd ns
+          :EndIf
+      :Else
+          (r space folder)←GetSpaceAndFolder Cmd Args
+      :EndSelect
       :If 0=≢r
           :Select ⎕C Cmd
           :Case ⎕C'Add'
               r←Add space folder Args
+          :Case ⎕C'AddGitIgnore'
+              r←AddGitIgnore folder
           :Case ⎕C'ChangeLog'
               r←ChangeLog space folder Args
+          :Case ⎕C'Branch'
+              r←ListBranches space folder Args
           :Case ⎕C'Commit'
               r←Commit space folder Args
           :Case ⎕C'CompareCommits'
@@ -178,6 +228,8 @@
               r←Diff space folder Args
           :Case ⎕C'GetDefaultProject'
               r←GetDefaultProject ⍬
+          :Case ⎕C'GetTagOfLatestRelease'
+              r←GetTagOfLatestRelease Args
           :Case ⎕C'GoToGitHub'
               :If 0=⎕NC'space'
               :OrIf 0=≢space
@@ -185,6 +237,8 @@
               :Else
                   r←space GoToGitHub Args
               :EndIf
+          :Case ⎕C'Init'
+              r←Init space folder Args
           :Case ⎕C'IsDirty'
               r←IsDirty space folder Args
           :Case ⎕C'IsGitProject'
@@ -200,92 +254,108 @@
           :Case ⎕C'SetDefaultProject'
               r←G.SetDefaultProject{⍵/⍨0≠⍵}Args._1
           :Case ⎕C'Squash'
-              r←⍪Squash space folder Args.m
+              msg←''Args.Switch'm'
+              noOf←⊃(//)⎕VFI(⍕(1+∧/Args._1∊⎕D)⊃Args.(_2 _1)),' +0'
+              r←⍪folder Squash msg noOf
           :Case ⎕C'Status'
               r←⍪Status space folder Args
           :Case ⎕C'Version'
-              r←⊃{⍺,' from ',⍵}/1↓⎕SE._APLGit2.APLSource.Version
+              r←⎕SE.APLGit2.Version
           :Else
               ∘∘∘ ⍝ Huh?!
           :EndSelect
       :EndIf
     ∇
 
-    ∇ r←Log(space folder args);parms
-      parms←⎕NS''
-      parms.verbose←args.verbose
-      parms.since←{0≡⍵:'' ⋄ ⍵}args.since
-      :If 0≡args.noOf
-          args.noOf←¯1
-      :EndIf
-      parms.noOf←args.noOf
-      r←parms G.Log folder
-    ∇
-
-    ∇ r←CompareCommits(space folder args);branch1;branch2;b;branches;ind
-      :If 0∊args.(_1 _2)                        ⍝ Any of the two required branch names undefined?
-          branches←2↓¨G.ListBranches folder
-          branches←{⍵/⍨~∨/¨'/\'∘∊¨⍵}branches    ⍝ Drop any path
-          :If 2>≢branches
-              r←'There is no branch to compare with'
-              :Return
+    ∇ r←GetTagOfLatestRelease args;username;path;wsPathRef;project;l
+      r←''
+      project←args._1
+      :If 0≡args.username
+          :If 0≡args._1
+          :OrIf 0=≢args._1
+              path←⎕SE.Cider.GetProjectPath''
+              →(0=≢path)/0
+              wsPathRef←⍎{l←⎕SE.Cider.ListOpenProjects 0 ⋄ ⊃l[l[;2]⍳⊂⍵;]}path
+              username←wsPathRef.CiderConfig.CIDER.githubUsername
           :Else
-              :If ∧/args.(_1 _2)≡¨0                 ⍝ Both undefined?
-                  branch1←G.CurrentBranch folder    ⍝ The first one is then the current one
-                  :If (⊂branch1)∊'main' 'master'    ⍝ When the current one is either "main" or "master"...
-                      :If 2=≢branches               ⍝ ... and there are just two branches anyway...
-                          branch1←branches⊃⍨(branches⍳'main' 'master')~1+≢branches
-                          branch2←⊃branches~'main' 'master'
-                      :Else
-                          ind←'Select a branch:'Select branches
-                          :If 0=≢ind
-                              r←'Cancelled by user'
-                              :Return
-                          :Else
-                              branch2←ind⊃branches
-                          :EndIf
-                      :EndIf
-                  :Else
-                      branch2←branch1               ⍝ Current one is neither "main" nor "master", so we swap them
-                      branch1←branches⊃⍨(branches⍳'main' 'master')~1+≢branches
-                  :EndIf
+              :If 0=≢args._1
+                  _errno ⎕SIGNAL⍨'Could not determine GitHub username'
               :Else
-                  branch1←args._1
-                  :If (⊂branch1)∊'main' 'master'
-                      branch2←G.CurrentBranch folder    ⍝ The second one is then the current one
-                      :If (⊂branch2)∊'main' 'master'    ⍝ When the current one is either "main" or "master"...
-                          :If 2=≢branches               ⍝ ... and there are just two branches anyway...
-                              branch2←⊃branches~'main' 'master'
-                          :Else
-                              ind←'Select a branch:'Select branches~⊂branch1
-                              :If 0=≢ind
-                                  r←'Cancelled by user'
-                                  :Return
-                              :Else
-                                  branch2←ind⊃branches
-                              :EndIf
-                          :EndIf
-                      :Else
-                          branch2←branch1               ⍝ Current one is neither "main" nor "master", so we swap them
-                          branch1←branches⊃⍨(branches⍳'main' 'master')~1+≢branches
-                      :EndIf
+                  l←⎕SE.Cider.ListOpenProjects 0
+                  :Trap 0
+                      wsPathRef←⍎1⊃l[({{⌽⍵↑⍨¯1+⍵⍳'.'}⌽⍵}¨{⍵[;1]}l)⍳⊂{{⌽⍵↑⍨¯1+⍵⍳'.'}⌽⍵}project;]
                   :Else
-                      branch2←branch1
-                      branch1←branches⊃⍨(branches⍳'main' 'master')~1+≢branches
-                  :EndIf
+                      _errno ⎕SIGNAL⍨'Could not determine GitHub username'
+                  :EndTrap
+                  username←wsPathRef.CiderConfig.CIDER.githubUsername
               :EndIf
           :EndIf
       :Else
-          (branch1 branch2)←args.(_1 _2)
+          username←args.username
       :EndIf
-      :If (,0)≢,Args.with
-          ⎕SE.CompareFiles.Use Args.with
+      :If 0≡project
+          project←wsPathRef.CiderConfig.CIDER.projectSpace
       :EndIf
-      r←folder G.CompareCommits branch1 branch2
+      r←args.verbose G.GetTagOfLatestRelease username project
+    ∇
+
+    ∇ r←AddGitIgnore folder
+      r←⎕SE.APLGit2.AddGitIgnore folder
+    ∇
+
+    ∇ r←Log(space folder args);parms;buff
+      parms←⎕NS''
+      parms.verbose←args.verbose
+      parms.max←¯1
+      parms.since←''
+      parms(ProcessLogParms)←(1+0≡args._2)⊃args.(_2 _1)
+      r←parms G.Log folder
+    ∇
+
+    ∇ parms←parms ProcessLogParms data;max
+      :If 0≢data
+          :If {(10=≢⍵)∧∧/(({⊃⍵↑⍨1⌈≢⍵}1↑(⍵~'-')∊⎕D)('-'=⊃1↑∪⍵~⎕D))}data ⍝ Is it something like "1934-01-31"?
+              parms.since←data
+          :ElseIf ⊃⊃⎕VFI data   ⍝ Max?!
+          :AndIf 0<max←⊃(//)⎕VFI data
+              parms.max←max
+          :EndIf
+      :EndIf
+    ∇
+
+    ∇ {(filename1 filename2)}←CompareCommits(space folder args);hash1;hash2;flag;exe;parms;qdmx;name;default
+      (hash1 hash2)←{0≡⍵:'' ⋄ ⍵}¨args.(_1 _2)
+      (filename1 filename2)←folder G.CompareCommits hash1 hash2
+      :If 0<+/⎕NEXISTS filename1 filename2
+          :If Args.files
+              ⎕←filename1 filename2
+          :Else
+              :If flag←9=⎕SE.⎕NC'CompareFiles'
+                  default←''Args.Switch'use'
+                  :Trap 911
+                      (exe name)←⎕SE.CompareFiles.EstablishCompareEXE default
+                  :Else
+                      qdmx←⎕DMX
+                      ⎕←'Comparison with "CompareFiles" crashed'{0=≢⍵:⍺ ⋄ ⍺,' with "',⍵,'"'}qdmx.EM
+                      :Return
+                  :EndTrap
+              :AndIf 0<≢exe
+                  parms←⎕SE.CompareFiles.ComparisonTools.⍎'CreateParmsFor',name
+                  parms.(file1 file2)←filename1 filename2
+                  parms.(caption1 caption2)←hash1 hash2
+                  {}⎕SE.CompareFiles.Compare parms
+                  ⎕NDELETE filename1 filename2
+                  (filename1 filename2)←⊂''
+              :Else
+                  ⎕←filename1 filename2
+              :EndIf
+          :EndIf
+      :EndIf
     ∇
 
     ∇ (r space folder)←GetSpaceAndFolder(Cmd Args)
-      r←0 0⍴'' ⋄ space←folder←''
+      r←0 0⍴''
+      space←folder←''
       :If ~(⊂Cmd)∊'GetDefaultProject' 'SetDefaultProject' 'Version'
           :If ({⍵⊃⍨⍸⍵.Name≡¨⊂Cmd}List)._Project
           :AndIf 0≢Args._1
@@ -339,8 +409,7 @@
     ∇ r←ChangeLog(space folder args);msg;name;⎕TRAP
       name←args._1
       :If ~(⊃name)∊'#⎕'
-          ⎕TRAP←0 'S'
-          ∘∘∘
+          name←(⍕space),'.',name
       :EndIf
       ('Not an APL object: ',name)Assert 0<⎕NC name
       r←folder ⎕SE.APLGit2.ChangeLog name
@@ -348,6 +417,14 @@
 
     ∇ r←GoToGithub(space folder args);msg
       r←⎕SE.APLGit2.GoToGithub folder msg
+    ∇
+
+    ∇ r←Init(space folder args)
+      'This folder is already managed by Git'Assert~⎕SE.APLGit2.IsGitProject folder
+      :If args.quiet
+      :OrIf ⎕SE.CommTools.YesOrNo'Sure that you want to make ',folder,' a Git-managed folder?'
+          r←args.quiet ⎕SE.APLGit2.Init folder
+      :EndIf
     ∇
 
     ∇ r←IsDirty(space folder args)
@@ -363,19 +440,21 @@
       r←⎕SE.APLGit2.OpenGitShell folder
     ∇
 
-    ∇ r←RefLog(space folder args);branch
+    ∇ r←RefLog(space folder args);branch;value;flag
       :If (,0)≡args.branch
           branch←''
       :Else
           branch←args.branch
       :EndIf
       :If (,0)≡,args.max
-          r←folder ⎕SE.APLGit2.RefLog branch
+          r←folder ⎕SE.APLGit2.RefLog~args.all
       :Else
-          r←folder ⎕SE.APLGit2.RefLog branch args.max
+          r←folder ⎕SE.APLGit2.RefLog 0
+          (flag value)←⎕VFI args.max
+          '"max" must be a positive integer'Assert flag
+          r←value↑r
       :EndIf
     ∇
-
     ∇ r←CurrentBranch(space folder args)
       r←⎕SE.APLGit2.CurrentBranch folder
     ∇
@@ -384,7 +463,7 @@
       branch←⎕SE.APLGit2.CurrentBranch folder
       :If ⎕SE.APLGit2.IsDirty folder ⍝ 0<'?'+.=⊃∘∪¨2↑¨1 ⎕SE.Git.Status folder
           :If 1=args.add
-          :OrIf 1 YesOrNo'Branch "',branch,'" is dirty - shall Git''s "Add ." command be executed?'
+          :OrIf 1 ⎕SE.CommTools.YesOrNo'Branch "',branch,'" is dirty - shall Git''s "Add ." command be executed?'
               (rc msg data)←folder ⎕SE.APLGit2.##.U.RunGitCommand'add .'
               msg Assert 0=rc
           :Else
@@ -408,11 +487,12 @@
                   msg←ref.msg{⍺/⍨~(⌽∧\0=⌽⍵)∨(∧\0=⍵)}≢¨ref.msg
                   :If (⊂branch)∊'main' 'master'
                   :AndIf 0=≢(∊msg)~'.'
-                      :If 0=1 YesOrNo'You MUST specify a meaningful message for "',branch,'"; try again (no=cancel) ?'
+                      :If 0=1 ⎕SE.CommTools.YesOrNo'You MUST specify a meaningful message for "',branch,'"; try again (no=cancel) ?'
                           r←'Commit cancelled by user'
                           :Return
                       :EndIf
-                  :ElseIf YesOrNo'Sure you don''t want to provide a message? ("No" cancells the whole operation)'
+                  :ElseIf 0<≢(∊msg)~'.'
+                  :OrIf ⎕SE.CommTools.YesOrNo'Sure you don''t want to provide a message? ("No" cancells the whole operation)'
                       flag←1
                   :Else
                       r←'Operation cancelled by user'
@@ -433,8 +513,10 @@
       r←short G.Status folder
     ∇
 
-    ∇ r←Squash(space folder msg)
-      r←folder G.Squash{0≡⍵:'' ⋄ ⍵}msg
+    ∇ r←folder Squash(msg noOf)
+      'Number of commits to be squashed must be a positive integer'Assert(⎕DR noOf)∊83 163 323
+      'Number of commits to be squashed must be a positive integer'Assert noOf≥0
+      r←folder G.Squash msg noOf
     ∇
 
     ∇ r←ListBranches(space folder args);parms
@@ -456,22 +538,28 @@
           :Select ⎕C Cmd
           :Case ⎕C'Add'
               r,←⊂']APLGit2.add <filter> -project='
+          :Case ⎕C'AddGitIgnore'
+              r,←⊂']APLGit2.AddGitIgnore [space|folder]'
+          :Case ⎕C'Branch'
+              r,←⊂']APLGit2.Branch [space|folder] -a -r'
           :Case ⎕C'ChangeLog <apl-name> -project='
               r,←⊂']APLGit2.ChangeLog <filter> -project='
           :Case ⎕C'Commit'
               r,←⊂']APLGit2.Commit [space|folder] -m= -add'
           :Case ⎕C'CompareCommits'
-              r,←⊂']APLGit2.CompareCommits [hash1] [hash2] =project='
+              r,←⊂']APLGit2.CompareCommits [hash1] [hash2] -project= -use=[name|?] -view'
           :Case ⎕C'CurrentBranch'
               r,←⊂']APLGit2.CurrenBranch [space|folder]'
           :Case ⎕C'Diff'
               r,←⊂']APLGit2.Diff [space|folder] -verbose'
           :Case ⎕C'GetDefaultProject'
               r,←⊂']GetDefaultProject'
+          :Case ⎕C'GetTagOfLatestRelease'
+              r,←⊂']APLGit2.GetTagOfLatestRelease [space|folder]'
           :Case ⎕C'GoToGitHub'
               r,←⊂']APLGit2.OpenGitHub [space|folder|<group>/<project-name>|[alias]]'
           :Case ⎕C'Init'
-              r,←⊂']APLGit2.Init [folder]'
+              r,←⊂']APLGit2.Init [folder] -quiet'
           :Case ⎕C'IsDirty'
               r,←⊂']APLGit2.IsDirty [space|folder]'
           :Case ⎕C'IsGitProject'
@@ -479,17 +567,17 @@
           :Case ⎕C'ListBranches'
               r,←⊂']APLGit2.ListBranches [space|folder] -a -r'
           :Case ⎕C'Log'
-              r,←⊂']APLGit2.Log [space|folder] -since= -verbose -noOf='
+              r,←⊂']APLGit2.Log [space|folder] -since= -verbose -max='
           :Case ⎕C'OpenGitShell'
               r,←⊂']APLGit2.OpenGitShell [space|folder]'
           :Case ⎕C'RefLog'
-              r,←⊂']APLGit2.RefLog [space|folder] -max= -branch= -project='
+              r,←⊂']APLGit2.RefLog [space|folder] -max= -all -branch= -project='
           :Case ⎕C'SetDefaultProject'
               r,←⊂']APLGit2.SetDefaultProject [space|folder]'
           :Case ⎕C'Status'
               r,←⊂']APLGit2.Status -short -path='
           :Case ⎕C'Squash'
-              r,←⊂']APLGit2.Squash [space|folder] -m=<message>'
+              r,←⊂']APLGit2.Squash [space|folder] [noOf] -m=<message>'
           :Else
               r,←⊂'There is no help available'
           :EndSelect
@@ -500,7 +588,6 @@
       :Case 1
           :Select ⎕C Cmd
           :Case ⎕C'Add'
-              ⎕TRAP←0 'S'
               r,←⊂'Add files to the index.'
               r,←⊂''
               r,←⊂'You may specify one of:'
@@ -509,6 +596,19 @@
               r,←⊂' * A "." (dot), meaning that all so far untracked files should be added'
               r,←⊂''
               r,←AddLevel3HelpInfo'Add'
+          :Case ⎕C'AddGitIgnore'
+              r,←⊂'Add a file .gitignore to a particular path or project, or merges an existing file with'
+              r,←⊂'default values.'
+              r,←⊂''
+              r,←⊂'The user will be asked a couple of questions, and she will be able to edit the result'
+              r,←⊂'of her choices before it is written to file.'
+          :Case ⎕C'Branch'
+              r,←⊂'List all branches, by default local ones.'
+              r,←⊂''
+              r,←⊂'You may specify two mutually exclusive options in order to change its behaviour:'
+              r,←⊂' * -a stands for "all": list all local and remote branches'
+              r,←⊂' * -r stands for "remote": list just remote branches'
+              r,←AddLevel3HelpInfo'ListBranches'
           :Case ⎕C'ChangeLog'
               r,←⊂'Takes an APL name and returns a matrix with zero or more rows and 4 columns with'
               r,←⊂'information regarding all commits the given APL object was changed:'
@@ -533,16 +633,26 @@
               r,←⊂''
               r,←AddLevel3HelpInfo'Commit'
           :Case ⎕C'CompareCommits'
-              r,←⊂'Compare all changes between two commits.'
+              r,←⊂'Compare changes between two commits.'
               r,←⊂''
-              r,←⊂'You may specify two commits, but you may also specify just one branch, say "foo".'
-              r,←⊂'In that case "foo" is compared with "main".'
-              r,←⊂'You may also omit both branches; in that case "main" is compared with "dev". If "dev"'
-              r,←⊂'does not exist an error is thrown.'
+              r,←⊂'You may specify none, one or two hashes as argument:'
+              r,←⊂' * No argument means "compare last commit with the most recent ancestor'
+              r,←⊂' * One argument means "compare last commit with the given commit"'
+              r,←⊂' * Two arguments mean "compare those commits with each other"'
+              r,←⊂''
+              r,←⊂'If the user command ]CompareFiles and its API are available then this is used'
+              r,←⊂'for the comparison. Otherwise the names of two files are printed to session.'
+              r,←⊂'These files are generated in the temporary folder of the current OS.'
+              r,←⊂''
+              r,←⊂'-files  If the user command ]CompareFiles is available but you want to get just the'
+              r,←⊂'        filenames specify this modifier'
+              r,←⊂'-use=   If the user command ]CompareFiles is available then you can use this to'
+              r,←⊂'        specify the comparison utility to be used. Must be either a name or a "?".'
+              r,←⊂'        See ]CompareFiles for details.'
               r,←⊂''
               r,←⊂' * If there is just one open Cider project it is taken'
               r,←⊂' * If there are several open Cider projects the user is interrogated'
-              r,←⊂' * You may specify a particular project with =project=[ProjectName|ProjectFolder]'
+              r,←⊂' * You may specify a particular project with -project=[ProjectName|ProjectFolder]'
           :Case ⎕C'CurrentBranch'
               r,←⊂'Returns the name of the current branch'
               r,←⊂''
@@ -568,7 +678,12 @@
               r,←⊂' * A Cider alias of an opened Cider project like [git]'
               r,←AddLevel3HelpInfo'GoToGitHub'
           :Case ⎕C'Init'
-              r,←⊂'Useful to initialize a folder for being managed by Git'
+              r,←⊂'Useful to initialize a folder for being managed by Git.'
+              r,←⊂''
+              r,←⊂'You may add the path to a folder as argument; if you do not then APLGit2 tries to'
+              r,←⊂'figure it out.'
+              r,←⊂''
+              r,←⊂'-quiet is useful to prevent Init to ask any questions, mostly for tests.'
           :Case ⎕C'IsDirty'
               r,←⊂'Returns one of:'
               r,←⊂' * "Clean"'
@@ -579,6 +694,12 @@
               r,←⊂'Returns:'
               r,←⊂'Project <name> (<path) is [not] managed by Git'
               r,←⊂''
+              r,←AddLevel3HelpInfo'IsGitProject'
+          :Case ⎕C'GetTagOfLatestRelease'
+              r,←⊂'Returns the tag number of the latest release.'
+              r,←⊂'Drafts are ignored.'
+              r,←⊂''
+              r,←⊂'-verbose If specified the date of the commit and the caption of the release are returned as well.'
               r,←AddLevel3HelpInfo'IsGitProject'
           :Case ⎕C'ListBranches'
               r,←⊂'List all branches, by default local ones.'
@@ -591,23 +712,36 @@
               r,←⊂'Shows a list with all commits in an edit window, by default with --oneline, but watch out'
               r,←⊂'for -verbose.'
               r,←⊂''
-              r,←⊂'-since=  Use this to get all commits after a specific date (YYYY-MM-DD)'
-              r,←⊂'-verbose By default a short report is provided. Overwrite with -verbose for a detailed report'
-              r,←⊂'-noOf=   Allows you to specify the maximum number of commits you want to be returned'
+              r,←⊂'If you need to specify a folder (rather than on acting on open Cider projects) then you must'
+              r,←⊂'specify the folder as the first argument.'
               r,←⊂''
+              r,←⊂'You may specify instead or in addition an integer or a date; see below for details.'
+              r,←⊂''
+              r,←⊂' * Without an argument or just a folder/alias the full log is printed'
+              r,←⊂' * An integer is interpreted as "max number of log entries"'
+              r,←⊂' * Alternatively one can specify "YYYY-MM-DD" which is treated as "since.'
+              r,←⊂''
+              r,←⊂'-verbose By default a short report is provided. Overwrite with -verbose for a detailed report'
               r,←AddLevel3HelpInfo'Log'
           :Case ⎕C'OpenGitShell'
               r,←⊂'Opens a Git Bash shell, either on the given project or, if no project was provided, the'
               r,←⊂'current directory if that carries a folder .git/. If it does not an error is thrown'
               r,←⊂''
               r,←AddLevel3HelpInfo'OpenGitShell'
-          :Case ⎕C'RefLog'                       
-              r,←⊂'Lists the reference logs.'
+          :Case ⎕C'RefLog'
+              r,←⊂'Lists the reference log.'
+              r,←⊂''
+              r,←⊂'By default the command lists just log entries up to the last checkout.'
               r,←⊂''
               r,←⊂'Reference logs, or "reflogs", record when the tips of branches and other references were'
               r,←⊂'updated in the local repository. Reflogs are useful in various Git commands, to specify'
               r,←⊂'the old value of a reference.'
-              r,←AddLevel3HelpInfo'OpenGitShell'
+              r,←⊂''
+              r,←⊂'-all   If you want all records then specifiy the -all flag.'
+              r,←⊂'-max   If you want a specific number then specify the max= modifier.'
+              r,←⊂''
+              r,←⊂''
+              r,←AddLevel3HelpInfo'RefLog'
           :Case ⎕C'SetDefaultProject'
               r,←⊂'Use this to specify a default project.'
               r,←⊂'Commands that require a project will act on the default project in case it was set.'
@@ -621,10 +755,12 @@
               r,←⊂'Squashes some commits of the current branch into a single commit.'
               r,←⊂'The current branch MUST be neither "main" nor "master".'
               r,←⊂''
-              r,←⊂'-m    You may specify a message with -m="my message", but if you don''t you will be given an edit'
-              r,←⊂'      window for specifying a message. It will be populated with the messages from the commits'
-              r,←⊂'      about to be squashed.'
-              r,←AddLevel3HelpInfo'Status'
+              r,←⊂'If no argument is specifid all suitable commits will be listed.'
+              r,←⊂'By specifying a positive integer you can specify the number of commits to be squashed'
+              r,←⊂''
+              r,←⊂'-m     You may specify a message with -m="my message", but if you don''t you will be given an edit'
+              r,←⊂'       window for specifying a message. It will be populated with the messages from the commits'
+              r,←⊂'       about to be squashed.'
           :Else
               r,←⊂'There is no additional help available'
           :EndSelect
@@ -632,7 +768,7 @@
           :Select ⎕C Cmd
           :CaseList ⎕C¨'Add' ''
               r,←AddProjectOptions 1
-          :CaseList ⎕C¨'Commit' 'CurrentBranch' 'Diff' 'GoToGitHub' 'IsDirty' 'IsGitProject' 'ListBranches' 'Log' 'OpenGitShell' 'Squash' 'Status'
+          :CaseList ⎕C¨'Commit' 'CurrentBranch' 'Diff' 'GoToGitHub' 'IsDirty' 'IsGitProject' 'ListBranches' 'Log' 'OpenGitShell' 'Status'
               r,←AddProjectOptions 0
           :Else
               r,←⊂'There is no additional help available'
@@ -650,9 +786,9 @@
     ∇ r←AddProjectOptions flag
       r←''
       r,←⊂'The ]APLGit2.* user commands are particularly useful when used in conjunction with the project'
-      r,←⊂'management tool Cider, but it can be used without Cider. For that to work you must specify the'
-      r,←⊂'folder you wish the user command to act on. APLGit2 does not accept URLs pointing to GitHub, it'
-      r,←⊂'works only locally.'
+      r,←⊂'manager Cider, but it can be used without Cider as well, but then you must specify the folder'
+      r,←⊂'you wish the user command to act on. APLGit2 does not accept URLs pointing to GitHub, it works'
+      r,←⊂'only locally.'
       r,←⊂''
       r,←⊂'By default a user command will act on the currently opened Cider project if there is just one.'
       r,←⊂'If there are multiple open Cider projects the user will be asked which one to act on.'
@@ -681,7 +817,7 @@
       r←⊃min≤currentVersion
     ∇
 
-    Assert←{⍺←'' ⋄ (,1)≡,⍵:r←1 ⋄ ⍺ ⎕SIGNAL 1↓(⊃∊⍵),_errno}
+    Assert←{⍺←'' ⋄ (,1)≡,⍵:r←1 ⋄ (∊⍺) ⎕SIGNAL 1↓(⊃∊⍵),_errno}
 
     ∇ r←r AddTitles titles
     ⍝ `r` is a matrix with data. `titles` is put on top of that matrix, followed by a row with `-` matching the lengths of each title
@@ -691,122 +827,6 @@
 
     ∇ path←AddSlash path
       path,←(~(¯1↑path)∊'/\')/'/'
-    ∇
-
-    ∇ G←LoadCode dummy;res;folder;msg
-      :If 0=⎕SE.⎕NC'_APLGit2'
-          G←'_APLGit2'⎕SE.⎕NS''
-          folder←¯1↓1⊃⎕NPARTS ##.SourceFile
-          res←({⍵.overwrite←1 ⋄ ⍵}⎕NS'')⎕SE.Link.Import G folder
-          'Could not import the Git application code'Assert∨/'Imported:'⍷res
-          ⎕SE.Tatin.LoadDependencies((1⊃⎕NPARTS ##.SourceFile),'packages')'⎕se._APLGit2.APLSource'
-          ⎕SE.APLGit2←⎕SE._APLGit2.APLSource.API          ⍝ Establish the API
-          {}⎕SE.APLGit2.InitializeGitUserCommand''
-      :EndIf
-      G←⎕SE.APLGit2
-    ∇
-
-    ∇ yesOrNo←{default}YesOrNo question;isOkay;answer;add;dtb;answer2
-    ⍝ Ask a simple question and allows just "Yes" or "No" as answers.
-    ⍝ You may specify a default via the optional left argument which when specified
-    ⍝ rules what happens when the user just presses <enter>.
-    ⍝ `default` must be either 1 (yes) or 0 (no).
-    ⍝ Note that this function does not work as expected when traced!
-      isOkay←0
-      default←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'default'
-      isOkay←0
-      :If 0≠≢default
-          'Left argument must be a scalar'⎕SIGNAL _errno/⍨1≠≢default
-      :AndIf ~default∊0 1
-          'The left argument. if specified, must be a Boolean or empty'⎕SIGNAL _errno
-      :EndIf
-      :If 0=≢default
-          add←' (y/n) '
-      :Else
-          :If default
-              add←' (Y/n) '
-          :Else
-              add←' (y/N) '
-          :EndIf
-      :EndIf
-      :If 1<≡question
-          ((≢question)⊃question)←((≢question)⊃question),add
-          question←⍪question
-      :Else
-          question←question,add
-      :EndIf
-      :Repeat
-          ⍞←question
-          answer←⍞
-          :If answer≡question                        ⍝ Did...  (since version 18.0 trailing blanks are not removed anynmore)
-          :OrIf (≢answer)=¯1+≢question               ⍝ ..the ...
-          :OrIf 0=≢answer                            ⍝ ...user just...
-              dtb←{⍵↓⍨-+/∧\' '=⌽⍵}
-              answer2←dtb answer
-          :OrIf answer2≡((-≢answer2)↑(⎕UCS 10){~⍺∊⍵:⍵ ⋄ ' ',dtb ⍺{⌽⍵↑⍨1+⍵⍳⍺}⌽⍵}question)   ⍝ ...press <enter>?
-              :If 0≠≢default
-                  yesOrNo←default
-                  isOkay←1
-              :EndIf
-          :Else
-              answer←¯1↑{⍵↓⍨-+/∧\' '=⌽⍵}answer
-              :If answer∊'YyNn'
-                  isOkay←1
-                  yesOrNo←answer∊'Yy'
-              :EndIf
-          :EndIf
-      :Until isOkay
-    ∇
-
-
-    ∇ index←{x}Select options;flag;answer;question;value;bool;⎕ML;⎕IO;manyFlag;mustFlag;caption
-    ⍝ Presents `options` as a numbered list and allows the user to select either exactly one or multiple ones.\\
-    ⍝ One is the default.\\
-    ⍝ The optional left argument allows you to specify more options:
-    ⍝ * `manyFlag` defaults to 0 (meaning just one item might be selected) or 1, in which case multiple items can be specified.
-    ⍝ * `mustFlag` forces the user to select at least one  option.
-    ⍝ * `caption` is shown above the options.
-    ⍝ `options` must not have more than 999 items.
-    ⍝ If the user aborts by entering nothing or a "q" (for "quit") `index will be `⍬`.
-      x←{0<⎕NC ⍵:⊆⍎⍵ ⋄ ''}'x'
-      (caption manyFlag mustFlag)←x,(⍴,x)↓'' 0 0
-      ⎕IO←1 ⋄ ⎕ML←1
-      manyFlag←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'manyFlag'
-      'Invalid right argument; must be a vector of text vectors.'⎕SIGNAL _errno/⍨2≠≡options
-      'Right argument has more than 999 items'⎕SIGNAL _errno/⍨999<≢options
-      flag←0
-      :Repeat
-          ⎕←{⍵↑'--- ',caption,((0≠≢caption)/' '),⍵⍴'-'}⎕PW-1
-          ⎕←⍪{((⊂'. '),¨⍨(⊂3 0)⍕¨⍳⍴⍵),¨⍵}options
-          ⎕←''
-          question←'Select one ',(manyFlag/'or more '),'item',((manyFlag)/'s'),' '
-          question,←((manyFlag∨~mustFlag)/'('),((~mustFlag)/'q=quit'),((manyFlag∧~mustFlag)/', '),(manyFlag/'a=all'),((manyFlag∨~mustFlag)/')'),' :'
-          :If 0<≢answer←⍞,0/⍞←question
-              answer←(⍴question)↓answer
-              :If 1=≢answer
-              :AndIf answer∊'Qq',manyFlag/'Aa'
-                  :If answer∊'Qq'
-                      :If 0=mustFlag
-                          index←⍬
-                          flag←1
-                      :EndIf
-                  :Else
-                      index←⍳≢options
-                      flag←1
-                  :EndIf
-              :Else
-                  (bool value)←⎕VFI answer
-                  :If ∧/bool
-                  :AndIf manyFlag∨1=+/bool
-                      value←bool/value
-                  :AndIf ∧/value∊⍳⍴options
-                      index←value
-                      flag←0≠≢index
-                  :EndIf
-              :EndIf
-          :EndIf
-      :Until flag
-      index←{1<≢⍵:⍵ ⋄ ⊃⍵}⍣(⍬≢index)⊣index
     ∇
 
     ∇ (space folder)←GetSpaceAndFolder_ data

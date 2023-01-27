@@ -1,0 +1,36 @@
+ R←Test_UC_010(stopFlag batchFlag);⎕TRAP;result;msg;rc;stop
+⍝ Runs ]Branch
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ stop←0
+ (rc msg result)←stop ∆UCMD'Branch "',∆Folder1,'"'
+ msg Assert rc=0
+ →T.PassesIf(⍪⊂'* main')≡result
+
+ (rc msg result)←stop ∆UCMD'Branch "',∆Folder2,'"'
+ msg Assert rc=0
+ →T.PassesIf(⍪⊂'* main')≡result
+
+ (rc msg result)←stop ∆UCMD'Branch #.Proj_2'
+ msg Assert rc=0
+ →T.PassesIf(⍪⊂'* main')≡result
+
+ (rc msg result)←stop ∆UCMD'Branch #.Proj_2 -a'
+ msg Assert rc=0
+ →T.PassesIf(⍪⊂'* main')≡result
+
+ (rc msg result)←stop ∆UCMD'Branch #.Proj_2 -r'
+ msg Assert rc=0
+ →T.PassesIf 0=≢result
+
+ 1 ⎕SE.APLGit2.SetDefaultProject #.Proj_2
+ (rc msg result)←stop ∆UCMD'Branch'
+ msg Assert rc=0
+ →T.GoToTidyUp(⍪⊂'* main')≢result
+
+ R←T._OK
+
+∆TidyUp:
+ {}1 ⎕SE.APLGit2.SetDefaultProject''
+⍝Done

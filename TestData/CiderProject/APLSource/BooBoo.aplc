@@ -1,0 +1,11 @@
+:Class BooBoo
+
+    ⎕ML←⎕IO←1
+
+    ∇ r←Version
+      :Access Public Shared
+      r←'BooBoo' '1.1.4+62' '2021-08-04'
+    ∇    
+      
+
+:EndClass

@@ -1,17 +1,10 @@
-  {r}←InitializeGitUserCommand dummy
+ {r}←InitializeGitUserCommand dummy
 ⍝ Propagate refs and set global ∆TestFlag
  r←⍬
- :If 0<⎕NC'A'                                   ⍝ It's a Tatin package then
-     U.A←A
-     U.F←F
- :Else                                          ⍝ It's the Git project
-     :If '⎕'=⊃⊃⎕XSI
-         U.A←A←⎕SE._APLGit2.APLSource.APLTreeUtils2
-         U.F←F←⎕SE._APLGit2.APLSource.FilesAndDirs
-     :Else
-         U.A←A←##.APLTreeUtils2
-         U.F←F←##.FilesAndDirs
-     :EndIf
+ U.A←A←APLTreeUtils2
+ U.F←F←FilesAndDirs
+ :If '⎕'=⊃⊃⎕XSI                     ⍝ Called as a user command?!
+     ⎕EX'APLGit2_uc'                ⍝ Manage by the user command framework
  :EndIf
  ∆TestFlag←0
 ⍝Done

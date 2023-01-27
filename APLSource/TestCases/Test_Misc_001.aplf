@@ -1,0 +1,24 @@
+ R←Test_Misc_001(stopFlag batchFlag);⎕TRAP;qdmx
+⍝ Runs the "Assert" method
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ ##.APLGit2.U.Assert 1
+ 'Does not show'##.APLGit2.U.Assert 1
+
+ :Trap 811
+     ##.APLGit2.U.Assert 10
+ :Else
+     qdmx←⎕DMX
+     →T.PassesIf 811=qdmx.EN
+ :EndTrap
+
+ :Trap 811
+     'Does show'##.APLGit2.U.Assert 10
+ :Else
+     qdmx←⎕DMX
+     →T.PassesIf'Does show'≡qdmx.EM
+ :EndTrap
+
+ R←T._OK
+⍝Done

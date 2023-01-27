@@ -19,11 +19,10 @@
          :Else
              (rc more buff1)←folder U.RunGitCommand('show  --raw ',hash1,':',thisFile)
              :If 0≠rc
-                 :If ∨/'does not exist'⍷∊more
-                 :OrIf ∨/'exists on disk, but not'⍷∊more
+                 :If ∨/∨/¨'does not exist' 'exists on disk, but not' 'unknown revision or path not in the working tree'⍷¨⊂∊more
                      buff1←''
                  :Else
-                     ∘∘∘ ⍝ Huh?!
+                     ∘∘∘ ⍝ It appears that the file does not exist but we fail to analyze the error message correctly in this respect
                  :EndIf
              :EndIf
          :EndIf

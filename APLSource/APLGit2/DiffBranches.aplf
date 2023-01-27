@@ -5,12 +5,13 @@
  :If 0=⎕NC'x'
  :OrIf 0=≢x
      branches←(ListBranches path)~¨⊂' *'
+     'There is just one branch?!'U.Assert 1<≢branches
      currentBranch←CurrentBranch path
      :If 1=≢branches~⊂currentBranch
          branch1←currentBranch
          branch2←⊃branches~⊂currentBranch
      :Else
-         'It''s not clear which branches you want to diff'Assert~(⊂currentBranch)∊'main' 'master'
+         'It''s not clear which branches you want to diff'U.Assert~(⊂currentBranch)∊'main' 'master'
          branch1←currentBranch
          branch2←⊃branches~⊂currentBranch
      :EndIf
@@ -26,6 +27,6 @@
      :EndIf
  :EndIf
  (rc msg buff)←path U.RunGitCommand'diff ',branch1,'..',branch2
- U.Assert 0=rc
+ msg U.Assert 0=rc
  r←buff
 ⍝Done
