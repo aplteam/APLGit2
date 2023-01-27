@@ -1,7 +1,7 @@
- (filename1 filename2)←{x}CompareCommits y;space;folder;branch;reflog;hash1;hash2;list;noofBytes;flag;exe;alias;parms
-⍝ Allows inspection of all differences between two commits.\\
+ (filename1 filename2)←{x}CompareCommits y;space;folder;hash1;hash2;list;noofBytes;flag;exe;alias;parms;branch;name
+⍝ Allows inspection of all differences between two commits in a single comparison.\\
 ⍝ In case `⍵` is empty the last commit is compared with the checkout commit of the current branch.
-⍝ In case `⍵` is a single commit it is compare with the last commit.
+⍝ In case `⍵` is a single commit it is compared with the last commit.
 ⍝ Instead one can specify two commits (hashes) explicitly via the right argument.
 ⍝ For what `x` can actually be see `EstablishProject`.\\
 ⍝ Returns either two empty vectors in case no differences were detected or two filenames otherwise.\\
@@ -15,8 +15,7 @@
      :If 0=≢y
      :OrIf 0=+/≢¨y
          hash1←GetLastCommit folder
-         reflog←folder RefLog 0
-         hash2←⊃reflog[reflog[;3]⍳⊂'checkout:';]
+         hash2←GetMostRecentAncestor folder
      :ElseIf 1=≢y
      :OrIf 1=+/0=≢¨y
          hash1←GetLastCommit folder

@@ -1,34 +1,34 @@
- {r}←Make flag;targetPath;myUCMDsFolder;M;F;A;name;C;tempFolder;toFolder;version
+ {r}←{version}Make batch;T;zipFilename;res;path;cfg;M;C;currentVersion;caption;options;choice
+⍝ Creates a new version of APLGit2 in the Dist/ folder.\\
+⍝  * The user is asked whether the better version of the script is copied from either `MyUCMDs/` or the project (if they differ)
+⍝  * The user is also asked whether the newly built version should be installed in `MyUCMDs/`\\
+⍝ If `batch` is 1 (default is 0) none of this happens.\\
+⍝ `version` can be either a full-fledged version number or something like "+0.0.1".
+⍝ If no left argument is provided the user is questioned.\\
+⍝ Returns always ⍬
  r←⍬
- :If flag
-     M←⎕SE.MakeHelpers
-     C←##.CiderConfig
-     F←M.##.F ⋄ A←M.##.A
-     name←'APLGit2'
-    ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
-     targetPath←C.HOME,'/Dist/'
-     myUCMDsFolder←M.GetMyUCMDsFolder''
-     tempFolder←F.GetTempSubDir name
-    ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
-     version←⍎'#.',name,'.',name,'.Version'
-     M.RecreateFolder targetPath
-     3 ⎕MKDIR tempFolder,'/APLGit2/APLSource'
-     :If ⎕NEXISTS myUCMDsFolder,'/CompareFiles/CompareFiles_uc.dyalog'
-         M.CopyBetter(myUCMDsFolder,'/APLGit2/APLGit2_uc.dyalog')(C.HOME,'/',C.CIDER.source,'/APLGit2_uc.dyalog')'User command version' 'APL Code'
-     :EndIf
-     ('Project <',name,'> is not currently open')Assert(⊂'#.',name)∊{⍵[;1]}1↓⎕SE.Link.Status''
-     {}M.IncreaseBuildID'#.',name,'.',name,'.Version'
-     M.CreateAPI(⍎'#.',name,'.',name)#.APLGit2.APLGit2.Public
-     (C.HOME,'/',C.CIDER.source,'/APLGit2/*')M.CopyTo tempFolder,'/APLGit2/',C.CIDER.source,'/'
-     (C.HOME,'/',C.CIDER.source,'/APLGit2_uc.dyalog')M.CopyTo tempFolder,'/APLGit2/'
-     (C.HOME,'/packages')M.CopyTo tempFolder,'/APLGit2/'
-     M.CreateZipFile name tempFolder(2⊃version)
-     (tempFolder,'/*')M.CopyTo targetPath
-     :If 1 M.YesOrNo'Copy the user command to MyUCMDs?'
-         toFolder←myUCMDsFolder,'/APLGit2/'
-         F.RmDir toFolder
-         (targetPath,'APLGit2/*')M.CopyTo toFolder
-     :EndIf
-     F.RmDir tempFolder
-     ⎕←'*** New version ',(2⊃version),' from ',(3⊃version),' of ',(1⊃version),' built'
+ M←⎕SE.MakeHelpers ⋄ T←⎕SE.Tatin ⋄ C←##.CiderConfig
+ '⍺ must be a Boolean'Assert(,⊂batch)∊0 1
+ path←C.HOME,'/Dist/'
+ cfg←M.GetPackageCfg C.HOME
+ :If 0=⎕NC'version'
+     currentVersion←M.DropBuildNumber cfg.version
+     caption←'Bump version of ',cfg.name,' (currently on ',currentVersion,')'
+     options←'No action' 'Bump patch number' 'Bump minor number' 'Bump major number'
+     choice←caption 0 1 M.Select options
+     version←choice⊃'' '+0.0.1' '+0.1.0' '+1.0.0'
  :EndIf
+ :If ~batch
+     M.FetchLaterUserCommand'APLGit2_UC.dyalog'cfg C('[MyUCMDs]APLGit2')
+ :EndIf
+ M.CreateAPI ##.APLGit2 ##.APLGit2.Public
+ M.RecreateFolder path
+ zipFilename←T.BuildPackage C.HOME path''
+ ⎕←'*** New version build successfully:',(⎕UCS 13),'   ',zipFilename
+ :If ~batch
+ :AndIf 1 M.YesOrNo'Install new version as user command in MyUCMDs?'
+     M.RecreateFolder M.GetMyUCMDsFolder'/APLGit2'
+     res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]'
+     ⎕←'  New version installed as user command in MyUCMDs/: ',res
+ :EndIf
+⍝Done

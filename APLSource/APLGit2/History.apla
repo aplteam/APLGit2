@@ -1,4 +1,11 @@
 (
+ '* 0.9.0 ⋄ 2023-01-27'
+ '  * APLGit2 can now be installed as a package into [MyUCMDs]'
+ '  * APLGit2 now need version 4.0.0 of ]CompareCommits and its API'
+ '  * `Log` has a different (and easier) syntax'
+ '  * `CompareCommits` improved'
+ '  * `Squash` improved: excepts a second argument while the modifier -noOf= was removed'
+ '  * Internal change: several test cases fully automated'
  '* 0.8.0 ⋄ 2022-12-12'
  '  * New command "Branch" added but just as a synonym for `ListBranches`'
  '  * Readability of "Methods" improved'

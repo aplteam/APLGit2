@@ -8,7 +8,7 @@
  (space path)←EstablishProject y
  →(0=≢space,path)/0
  :If quiet
- :OrIf ##.CommTools.YesOrNo'Add .gitignore for APLers to ',path,' ?'
+ :OrIf CommTools.YesOrNo'Add .gitignore for APLers to ',path,' ?'
      buff←'aplcore' 'CONTINUE.dws' 'conga.crash'
      :If 0<≢space
          ref←⍎space
@@ -19,7 +19,7 @@
          q←'Install folders: ',⊃{⍺,'/ and ',⍵,'/'}/installFolders
          q,←(⎕UCS 13),'  Add special statements for them?'
          :If quiet
-         :OrIf ##.CommTools.YesOrNo q
+         :OrIf CommTools.YesOrNo q
              buff,←⊃,/{r←''
                  r,←⊂'/',⍵,'*'
                  r,←⊂'!/',⍵,'apl-dependencies.txt'
@@ -32,7 +32,7 @@
          :If quiet
              ind←2          ⍝ Merge
          :Else
-             ind←('Select desired action on ',path,'/.gitignore')0 1 ##.CommTools.Select'Replace' 'Merge' 'Quit'
+             ind←('Select desired action on ',path,'/.gitignore')0 1 CommTools.Select'Replace' 'Merge' 'Quit'
          :EndIf
          →(ind=3)/0
          :If ind=2

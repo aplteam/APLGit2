@@ -4,10 +4,10 @@
  ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
  (space folder)←EstablishProject y
  buff←Status folder
- msg←1⊃buff
+ msg←2⊃buff
  :If 2=⍴⍴msg
      r←'On branch '{{⍵↑⍨¯1+⍵⍳' '}⍵↓⍨¯1+(≢⍺)+1⍳⍨⍺⍷⍵}msg[2;]
  :Else
-     r←(≢'On branch ')↓1⊃buff
+     r←(≢'On branch ')↓msg
  :EndIf
 ⍝Done

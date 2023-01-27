@@ -1,4 +1,4 @@
- R←Test_API_013(stopFlag batchFlag);⎕TRAP;result
+R←Test_API_013(stopFlag batchFlag);⎕TRAP;result
 ⍝ Runs "Diff"
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed

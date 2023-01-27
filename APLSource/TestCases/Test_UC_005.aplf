@@ -3,10 +3,10 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- tempDir←##.FilesAndDirs.GetTempSubDir'APLGit2-Tests'
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-Tests'
  (⊂'This' 'and that')⎕NPUT tempDir,'/foo.txt'
  (⊂'r←Hello' 'r←''World''')⎕NPUT tempDir,'/Hello.aplf'
- ⎕SE._APLGit2.⎕EX'DEFAULT_PROJECT'
+ ⎕SE.APLGit2.##.⎕ex'DEFAULT_PROJECT'
 
  stop←0
  (rc msg buff)←stop ∆UCMD'Init "',tempDir,'" -quiet'
@@ -14,7 +14,7 @@
  →T.GoToTidyUp 0<≢msg
  →T.GoToTidyUp≢/FilesAndDirs.NormalizePath¨buff tempDir
  →T.GoToTidyUp~⎕NEXISTS tempDir,'/.git'
-→T.GoToTidyUp 0=⎕NEXISTS tempDir,'/.gitignore'
+ →T.GoToTidyUp 0=⎕NEXISTS tempDir,'/.gitignore'
  →T.GoToTidyUp~⎕NEXISTS tempDir,'/.gitattributes'
 
  R←T._OK

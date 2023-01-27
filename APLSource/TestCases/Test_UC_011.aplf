@@ -3,24 +3,21 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- :If batchFlag
-     R←T._NoBatchTest
-     :Return
- :EndIf
-
- 0 0⍴⍞,0/⍞←'This test needs you: you will be given a choice: select #.APLGit2! Press <enter> to continue'
-
  stop←0
  (rc msg result)←stop ∆UCMD'ChangeLog #.APLGit2.APLGit2.Add -project=#.APLGit2'
  msg Assert rc=0
- →T.PassesIf 0<≢result
+ →T.GoToTidyUp~0<≢result
 
+ ⎕SE.CommTools.Select_Choices←1 2⍴∆SelectCaption '#.APLGit2'
  (rc msg result)←stop ∆UCMD'ChangeLog #.APLGit2.APLGit2.Add'
  msg Assert rc=0
- →T.PassesIf 0<≢result
+ →T.GoToTidyUp~0<≢result
 
  (rc msg result)←stop ∆UCMD'ChangeLog'
- →T.PassesIf∨/'too few arguments'⍷msg
+ →T.GoToTidyUp~∨/'too few arguments'⍷msg
 
  R←T._OK
+
+∆TidyUp:
+ ⎕SE.CommTools.Cleanup
 ⍝Done

@@ -3,10 +3,10 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- tempDir←##.FilesAndDirs.GetTempSubDir'APLGit2-Tests'
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-Tests'
  (⊂'This' 'and that')⎕NPUT tempDir,'/foo.txt'
  (⊂'r←Hello' 'r←''World''')⎕NPUT tempDir,'/Hello.aplf'
- ⎕SE._APLGit2.⎕EX'DEFAULT_PROJECT'
+ ⎕SE.APLGit2.##.⎕EX'DEFAULT_PROJECT'
 
  stop←0
 
@@ -84,5 +84,5 @@
 
 ∆TidyUp:
  Assert 0=⊃buff←FilesAndDirs.RmDirByForce tempDir
- ⎕SE._APLGit2.⎕EX'DEFAULT_PROJECT'
+ ⎕SE.APLGit2.##.⎕EX'DEFAULT_PROJECT'
 ⍝Done

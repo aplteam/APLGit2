@@ -1,6 +1,6 @@
- R←Test_UC_110(stopFlag batchFlag);⎕TRAP;stop;rc;msg;buff;tempFolder;folder
-⍝ Attempts to run "]CompareCommits" with -view
-⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←Test_UC_110(stopFlag batchFlag);⎕TRAP;stop;rc;msg;buff;tempFolder;folder;q
+⍝ Attempts to run "]CompareCommits" (uses ]CompareFiles for putting diffs on display)
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
  :If batchFlag
@@ -10,14 +10,16 @@
      →0,R←T._NotApplicable
  :EndIf
 
- ⎕←' This test needs you: it will run the command ]CompareCommits which will use an external'
- ⎕←' comparison utility via the ]CompareFiles user command'
- :If 0=1 ∆YesOrNo' Would you like to run this test?'
+ q←''
+ q,←⊂' This test needs you: it will run the command ]CompareCommits which will use an external'
+ q,←⊂' comparison utility via the ]CompareFiles user command'
+ q,←⊂' Would you like to run this test?'
+ :If 0=1 ∆YesOrNo q
      →0,R←T._Inactive
  :EndIf
 
  stop←0
- (rc msg buff)←stop ∆UCMD'CompareCommits -project=#.APLGit2 -view'
+ (rc msg buff)←stop ∆UCMD'CompareCommits -project=#.APLGit2'
  msg Assert rc=0
  →T.PassesIf 0=≢msg
 

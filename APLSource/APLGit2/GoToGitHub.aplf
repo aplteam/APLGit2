@@ -15,10 +15,10 @@
          :Return
      :EndIf
      ref←⍎1⊃list[ind;]
-     url←ref.CiderConfig.CIDER.info_url
+     url←ref.CiderConfig.CIDER.project_url
  :Else
      ref←⍎y
      'Invalid argument'U.Assert 9=ref.⎕NC'CiderConfig'
-     url←ref.CiderConfig.CIDER.info_url
+     url←ref.CiderConfig.CIDER.project_url
  :EndIf
  {}A.GoToWebPage url

@@ -1,11 +1,15 @@
- no←GetNumberOfCommits(commits branch folder caption);val;flag;b
+ no←GetNumberOfCommits(commits branch folder caption);val;flag;b;buff
  no←flag←0
  :Repeat
      ⎕←'*** Commits in branch "',branch,'" of project "',folder,'"'
-     ⎕←↑((⍕¨⍳≢commits),¨⊂'. '),¨↓commits
+     buff←(↑commits[;1]),' ',(↑commits[;2]),' ',(↑commits[;3]),' ',↑commits[;4]
+     buff←⍕¨(((0,⍨≢⍕≢buff)∘⍕¨⍳≢buff),¨⊂'. '),¨↓buff
+     buff←↑⌽(⎕PW-6){⍺>≢⍵:⍵ ⋄ ((⍺-3)↑⍵),'...'}¨buff
+     ⎕←buff
      ⍞←caption
      val←⍞
      val←(≢caption)↓val
+     {⍵:.}val≡'∘∘∘'
      :If 0=≢val
          flag←1
      :ElseIf ∨/b←⊃⎕VFI val

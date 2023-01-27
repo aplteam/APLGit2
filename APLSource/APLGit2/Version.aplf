@@ -1,3 +1,9 @@
- r←Version
+ r←Version;json;ns
 ⍝ See also `History`
- r←'APLGit2' '0.8.0+151' '2022-12-12'
+ :If 0<##.⎕NC'CiderConfig'
+     json←⊃⎕NGET ##.CiderConfig.HOME,'/apl-package.json'
+ :Else
+     json←⊃⎕NGET TatinVars.HOME,'/apl-package.json'
+ :EndIf
+ ns←⎕JSON⍠('Dialect' 'JSON5')⊢json
+ r←ns.version

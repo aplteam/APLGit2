@@ -3,17 +3,12 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- :If batchFlag
-     R←T._NoBatchTest
-     :Return
- :EndIf
-
- 0 0⍴⍞,0/⍞←'This test needs you: you will be given a choice: select #.Proj_2! Press <enter> to continue'
-
  stop←0
+ ⎕SE.CommTools.Select_Choices←1 2⍴∆SelectCaption'#.Proj_2'
  (rc msg result)←stop ∆UCMD'IsGitProject'
  msg Assert rc=0
- →T.PassesIf 'yes'≡result
+ ⎕SE.CommTools.Cleanup
+ →T.PassesIf'yes'≡result
 
  R←T._OK
 ⍝Done

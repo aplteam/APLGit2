@@ -1,2 +1,0 @@
- yesNo←IsGitInstalled;path;exeName
- yesNo←##.IsGitInstalled;path;exeName

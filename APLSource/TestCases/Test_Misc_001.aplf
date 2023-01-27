@@ -1,5 +1,5 @@
  R←Test_Misc_001(stopFlag batchFlag);⎕TRAP;qdmx
-⍝ Exercise the "Assert" method
+⍝ Runs the "Assert" method
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

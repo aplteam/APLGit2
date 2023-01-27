@@ -28,7 +28,7 @@ For example, the  `Commit` API function just does that: executing `git commit`. 
 
 ## Installation
 
-Download a release and put the contents of the ZIP file into one of the folders Dyalog APL scans for user commands.
+APLGit2 is published on <https://tatin.dev> as a package. Install it into one of the folders that Dyalog scans for user commands at startup time and you are done. We recommend the `MyUCMDs/` folder. 
 
 For details refer to the Dyalog User Commands User Guide.
 

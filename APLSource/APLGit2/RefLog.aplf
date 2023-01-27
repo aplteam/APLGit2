@@ -1,9 +1,10 @@
- r←{x}RefLog restrictFlag;space;folder;rc;more;branch;buff
+r←{x}RefLog restrictFlag;space;folder;rc;more;branch;buff
 ⍝ Execute Git's "reflog" command.
 ⍝ Returns a matrix with zero or more rows and these columns
 ⍝ [1] Hash
 ⍝ [2] Symbolic pointer (HEAD)
-⍝ [3] Commit message
+⍝ [3] Command
+⍝ [4] Message, either from the user of from Git
 ⍝ `restrictFlag` defaults to 0 when empty; this lists all entries.
 ⍝ If this is 1 then only the entries up to the last checkout are listed.
 ⍝ For what `x` can actually be see `EstablishProject`.\\

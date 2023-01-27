@@ -1,0 +1,34 @@
+ R←Test_API_021(stopFlag batchFlag);⎕TRAP;result;tempDir;noOf;res;noOf2
+⍝ Runs "Squash"
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←FilesAndDirs.GetTempSubDir⊃⎕SI
+ (##.CiderConfig.HOME,'/TestData/TestProject.zip')ZipArchive.UnzipTo tempDir
+ noOf←≢G.Log tempDir
+
+ (⊂'First')⎕NPUT tempDir,'/myFile.txt'
+ res←G.Add tempDir
+ Assert res=0
+ res←'First test commit'G.Commit tempDir
+ Assert∨/'1 file changed, 1 insertion(+)'⍷∊res
+ (⊂'second')⎕NPUT(tempDir,'/myFile.txt')1
+ res←G.Add tempDir
+ Assert res=0
+ res←'First test commit'G.Commit tempDir
+ Assert∨/'1 file changed, 1 insertion(+)'⍷∊res
+ (⊂'Third')⎕NPUT(tempDir,'/myFile.txt')1
+ res←G.Add tempDir
+ Assert res=0
+ res←'First test commit'G.Commit tempDir
+ Assert∨/'1 file changed, 1 insertion(+)'⍷∊res
+
+ noOf2←tempDir G.Squash'This is my message' 3
+ →T.GoToTidyUp 3≠noOf2
+ →T.GoToTidyUp(noOf+1)≠≢G.Log tempDir
+ →T.GoToTidyUp~>/≢¨tempDir∘G.RefLog¨0 1
+
+ R←T._OK
+
+∆TidyUp:
+ Assert 0=⊃buff←FilesAndDirs.RmDirByForce tempDir

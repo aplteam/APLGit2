@@ -7,6 +7,6 @@
      ~(⊂⍺)∊0 1:'Invalid left argument: not a Boolean'⎕SIGNAL 11
      l←⍵
      0=≢l:l
-     0=≢i←Select↓⎕FMT l:'' ''
+     0=≢i←'APLGit2: please select a project'##.CommTools.Select↓⎕FMT l:'' ''
      l[i;]
  }

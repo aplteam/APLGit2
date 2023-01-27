@@ -3,7 +3,7 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- tempDir←##.FilesAndDirs.GetTempSubDir'APLGit2 Tests'
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2 Tests'
  (⊂'This' 'and that')⎕NPUT tempDir,'/foo.txt'
  (⊂'r←Hello' 'r←''World''')⎕NPUT tempDir,'/Hello.aplf'
 

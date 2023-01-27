@@ -19,4 +19,5 @@
      :EndIf
      (ind⊃r)←msg
  :EndIf
+ r←(⊂space),⊆r
 ⍝Done

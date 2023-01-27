@@ -2,7 +2,7 @@
  r←⍬
  quiet←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'quiet'
  :If quiet
- :OrIf ##.CommTools.YesOrNo'Add .gitattributes for APLers to ',path,' ?'
+ :OrIf CommTools.YesOrNo'Add .gitattributes for APLers to ',path,' ?'
      buff←''
      buff,←⊂'# Auto detect text files (for EOL-auto conversion)'
      buff,←⊂'* text=auto'

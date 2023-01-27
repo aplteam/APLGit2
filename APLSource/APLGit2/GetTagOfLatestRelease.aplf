@@ -4,7 +4,7 @@
  ⍝ "username" is expected to be the GitHub username. It's the equivalent of "group" in Tatin.
  verbose←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'verbose'
  'Both "username" and "repoName" must not be empty'U.Assert 0∧.<≢¨username repoName
- GH←⎕NEW ##.GitHubAPIv3(,⊂username)
+ GH←⎕NEW GitHubAPIv3(,⊂username)
  :Trap 0
      (rc msg data)←GH.GetLatestReleaseInfo repoName
  :Else

@@ -5,6 +5,7 @@
  :If 0=⎕NC'x'
  :OrIf 0=≢x
      branches←(ListBranches path)~¨⊂' *'
+     'There is just one branch?!'U.Assert 1<≢branches
      currentBranch←CurrentBranch path
      :If 1=≢branches~⊂currentBranch
          branch1←currentBranch
