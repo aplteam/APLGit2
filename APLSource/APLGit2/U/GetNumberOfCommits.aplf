@@ -5,8 +5,8 @@
      buff←(↑commits[;1]),' ',(↑commits[;2]),' ',(↑commits[;3]),' ',↑commits[;4]
      buff←⍕¨(((0,⍨≢⍕≢buff)∘⍕¨⍳≢buff),¨⊂'. '),¨↓buff
      buff←↑⌽(⎕PW-6){⍺>≢⍵:⍵ ⋄ ((⍺-3)↑⍵),'...'}¨buff
-     ⍞←caption
      ⎕←buff
+     ⍞←caption
      val←⍞
      val←(≢caption)↓val
      {⍵:.}val≡'∘∘∘'
