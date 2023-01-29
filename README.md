@@ -28,9 +28,11 @@ For example, the  `Commit` API function just does that: executing `git commit`. 
 
 ## Installation
 
-APLGit2 is published on <https://tatin.dev> as a package. Install it into one of the folders that Dyalog scans for user commands at startup time and you are done. We recommend the `MyUCMDs/` folder. 
+APLGit2 can be installed as a Tatin package:
 
-For details refer to the Dyalog User Commands User Guide.
+```
+]Tatin.InstallPackages [tatin]aplgit2 [myucmds]
+```
 
 ## Methods
 
