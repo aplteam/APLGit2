@@ -1,0 +1,10 @@
+ R←Test_Misc_008(stopFlag batchFlag);⎕TRAP;res
+⍝ Runs the "GetValidFileExtensions" method
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ res←G.U.GetValidFileExtensions
+ →T.PassesIf res≡'aplf'  'aplo'  'apln'  'aplc'  'apli'  'dyalog'  'array'
+
+ R←T._OK
+⍝Done

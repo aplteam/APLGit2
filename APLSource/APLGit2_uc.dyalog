@@ -482,7 +482,7 @@
               flag←0
               :Repeat
                   ref←⎕NS''
-                  ref.msg←'' ''
+                  ref.msg←,⊂''
                   ref.⎕ED'msg'
                   msg←ref.msg{⍺/⍨~(⌽∧\0=⌽⍵)∨(∧\0=⍵)}≢¨ref.msg
                   :If (⊂branch)∊'main' 'master'
@@ -499,7 +499,7 @@
                       :Return
                   :EndIf
                   msg←{0=≢⍵:'...' ⋄ ⍵}msg
-                  msg←1↓∊(⎕UCS 10),¨msg
+                  msg←1↓⊃,/(⎕UCS 10),¨⊆msg
               :Until flag
           :EndIf
           r←⍪msg ⎕SE.APLGit2.Commit folder

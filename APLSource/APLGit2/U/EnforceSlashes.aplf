@@ -1,6 +1,0 @@
- EnforceSlashes←{
-     r←⍵
-     0=+/b←r='\':r
-     (b/r)←'/'
-     r
- }

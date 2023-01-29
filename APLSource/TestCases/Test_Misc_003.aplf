@@ -1,0 +1,12 @@
+ R←Test_Misc_003(stopFlag batchFlag);⎕TRAP;res
+⍝ Runs the "LogForBranch" method
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ res←'#.APLGit2'G.LogForBranch'main'
+ →T.PassesIf 2=≡res
+ →T.PassesIf 2=⍴⍴res
+ →T.PassesIf 4=2⊃⍴res
+
+ R←T._OK
+⍝Done

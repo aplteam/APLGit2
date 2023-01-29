@@ -13,8 +13,8 @@
  G.∆TestFlag←1
 
  ∆TempDir←F.GetTempSubDir'Git_Tests'
- 3 ⎕MKDIR ∆Folder1←G.U.EnforceSlashes ∆TempDir,'/NoBlanks'
- 3 ⎕MKDIR ∆Folder2←G.U.EnforceSlashes ∆TempDir,'/Has Blanks'
+ 3 ⎕MKDIR ∆Folder1←G.F.EnforceSlash ∆TempDir,'/NoBlanks'
+ 3 ⎕MKDIR ∆Folder2←G.F.EnforceSlash ∆TempDir,'/Has Blanks'
 
  'Proj_1'#.⎕NS''
  #.Proj_1.(⎕IO ⎕ML)←1

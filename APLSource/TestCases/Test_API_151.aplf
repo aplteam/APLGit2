@@ -1,0 +1,9 @@
+ R←Test_API_151(stopFlag batchFlag);⎕TRAP
+⍝ Runs the "IsGitInstalled" method
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ →T.PassesIf 1=G.IsGitInstalled
+
+ R←T._OK
+⍝Done

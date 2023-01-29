@@ -1,0 +1,11 @@
+ R←Test_Misc_005(stopFlag batchFlag);⎕TRAP;res
+⍝ Runs the "Version" method
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ res←G.Version
+ →T.PassesIf 1=≡res
+ →T.PassesIf' '=1↑0⍴res
+
+ R←T._OK
+⍝Done
