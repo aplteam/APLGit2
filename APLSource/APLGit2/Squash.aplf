@@ -20,7 +20,7 @@
      buff←2↑(⊆y),0
      :If ' '=1↑0⍴1⊃buff
          msg←1⊃buff
-         noOf←2⊃y
+         noOf←2⊃buff
      :Else
          noOf←⊃y
          msg←{' '=1↑0⍴⍵:⍵ ⋄ ''}2⊃buff
@@ -28,7 +28,7 @@
  :EndIf
  (space folder)←EstablishProject x
  currentBranch←CurrentBranch folder
- 'No squashing of main/master 'U.Assert~(⊂currentBranch)∊'main' 'master'
+ 'No squashing of main/master'U.Assert~(⊂currentBranch)∊'main' 'master'
  'Cannot squash: there are uncommitted changes'U.Assert~IsDirty folder
  :If 0=noOf
      r←≢commits←folder RefLog 0
@@ -77,5 +77,6 @@
      msg←'-m "',msg,'"'
      (rc more buff)←folder U.RunGitCommand('commit ',msg)
      ('Committing after resetting failed; RC=',(⍕rc),' ',more)U.Assert 0=rc
+     r←noOf_
  :EndIf
 ⍝Done
