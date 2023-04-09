@@ -32,5 +32,5 @@
  R←T._OK
 
 ∆TidyUp:
- {}1 ⎕SE.APLGit2.SetDefaultProject''
+ {}1 APLGit2.SetDefaultProject''
 ⍝Done

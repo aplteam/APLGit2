@@ -1,4 +1,4 @@
- R←Test_API_004(stopFlag batchFlag);⎕TRAP;tempDir;result
+ R←Test_API_004(stopFlag batchFlag);⎕TRAP;tempDir;result;msg;rc
 ⍝ Runs "Init"
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -16,5 +16,6 @@
  R←T._OK
 
 ∆TidyUp:
- Assert 0=⊃buff←FilesAndDirs.RmDir tempDir
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
 ⍝Done

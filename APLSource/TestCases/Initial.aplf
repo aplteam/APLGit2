@@ -8,7 +8,7 @@
  A←APLTreeUtils2
  F←FilesAndDirs
  G←##.APLGit2
- G.InitializeGitUserCommand ⍬
+ C←CommTools
 
  G.∆TestFlag←1
 

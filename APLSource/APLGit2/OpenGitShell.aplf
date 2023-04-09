@@ -8,6 +8,7 @@
 ⍝  1. The name of the branch
 ⍝  2. The hash of the commit as a simple text string
  r←⍬
+ 'This function is "Windows only"'U.Assert'win'≡⎕C A.GetOperatingSystem ⍬
  (space path)←EstablishProject y
  paths←';'A.Split 2 ⎕NQ #'GetEnvironment' 'PATH'
  :If 1=+/bool←∨/¨'\git\bin'∘⍷¨⎕C paths

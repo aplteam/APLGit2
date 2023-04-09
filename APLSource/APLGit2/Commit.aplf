@@ -1,4 +1,4 @@
- r←{msg}Commit y;nm;project;buff;rc;⎕TRAP;cb;path;cmd;msg_;space
+r←{msg}Commit y;nm;project;buff;rc;⎕TRAP;cb;path;cmd;msg_;space
 ⍝ Commit changes.\\
 ⍝ If the current branch is "main" (or "master") then `msg` **_must not_** be empty and should carry a meaningful message.
 ⍝ Otherwise `msg` may be empty but will become three dots (`...`).\\
@@ -11,6 +11,9 @@
  ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
  msg←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'msg'
  msg←{0=≢⍵:'...' ⋄ ⍵}msg
+ ((''''=msg)/msg)←'`'     ⍝ Converting single quotes to backticks
+ (('"'=msg)/msg)←'`'     ⍝ Converting double quotes to backticks
+ msg←'`'⎕R'\\`'⊣msg  ⍝ Escape backticks, otherwise on a Mac we are in trouble
  (space path)←EstablishProject y
  cb←CurrentBranch path
  nm←~(⊂cb)∊'master' 'main'

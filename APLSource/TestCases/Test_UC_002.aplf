@@ -1,12 +1,12 @@
-R←Test_UC_002(stopFlag batchFlag);⎕TRAP;result;msg;rc;stop
+ R←Test_UC_002(stopFlag batchFlag);⎕TRAP;result;msg;rc;stop
 ⍝ Runs ]ListBranches
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
  stop←0
- ⎕SE.CommTools.Select_Choices←1 2⍴∆SelectCaption 1
+ ⎕SE.APLGit2.##.CommTools.Select_Choices←1 2⍴∆SelectCaption 1
  (rc msg result)←stop ∆UCMD'ListBranches'
- ⎕SE.CommTools.Cleanup
+ ⎕SE.APLGit2.##.CommTools.Cleanup
  msg Assert rc=0
  →T.PassesIf 0<≢result
 

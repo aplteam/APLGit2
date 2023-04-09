@@ -1,4 +1,4 @@
- R←Test_UC_005(stopFlag batchFlag);⎕TRAP;rc;tempDir;stop;msg;buff
+ R←Test_UC_005(stopFlag batchFlag);⎕TRAP;rc;tempDir;stop;msg
 ⍝ Runs ]Init (initialize a folder for Git)
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -6,7 +6,7 @@
  tempDir←FilesAndDirs.GetTempSubDir'APLGit2-Tests'
  (⊂'This' 'and that')⎕NPUT tempDir,'/foo.txt'
  (⊂'r←Hello' 'r←''World''')⎕NPUT tempDir,'/Hello.aplf'
- ⎕SE.APLGit2.##.⎕ex'DEFAULT_PROJECT'
+ ⎕SE.APLGit2.##.⎕EX'DEFAULT_PROJECT'
 
  stop←0
  (rc msg buff)←stop ∆UCMD'Init "',tempDir,'" -quiet'
@@ -20,5 +20,6 @@
  R←T._OK
 
 ∆TidyUp:
- Assert 0=⊃buff←FilesAndDirs.RmDir tempDir
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
 ⍝Done

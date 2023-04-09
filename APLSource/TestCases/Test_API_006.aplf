@@ -1,4 +1,4 @@
- R←Test_API_006(stopFlag batchFlag);⎕TRAP
+ R←Test_API_006(stopFlag batchFlag);dmx;⎕TRAP
 ⍝ Runs "OpenGitShell"
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -8,10 +8,23 @@
      :Return
  :EndIf
 
- 0 0⍴⍞,0/⍞←'This test needs you: it opens a Git shell in Git''s project directory; press <enter> to continue'
+ :if 'win'≢APLTreeUtils2.GetOperatingSystem ⍬
+R←T._WindowsOnly
+    :Return
+ :endif
 
- {}G.OpenGitShell #.APLGit2
- →T.PassesIf 1 ∆YesOrNo'Was the shell opened in ',##.CiderConfig.HOME,'?'
+ C.Pause'This test needs you: it opens a Git shell in Git''s project directory.'
+
+ :Trap 6
+     {}G.OpenGitShell #.APLGit2
+     →T.PassesIf 0
+ :Else
+     dmx←⎕DMX
+     →T.PassesIf'GitBash not found!'≡dmx.EM
+     R←T._NotApplicable
+     :Return
+ :EndTrap
+ →T.PassesIf 1 C.YesOrNo'Was the shell opened in ',##.CiderConfig.HOME,'?'
 
  R←T._OK
 ⍝Done

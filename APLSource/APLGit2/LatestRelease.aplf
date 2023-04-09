@@ -2,6 +2,7 @@
  ⍝ Returns the tag of the latest release.
  ⍝ By default any draft releases are ignored.
  ⍝ "username" is expected to be the GitHub username. It's the equivalent of "group" in Tatin.
+ 'This function is "Windows only"'U.Assert'win'≡⎕C A.GetOperatingSystem ⍬
  verbose←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'verbose'
  'Both "username" and "repoName" must not be empty'U.Assert 0∧.<≢¨username repoName
  GH←⎕NEW GitHubAPIv3(,⊂username)

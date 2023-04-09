@@ -4,10 +4,10 @@
  R←T._Failed
 
  stop←0
- ⎕SE.CommTools.Select_Choices←1 2⍴∆SelectCaption'#.Proj_2'
+ ⎕SE.APLGit2.##.CommTools.Select_Choices←1 2⍴∆SelectCaption'#.Proj_2'
  (rc msg result)←stop ∆UCMD'IsGitProject'
  msg Assert rc=0
- ⎕SE.CommTools.Cleanup
+ ⎕SE.APLGit2.##.CommTools.Cleanup
  →T.PassesIf'yes'≡result
 
  R←T._OK

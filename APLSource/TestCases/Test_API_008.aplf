@@ -1,4 +1,4 @@
- R←Test_API_008(stopFlag batchFlag);⎕TRAP;tempFolder;buff;res;parms;data;expected;C
+ R←Test_API_008(stopFlag batchFlag);⎕TRAP;tempFolder;buff;res;parms;data;expected
 ⍝ Runs "AddGitIgnore"
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -7,8 +7,7 @@
      →0 ⋄ R←T._NoBatchTest
  :EndIf
 
- {}⍞,0/⎕←'This test needs you: when a ⎕ED pops up (twice!) just close it without a change; to continue press <enter>'
- C←##.APLGit2.CommTools
+ C.Pause 'This test needs you: when a ⎕ED pops up (twice!) just close it without a change.'
 
  tempFolder←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
  (tempFolder,'/')⎕NCOPY⍠('Wildcard' 1)⊢##.CiderConfig.HOME,'/TestData/CiderProject/*'

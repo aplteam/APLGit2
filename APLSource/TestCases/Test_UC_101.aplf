@@ -1,4 +1,4 @@
- R←Test_UC_101(stopFlag batchFlag);⎕TRAP;stop;rc;msg;buff;tempDir
+ R←Test_UC_101(stopFlag batchFlag);⎕TRAP;stop;rc;msg;tempDir
 ⍝ Runs all user commands on a Git-managed folder that is NOT a Cider project with a space in its name
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -66,5 +66,6 @@
  R←T._OK
 
 ∆TidyUp:
- Assert 0=⊃buff←FilesAndDirs.RmDirByForce tempDir
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
 ⍝Done

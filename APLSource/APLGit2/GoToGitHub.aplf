@@ -21,4 +21,8 @@
      'Invalid argument'U.Assert 9=ref.⎕NC'CiderConfig'
      url←ref.CiderConfig.CIDER.project_url
  :EndIf
- {}A.GoToWebPage url
+ :If 'win'≡⎕C A.GetOperatingSystem ⍬
+     {}A.GoToWebPage url
+ :Else
+     ⎕←']Open ',url
+ :EndIf

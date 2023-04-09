@@ -1,4 +1,4 @@
- R←Test_API_140(stopFlag batchFlag);⎕TRAP;tempFolder;allCommits1;allCommits2;zipfile;noOf
+ R←Test_API_140(stopFlag batchFlag);⎕TRAP;tempFolder;allCommits1;allCommits2;zipfile;noOf;msg;rc
 ⍝ Runs "Squash"
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -7,9 +7,9 @@
      →0,R←T._NoBatchTest
  :EndIf
 
- ⎕←' This test needs you: it will attempt to squash all commits (2) of the current branch ("dev") into a single one.'
- ⎕←' Therefore, when questioned, enter "2" for the number of commits to be squashed.'
- 0 0⍴⍞,0/⎕←' To continue press <enter>'
+ msg←⊂' This test needs you: it will attempt to squash all commits (2) of the current branch ("dev") into a single one.'
+ msg,←⊂' Therefore, when questioned, enter "2" for the number of commits to be squashed.'
+ C.Pause msg
 
  tempFolder←FilesAndDirs.GetTempSubDir⊃⎕SI
  zipfile←##.CiderConfig.HOME,'/TestData/TestProject.zip'
@@ -27,5 +27,6 @@
  R←T._OK
 
 ∆TidyUp:
- FilesAndDirs.RmDir tempFolder
+ (rc msg)←FilesAndDirs.RmDirByForce tempFolder
+ msg Assert rc=0
 ⍝Done

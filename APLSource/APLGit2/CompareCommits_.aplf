@@ -20,6 +20,7 @@
              (rc more buff1)←folder U.RunGitCommand('show  --raw ',hash1,':',thisFile)
              :If 0≠rc
                  :If ∨/∨/¨'does not exist' 'exists on disk, but not' 'unknown revision or path not in the working tree'⍷¨⊂∊more
+                 :OrIf rc=128   ⍝ From experience we know that this often means that the file does not exist, though it might have other reasons...
                      buff1←''
                  :Else
                      ∘∘∘ ⍝ It appears that the file does not exist but we fail to analyze the error message correctly in this respect
@@ -40,11 +41,11 @@
          :Else
              (rc more buff2)←folder U.RunGitCommand('show  --raw ',hash2,':',thisFile)
              :If 0≠rc
-                 :If ∨/'does not exist'⍷∊more
-                 :OrIf ∨/'exists on disk, but not'⍷∊more
+                 :If ∨/∨/¨'does not exist' 'exists on disk, but not' 'unknown revision or path not in the working tree'⍷¨⊂∊more
+                 :OrIf rc=128   ⍝ From experience we know that this often means that the file does not exist, though it might have other reasons...
                      buff2←''
                  :Else
-                     ∘∘∘ ⍝ Huh?!
+                     ∘∘∘ ⍝ It appears that the file does not exist but we fail to analyze the error message correctly in this respect
                  :EndIf
              :EndIf
          :EndIf

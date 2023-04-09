@@ -5,6 +5,33 @@
 
 `APLGit2` comes with a small set of functions designed to support the APL programmer while working on projects that are managed by Git. 
 
+`APLGit2` runs on Windows, Linux and Mac-OS.
+
+
+## Preconditions
+
+## Preconditions and assumptions
+
+* The Git bash must be installed, and available on the environment variable `%PATH%`
+* .NET Core 3.1 must be installed
+* The Git config parameters `user.name` and `user.email` must be set
+
+`]APLGit2.GoToGitHub` requires you to host your project on GitHub, but all other commands are agnostic in this respect
+
+Note that `]APLGit2.*` works particularly well in conjunction with [Cider](https://github.com/aplteam/Cider), though this is not a requirement. 
+
+However, with a project that is not managed by Cider you must always specify a folder, either as argument of a user command or by calling `]APLGit2.SetDefaultProject`. 
+
+Note that `APLGit2` works only **locally**, it does **not** accept a URL pointing to GitHub.
+
+
+## Installation
+
+APLGit2 is published on <https://tatin.dev> as a package. Install it into one of the folders that Dyalog scans for user commands at startup time and you are done. We recommend the `MyUCMDs/` folder. 
+
+For details refer to the Dyalog User Commands User Guide.
+
+
 ## Philosophy
 
 Experience tells that trying to support all sorts of Git commands from within APL is a recipe for trouble. For example, the Git command "checkout" should not be performed from within an APL session. 
@@ -24,18 +51,12 @@ It is strongly recommended to use the Git Bash for anything beyond that. This ha
 
 All functions are also available via an API which lives in `⎕SE.APLGit2`. However, the API calls are more basic. 
 
-For example, the  `Commit` API function just does that: executing `git commit`. The user command on the other hand first checks whether the project is currently dirty, and if it is it asks the user whether `git add .` should be executed first. Also, it opens an edit window for the user to create a message in case the `-m=` option was not set.
-
-## Installation
-
-APLGit2 is published on <https://tatin.dev> as a package. Install it into one of the folders that Dyalog scans for user commands at startup time and you are done. We recommend the `MyUCMDs/` folder. 
-
-For details refer to the Dyalog User Commands User Guide.
+For example, the  `Commit` API function just does that: executing `git commit`. The user command on the other hand first checks whether the project is currently dirty, and if it is it asks the user whether `git add . -A` should be executed first. Also, it opens an edit window for the user to create a message in case the `-m=` option was not set.
 
 ## Methods
 
 ```
- Add                    Execute the Git "Add" commands                                         
+ Add                    Execute the Git "Add" commands with the -A flag on "."
  AddGitIgnore           Adds a file `.gitignore` to a path with defaults useful for APLers
  Branch                 Lists all branches for a Git-managed project (same as ListBranches)
  ChangeLog              Takes an APL name and list all commits the object was part of          
@@ -61,14 +82,3 @@ For details refer to the Dyalog User Commands User Guide.
  Status                 Reports all untracked files and/or all uncommitted changes
  Version                APLGit2's version: returns name, version number & version date
 ```
-
-## Preconditions and assumptions
-
-* The Git bash must be installed, and available on the environment variable `%PATH%`
-* `]APLGit2.GoToGitHub` requires you to host your project on GitHub, but all other commands are agnostic in this respect
-
-Note that `]APLGit2.*` works particularly well in conjunction with [Cider](https://github.com/aplteam/Cider), though this is not a requirement. 
-
-However, with a project that is not managed by Cider you must always specify a folder, either as argument of a user command or by calling `]APLGit2.SetDefaultProject`. 
-
-Note that `APLGit2` works only **locally**, it does **not** accept a URL pointing to GitHub.

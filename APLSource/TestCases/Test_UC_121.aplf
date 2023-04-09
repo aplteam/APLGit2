@@ -7,10 +7,10 @@
      →0,R←T._NoBatchTest
  :EndIf
 
- ⎕←' This test needs you: it will attempt to squash all commits (2) of the current branch ("dev") into a single one.'
- ⎕←' Therefore, when questioned, enter "2" for the number of commits to be squashed.'
- ⎕←' When prompted for a message, enter "Foo".'
- 0 0⍴⍞,0/⎕←' To continue press <enter>'
+ msg←⊂'This test needs you: it will attempt to squash all commits (2) of the current branch ("dev") into a single one.'
+ msg,←⊂'Therefore, when questioned, enter "2" for the number of commits to be squashed.'
+ msg,←⊂'When prompted for a message, enter "Foo".'
+ C.Pause msg
 
  tempFolder←FilesAndDirs.GetTempSubDir(⊃⎕SI),' with spaces'
  zipfile←##.CiderConfig.HOME,'/TestData/TestProject.zip'
@@ -19,7 +19,7 @@
  allCommits1←##.APLGit2.Log tempFolder
  stop←0
  (rc msg buff)←stop ∆UCMD'Squash "',tempFolder,'"'
- Assert 0=rc
+ msg Assert 0=rc
  allCommits2←##.APLGit2.Log tempFolder
 
  →T.GoToTidyUp 0≠+/allCommits1[1 2;4]∊allCommits2[;4]
@@ -28,5 +28,6 @@
  R←T._OK
 
 ∆TidyUp:
- FilesAndDirs.RmDir tempFolder
+ (rc msg)←FilesAndDirs.RmDirByForce tempFolder
+ msg Assert rc=0
 ⍝Done

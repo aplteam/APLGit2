@@ -1,4 +1,4 @@
- R←Test_API_021(stopFlag batchFlag);⎕TRAP;result;tempDir;noOf;res;noOf2
+ R←Test_API_021(stopFlag batchFlag);⎕TRAP;result;tempDir;noOf;res;noOf2;msg;rc
 ⍝ Runs "Squash"
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -31,4 +31,6 @@
  R←T._OK
 
 ∆TidyUp:
- Assert 0=⊃buff←FilesAndDirs.RmDirByForce tempDir
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done

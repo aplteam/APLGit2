@@ -1,4 +1,4 @@
- R←Test_UC_102(stopFlag batchFlag);⎕TRAP;stop;rc;msg;buff;tempDir
+ R←Test_UC_102(stopFlag batchFlag);buff;msg;rc;stop;tempDir;⎕TRAP
 ⍝ Runs all user commands on a Git-managed folder that is NOT a Cider project
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -26,12 +26,12 @@
  (rc msg buff)←stop ∆UCMD'SetDefaultProject "',tempDir,'"'
  msg Assert rc=0
  →T.GoToTidyUp 0<≢msg
- →T.GoToTidyUp tempDir≡∊buff
+ →T.GoToTidyUp≢/F.NormalizePath¨tempDir∊buff
 
  (rc msg buff)←stop ∆UCMD'GetDefaultProject'
  msg Assert rc=0
  →T.GoToTidyUp 0<≢msg
- →T.GoToTidyUp tempDir≡∊buff
+ →T.GoToTidyUp ≢/F.NormalizePath¨tempDir(∊buff)
 
  (rc msg buff)←stop ∆UCMD'IsGitProject'
  msg Assert rc=0
@@ -83,6 +83,7 @@
  R←T._OK
 
 ∆TidyUp:
- Assert 0=⊃buff←FilesAndDirs.RmDirByForce tempDir
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
  ⎕SE.APLGit2.##.⎕EX'DEFAULT_PROJECT'
 ⍝Done

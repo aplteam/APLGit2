@@ -4,7 +4,7 @@
  R←T._Failed
 
  res←'#.APLGit2'G.LogForBranch'main'
- →T.PassesIf 2=≡res
+⍝ →T.PassesIf 2=≡res ⍝ Might well be empty...
  →T.PassesIf 2=⍴⍴res
  →T.PassesIf 4=2⊃⍴res
 

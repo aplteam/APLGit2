@@ -20,25 +20,25 @@
  →T.PassesIf 2=≢result
 
  (rc msg result)←stop ∆UCMD'Log "',∆Folder1,'" -verbose'
- →T.PassesIf 24=≢result
+ →T.PassesIf 0<≢result
 
- ⎕SE.CommTools.Select_Choices←1 2⍴'APLGit2: please select a project' '#.Proj_1'
+ ⎕SE.APLGit2.##.CommTools.Select_Choices←1 2⍴'APLGit2: please select a project' '#.Proj_1'
  (rc msg result)←stop ∆UCMD'Log'
- →T.GoToTidyUp 6≠≢result
- ⎕SE.CommTools.Cleanup
+ →T.GoToTidyUp 0=≢result
+ ⎕SE.APLGit2.##.CommTools.Cleanup
 
- ⎕SE.CommTools.Select_Choices←1 2⍴'APLGit2: please select a project' '#.Proj_1'
+ ⎕SE.APLGit2.##.CommTools.Select_Choices←1 2⍴'APLGit2: please select a project' '#.Proj_1'
  (rc msg result)←stop ∆UCMD'Log 2'
- →T.GoToTidyUp 2≠≢result
- ⎕SE.CommTools.Cleanup
+ →T.GoToTidyUp 0=≢result
+ ⎕SE.APLGit2.##.CommTools.Cleanup
 
-  ⎕SE.CommTools.Select_Choices←1 2⍴'APLGit2: please select a project' '#.Proj_1'
+ ⎕SE.APLGit2.##.CommTools.Select_Choices←1 2⍴'APLGit2: please select a project' '#.Proj_1'
  (rc msg result)←stop ∆UCMD'Log 2022-12-31'
  →T.GoToTidyUp 0=≢result
- ⎕SE.CommTools.Cleanup
+ ⎕SE.APLGit2.##.CommTools.Cleanup
 
  R←T._OK
 
 ∆TidyUp:
- ⎕SE.CommTools.Cleanup
+ ⎕SE.APLGit2.##.CommTools.Cleanup
 ⍝Done

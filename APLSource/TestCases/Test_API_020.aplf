@@ -1,4 +1,4 @@
- R←Test_API_020(stopFlag batchFlag);⎕TRAP;result;parms
+ R←Test_API_020(stopFlag batchFlag);⎕TRAP;result;parms;list;success
 ⍝ Runs "Diff"
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -7,7 +7,9 @@
  parms←⎕SE.Cider.CreateOpenParms''
  parms.quietFlag←1
  parms.folder←##.CiderConfig.HOME,'/TestData/CommTools'
- Assert ⎕SE.Cider.OpenProject parms
+ parms.watch←'ns'
+ (success list)← ⎕SE.Cider.OpenProject parms
+ Assert success
 
   result←G.DiffBranches #.CommTools
  →T.PassesIf 0<≢result

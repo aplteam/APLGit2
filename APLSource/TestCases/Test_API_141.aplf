@@ -22,5 +22,6 @@
  R←T._OK
 
 ∆TidyUp:
- FilesAndDirs.RmDir tempFolder
+ (rc msg)←FilesAndDirs.RmDirByForce tempFolder
+ msg Assert rc=0
 ⍝Done

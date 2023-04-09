@@ -15,7 +15,6 @@
  r,←⊂'GetTagOfLatestRelease'
  r,←⊂'GoToGitHub'
  r,←⊂'Init'
- r,←⊂'InitializeGitUserCommand'
  r,←⊂'IsDirty'
  r,←⊂'IsGitProject'
  r,←⊂'IsGitInstalled'

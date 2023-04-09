@@ -3,7 +3,12 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- data←##.APLGit2.GetTagOfLatestRelease'aplteam' 'APLGit2'
+ :If 'win'≢⎕C A.GetOperatingSystem ⍬
+     R←T._WindowsOnly
+     :Return
+ :EndIf
+
+ data←APLGit2.GetTagOfLatestRelease'aplteam' 'APLGit2'
 
  →T.PassesIf 1=≡data
  →T.PassesIf 0<≢data

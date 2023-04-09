@@ -8,7 +8,7 @@
  msg Assert rc=0
  →T.GoToTidyUp~0<≢result
 
- ⎕SE.CommTools.Select_Choices←1 2⍴∆SelectCaption '#.APLGit2'
+ ⎕SE.APLGit2.##.CommTools.Select_Choices←1 2⍴∆SelectCaption'#.APLGit2'
  (rc msg result)←stop ∆UCMD'ChangeLog #.APLGit2.APLGit2.Add'
  msg Assert rc=0
  →T.GoToTidyUp~0<≢result
@@ -19,5 +19,5 @@
  R←T._OK
 
 ∆TidyUp:
- ⎕SE.CommTools.Cleanup
+ ⎕SE.APLGit2.##.CommTools.Cleanup
 ⍝Done

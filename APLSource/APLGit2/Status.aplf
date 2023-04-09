@@ -1,9 +1,9 @@
  r←{short}Status y;rc;more;path;⎕TRAP;short;space;ind;branch;msg
-⍝ Reports all uncommited/untracked files.\\
+⍝ Reports all unstaged/uncommited/untracked files.\\
 ⍝ `y` must be one of:
-⍝   * Fully qualfied name of a namespace  that is an opened Cider project
+⍝   * Fully qualfied name of a namespace that is an opened Cider project
 ⍝   * Fully qualified path to a Git-managed project
-⍝ `short` defaults to 0 which gives you a detailed report.
+⍝ `short` defaults to 0 which gives you a detailed report while 1 gives a short report.
  ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
  short←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'short'
  (space path)←EstablishProject y

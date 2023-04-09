@@ -1,4 +1,4 @@
- R←Test_UC_110(stopFlag batchFlag);⎕TRAP;stop;rc;msg;buff;tempFolder;folder;q;parms
+ R←Test_UC_110(stopFlag batchFlag);⎕TRAP;stop;rc;msg;buff;tempFolder;folder;q;parms;log;success
 ⍝ Attempts to run "]CompareCommits" (uses ]CompareFiles for putting diffs on display)
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -14,21 +14,22 @@
  q,←⊂' This test needs you: it will run the command ]CompareCommits which will use an external'
  q,←⊂' comparison utility via the ]CompareFiles user command'
  q,←⊂' Would you like to run this test?'
- :If 0=1 ∆YesOrNo q
+ :If 0=1 C.YesOrNo q
      →0,R←T._NoBatchTest
  :EndIf
 
  parms←⎕SE.Cider.CreateOpenParms''
  parms.quietFlag←1
  parms.folder←##.CiderConfig.HOME,'/TestData/CommTools'
- Assert ⎕SE.Cider.OpenProject parms
+ (success log)←⎕SE.Cider.OpenProject parms
+ Assert success
 
  stop←0
  (rc msg buff)←stop ∆UCMD'CompareCommits -project=#.CommTools'
  msg Assert rc=0
  →T.PassesIf 0=≢msg
 
- →T.GoToTidyUp~1 ∆YesOrNo'Did a comparison utility show up?'
+ →T.GoToTidyUp~1 C.YesOrNo'Did a comparison utility show up?'
 
  R←T._OK
 

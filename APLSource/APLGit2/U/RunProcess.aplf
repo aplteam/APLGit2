@@ -3,7 +3,7 @@
 ⍝ Requires .NET under Windows but not elsewhere.
 ⍝ Cannot run in elevated mode because for that we would need to set i.Verb to 'runas' which
 ⍝ we can't because "UseShellEexecute" must be set to 1 for this which we can't because we must
-⍝ redirect StdOut and StdErr, something we can only do with "UseShellEexecute←0"
+⍝ redirect StdOut and StdErr, something we can only do with "UseShellExecute←0"
 ⍝ ⍵[0] ←→ Executable
 ⍝ ⍵[1] ←→ Argument
  r←⎕NS''
@@ -44,21 +44,18 @@
          buff←⎕SH cmd
      :Else
          dmx←⎕DMX
-         :If ∨/'code 127'⍷dmx.Message
+         r.ExitCode←1
+         r.StdErr←dmx.Message
+         :If ∨/'code 127 '⍷dmx.Message,' '
              r.ExitCode←127
-             r.StdErr←dmx.Message
-             :Return
-         :Else
-             dmx.Message ⎕SIGNAL 11
+         :ElseIf ∨/'code 128 '⍷dmx.Message,' '
+             r.ExitCode←128
          :EndIf
+         :Return
      :EndTrap
      r.StdOut←{'UTF-8'⎕UCS ⎕UCS ⍵}¨buff
      :If 0<≢msg←{22::'' ⋄ ⊃⎕NGET ⍵ 1}tfn
-         r.ExitCode←1
-         :If 2=|≡msg
-         :AndIf 1=≢msg
-             r.StdErr←∊msg
-         :EndIf
+         r.StdErr←⊃{⍺,' ',⍵}/msg
      :EndIf
      ##.F.DeleteFile tfn
  :EndIf
