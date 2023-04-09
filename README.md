@@ -51,7 +51,16 @@ It is strongly recommended to use the Git Bash for anything beyond that. This ha
 
 All functions are also available via an API which lives in `⎕SE.APLGit2`. However, the API calls are more basic. 
 
-For example, the  `Commit` API function just does that: executing `git commit`. The user command on the other hand first checks whether the project is currently dirty, and if it is it asks the user whether `git add . -A` should be executed first. Also, it opens an edit window for the user to create a message in case the `-m=` option was not set.
+For example, the  `Commit` API function just does that: executing `git commit`. The user command on the other hand first checks whether the project is currently dirty, and if it is it asks the user whether `git add .` should be executed first. Also, it opens an edit window for the user to create a message in case the `-m=` option was not set.
+
+## Installation
+
+APLGit2 can be installed as a Tatin package:
+
+```
+]Tatin.InstallPackages [tatin]aplgit2 [myucmds]
+```
+
 
 ## Methods
 
