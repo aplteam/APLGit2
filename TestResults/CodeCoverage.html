@@ -121,16 +121,14 @@ ul li, ol li {margin: 8pt 3pt;}
 <body>
 <h1 id="top">Coverage Report</h1>
 <p>Watched: 81 fns/opr within <code>#.APLGit2.APLGit2</code></p>
-<p>The test suite was executed 4 times:</p>
+<p>The test suite was executed 2 times:</p>
 <table>
 <thead>
 <tr><th>Executed at</th><th>APLVersion</th><th>Memory (MB)</th></tr>
 </thead>
 <tbody>
-<tr><td>2023-04-09 19:04:54</td><td>Windows-64 ⋄ 18.2.46856.0 ⋄ W ⋄ Development ⋄ Unicode</td><td>53</td></tr>
-<tr><td>2023-04-09 19:06:32</td><td>Linux-64 ⋄ 18.2.46656.0 ⋄ S ⋄ Development ⋄ Unicode</td><td>245</td></tr>
-<tr><td>2023-04-09 19:09:29</td><td>Mac-64 ⋄ 18.2.46881.0 ⋄ S ⋄ Development ⋄ Unicode</td><td>247</td></tr>
-<tr><td>2023-04-09 19:13:33</td><td>Mac-64 ⋄ 18.2.46881.0 ⋄ S ⋄ Development ⋄ Unicode</td><td>246</td></tr>
+<tr><td>2023-04-10 16:33:42</td><td>Windows-64 ⋄ 18.2.46856.0 ⋄ W ⋄ Development ⋄ Unicode</td><td>51</td></tr>
+<tr><td>2023-04-10 16:39:26</td><td>Mac-64 ⋄ 18.2.46881.0 ⋄ S ⋄ Development ⋄ Unicode</td><td>246</td></tr>
 </tbody>
 </table>
 <p>Overall 79% of the testable code is covered.</p>
@@ -165,7 +163,7 @@ ul li, ol li {margin: 8pt 3pt;}
 <tr><td><a href="#listing_21" title="Link to listing">#.APLGit2.APLGit2.AddGitAttributes</a></td><td>4, 15</td><td>87</td><td>15</td></tr>
 <tr><td><a href="#listing_22" title="Link to listing">#.APLGit2.APLGit2.DiffBetween</a></td><td>9</td><td>88</td><td>8</td></tr>
 <tr><td><a href="#listing_23" title="Link to listing">#.APLGit2.APLGit2.Log</a></td><td>29, 32, 51</td><td>91</td><td>33</td></tr>
-<tr><td><a href="#listing_24" title="Link to listing">#.APLGit2.APLGit2.Commit</a></td><td>24</td><td>94</td><td>17</td></tr>
+<tr><td><a href="#listing_24" title="Link to listing">#.APLGit2.APLGit2.Commit</a></td><td>26</td><td>94</td><td>18</td></tr>
 <tr><td><a href="#listing_25" title="Link to listing">#.APLGit2.APLGit2.U.GetNumberOfCommits</a></td><td>21</td><td>95</td><td>21</td></tr>
 <tr><td><a href="#listing_26" title="Link to listing">#.APLGit2.APLGit2.ChangeLog</a></td><td>32</td><td>96</td><td>24</td></tr>
 <tr><td><a href="#listing_27" title="Link to listing">#.APLGit2.APLGit2.AddGitIgnore</a></td><td>32</td><td>97</td><td>37</td></tr>
@@ -1017,21 +1015,23 @@ $(document).ready(function() {
 <code> [12]  msg←{0=≢⍵:'...' ⋄ ⍵}msg</code>
 <code> [13]  ((''''=msg)/msg)←'`'     ⍝ Converting single quotes to backticks</code>
 <code> [14]  (('"'=msg)/msg)←'`'     ⍝ Converting double quotes to backticks</code>
-<code> [15]  msg←'`'⎕R'\\`'⊣msg  ⍝ Escape backticks, otherwise on a Mac we are in trouble</code>
-<code> [16]  (space path)←EstablishProject y</code>
-<code> [17]  cb←CurrentBranch path</code>
-<code> [18]  nm←~(⊂cb)∊'master' 'main'</code>
-<code> [19]  ('You must provide a meaningful message in the "',cb,'" branch')⎕SIGNAL 11/⍨(0=nm)∧0=≢msg</code>
-<code> [20]  msg_←U.MassageMsg msg</code>
-<code> [21]  cmd←'commit -m "',msg_,'"'</code>
-<code> [22]  (rc msg buff)←path U.RunGitCommand cmd</code>
-<code> [23]  :If ∨/'nothing to commit, working tree clean'⍷∊buff</code>
-<code class="emphasize">→[24]      r←buff</code>
-<code> [25]  :Else</code>
-<code> [26]      msg U.Assert 0=rc</code>
-<code> [27]      r←buff</code>
-<code> [28]  :EndIf</code>
-<code> [29] ⍝Done</code>
+<code> [15]  :If 'mac'≡⎕C A.GetOperatingSystem ⍬</code>
+<code> [16]      msg←'`'⎕R'\\`'⊣msg  ⍝ Escape backticks, otherwise on a Mac we are in trouble</code>
+<code> [17]  :EndIf</code>
+<code> [18]  (space path)←EstablishProject y</code>
+<code> [19]  cb←CurrentBranch path</code>
+<code> [20]  nm←~(⊂cb)∊'master' 'main'</code>
+<code> [21]  ('You must provide a meaningful message in the "',cb,'" branch')⎕SIGNAL 11/⍨(0=nm)∧0=≢msg</code>
+<code> [22]  msg_←U.MassageMsg msg</code>
+<code> [23]  cmd←'commit -m "',msg_,'"'</code>
+<code> [24]  (rc msg buff)←path U.RunGitCommand cmd</code>
+<code> [25]  :If ∨/'nothing to commit, working tree clean'⍷∊buff</code>
+<code class="emphasize">→[26]      r←buff</code>
+<code> [27]  :Else</code>
+<code> [28]      msg U.Assert 0=rc</code>
+<code> [29]      r←buff</code>
+<code> [30]  :EndIf</code>
+<code> [31] ⍝Done</code>
 </div>
 <code class="header" id="listing_25">#.APLGit2.APLGit2.U.GetNumberOfCommits &mdash; 95%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
 <div class="code-block"><code>  no←GetNumberOfCommits(commits branch folder caption)</code>
@@ -1487,7 +1487,7 @@ $(document).ready(function() {
 <code class="header" id="listing_46">#.APLGit2.APLGit2.Version &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
 <div class="code-block"><code> r←Version</code>
 <code> [1] ⍝ See also `History`</code>
-<code> [2]  r←'0.10.0+216'</code>
+<code> [2]  r←'0.10.1+216'</code>
 </div>
 <code class="header" id="listing_47">#.APLGit2.APLGit2.API.Add &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
 <div class="code-block"><code> Add←{⍺←⊢ ⋄ 1:shy←⍺ ##.Add ⍵}</code>

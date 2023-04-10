@@ -1,4 +1,6 @@
 (
+ '* 0.10.1 ⋄ 2023-04-10'
+ '  * Bug fix: backtick (`) must be escaped on the Mac but not on other platforms (`Commit`)'
  '* 0.10.0 ⋄ 2023-04-09'
  '  * `CompareCommits` now removes all files that are not APL source files. Also, it honors now Cider''s'
  '    "source" parameter if the current project is managed by Cider.'
