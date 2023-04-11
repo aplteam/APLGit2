@@ -8,16 +8,11 @@
      :Return
  :EndIf
 
- :if 'win'≢APLTreeUtils2.GetOperatingSystem ⍬
-R←T._WindowsOnly
-    :Return
- :endif
-
- C.Pause'This test needs you: it opens a Git shell in Git''s project directory.'
+ C.Pause'This test needs you: it opens a Terminal in Git''s project directory.'
 
  :Trap 6
      {}G.OpenGitShell #.APLGit2
-     →T.PassesIf 0
+     →T.PassesIf 1
  :Else
      dmx←⎕DMX
      →T.PassesIf'GitBash not found!'≡dmx.EM

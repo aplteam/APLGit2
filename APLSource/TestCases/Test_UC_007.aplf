@@ -8,12 +8,7 @@
      :Return
  :EndIf
 
- :If 'win'≢⎕C A.GetOperatingSystem ⍬
-     R←T._WindowsOnly
-     :Return
- :EndIf
-
- C.Pause'This test needs you: it will open a Git shell in APLGit2''s project directory.'
+ C.Pause'This test needs you: it will open a Terminal in APLGit2''s project directory.'
 
  stop←0
  (rc msg buff)←stop ∆UCMD'OpenGitShell "',∆Folder2,'"'

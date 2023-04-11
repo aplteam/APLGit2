@@ -23,7 +23,7 @@
  :EndIf
  M.CreateAPI ##.APLGit2 ##.APLGit2.Public
  M.RecreateFolder path
- zipFilename←T.BuildPackage C.HOME path''
+ zipFilename←T.BuildPackage C.HOME path version
  ⎕←'*** New version build successfully:',(⎕UCS 13),'   ',zipFilename
  :If ~batch
  :AndIf 1 M.YesOrNo'Install new version as user command in MyUCMDs?'
