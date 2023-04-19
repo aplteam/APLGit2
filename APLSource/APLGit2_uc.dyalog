@@ -247,7 +247,8 @@
           :Case ⎕C'Log'
               r←Log space folder Args
           :Case ⎕C'OpenGitShell'
-              r←OpenGitShell space folder Args
+              {}OpenGitShell space folder Args
+              r←''
           :Case ⎕C'RefLog'
               r←RefLog space folder Args
           :Case ⎕C'SetDefaultProject'
@@ -369,12 +370,11 @@
           :EndIf
           :If 0=≢space,folder
               :If (⊂Cmd)∊'OpenGitShell' ''
-              :AndIf ⎕NEXISTS'./.git'
-                  folder←'./'
+                  folder←'.'
               :Else
                   r←'No project provided/selected'
               :EndIf
-          :ElseIf ~(⊂Cmd)∊'GoToGitHub' ''
+          :ElseIf ~(⊂Cmd)∊'GoToGitHub' 'OpenGitShell'
               ('<',folder,'> not found on disk')Assert ⎕NEXISTS folder
           :EndIf
       :EndIf
@@ -727,8 +727,9 @@
               r,←AddLevel3HelpInfo'Log'
           :Case ⎕C'OpenGitShell'
               r,←⊂'Opens a Git Bash shell, either on the given project or, if no project was provided, the'
-              r,←⊂'current directory if that carries a folder .git/. If it does not an error is thrown'
+              r,←⊂'current directory.'
               r,←⊂''
+              r,←⊂'If there are opened Cider projects you can specify a path or a dot (".") for the current directory.'
               r,←AddLevel3HelpInfo'OpenGitShell'
           :Case ⎕C'RefLog'
               r,←⊂'Lists the reference log.'
@@ -741,8 +742,6 @@
               r,←⊂''
               r,←⊂'-all   If you want all records then specifiy the -all flag.'
               r,←⊂'-max   If you want a specific number then specify the max= modifier.'
-              r,←⊂''
-              r,←⊂''
               r,←AddLevel3HelpInfo'RefLog'
           :Case ⎕C'SetDefaultProject'
               r,←⊂'Use this to specify a default project.'

@@ -1,4 +1,7 @@
 (
+ '* 0.12.0 ⋄ 2023-04-19'
+ '  * `OpenGitShell` accepts a dot (`.`) or a path as right argument which allows you to open a Git terminal'
+ '    in the given directory even with open Cider projects being around'
  '* 0.11.0 ⋄ 2023-04-11'
  '  * `OpenGitShell` does work now not only on Windows but also Mac-OS and Ubuntu'
  '* 0.10.1 ⋄ 2023-04-10'

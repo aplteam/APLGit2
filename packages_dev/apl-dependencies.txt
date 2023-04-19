@@ -4,4 +4,4 @@ aplteam-Tester2-3.4.0
 aplteam-ZipArchive-1.0.2
 aplteam-CodeCoverage-0.10.2
 aplteam-CommTools-1.4.1
-aplteam-APLGit2-0.10.0
+aplteam-APLGit2-0.11.0

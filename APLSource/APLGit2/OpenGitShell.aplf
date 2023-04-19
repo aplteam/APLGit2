@@ -3,10 +3,16 @@
 ⍝ `y` must be one of:\\
 ⍝   * Fully qualified path to a Git-managed project
 ⍝   * Fully qualified name of a namespace that is an opened Cider project\\
+⍝   * A dot (`.`) for "current directory"
 ⍝ Returns always 0\\
 ⍝ This has been tested on Windows, Mac-OS and Ubuntu.
  r←0
- (space path)←EstablishProject y
+ :If (,'.')≡,y
+     path←'.'
+     space←''
+ :Else
+     (space path)←EstablishProject y
+ :EndIf
  :Select ⎕C A.GetOperatingSystem ⍬
  :Case 'win'
      paths←';'A.Split 2 ⎕NQ #'GetEnvironment' 'PATH'
