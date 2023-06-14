@@ -3,12 +3,12 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- C.Select_Choices←1 2⍴'APLGit2: please select a project' '#.Proj_1'
+ G.CommTools.Select_Choices←1 2⍴'APLGit2: please select a project' '#.Proj_1'
  result←##.APLGit2.GetLastCommit''
  →T.GoToTidyUp~0<≢result
 
  R←T._OK
 
 ∆TidyUp:
- C.Cleanup
+ G.CommTools.Cleanup
 ⍝Done

@@ -7,7 +7,7 @@
      →0 ⋄ R←T._NoBatchTest
  :EndIf
 
- C.Pause 'This test needs you: when a ⎕ED pops up (twice!) just close it without a change.'
+ C.Pause'This test needs you: when a ⎕ED pops up (twice!) just close it without a change.'
 
  tempFolder←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
  (tempFolder,'/')⎕NCOPY⍠('Wildcard' 1)⊢##.CiderConfig.HOME,'/TestData/CiderProject/*'
@@ -17,8 +17,8 @@
  parms.watch←'ns'
  {}⎕SE.Cider.OpenProject parms
 
- C.YesOrNo_Answers←1 2⍴'Add .gitignore for APLers to ' 'Y'
- C.YesOrNo_Answers⍪←'Add special statements for them?' 'N'
+ G.CommTools.YesOrNo_Answers←1 2⍴'Add .gitignore for APLers to ' 'Y'
+ G.CommTools.YesOrNo_Answers⍪←'Add special statements for them?' 'N'
  res←G.AddGitIgnore tempFolder
  →T.GoToTidyUp~∨/'.gitignore created in'⍷res
  →T.GoToTidyUp~⎕NEXISTS tempFolder,'/.gitignore'
@@ -26,17 +26,17 @@
  expected←'aplcore' 'CONTINUE.dws' 'conga.crash'
  →T.GoToTidyUp expected≢data
 
- C.YesOrNo_Answers[2;]←'Add special statements for them?' 'Y'
- C.Select_Choices←1 2⍴'Select desired action on' 2
+ G.CommTools.YesOrNo_Answers[2;]←'Add special statements for them?' 'Y'
+ G.CommTools.Select_Choices←1 2⍴'Select desired action on' 2
  res←G.AddGitIgnore tempFolder
  expected←'aplcore' 'CONTINUE.dws' 'conga.crash' '/packages_dev/*' '!/packages_dev/apl-dependencies.txt' '!/packages_dev/apl-buildlist.json'
  data←⊃FilesAndDirs.NGET(tempFolder,'/.gitignore')1
- →T.GoToTidyUp expected≢data
+ →T.GoToTidyUp≢/FilesAndDirs.EnforceSlash¨¨expected data
 
  R←T._OK
 
 ∆TidyUp:
- C.Cleanup
+ G.CommTools.Cleanup
  {}⎕SE.Cider.CloseProject'#.BooBoo'
  Assert 0=⊃buff←FilesAndDirs.RmDir tempFolder
  #.⎕EX'BooBoo'

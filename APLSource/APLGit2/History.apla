@@ -1,4 +1,9 @@
 (
+ '* 0.12.1 ⋄ 2023-06-13'
+ '  * Bug fix in `AddIgnore`: still referred to (now renamed) `tatinFolder`'
+ '  * `Squash` tests can now be automated'
+ '  * Test cases amended accordingly'
+ '  * `Make` polished'
  '* 0.12.0 ⋄ 2023-04-19'
  '  * `OpenGitShell` accepts a dot (`.`) or a path as right argument which allows you to open a Git terminal'
  '    in the given directory even with open Cider projects being around'

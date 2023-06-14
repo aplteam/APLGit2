@@ -1,25 +1,15 @@
- no←GetNumberOfCommits(commits branch folder caption);val;flag;b;buff;width
- no←flag←0
- :Repeat
-     width←⎕PW
-     ⎕←width↑('--- Commits in branch "',branch,'" of project "',folder,'"'),' ',⎕PW⍴'-'
-     buff←(↑commits[;1]),' ',(↑commits[;2]),' ',(↑commits[;3]),' ',↑commits[;4]
-     buff←A.DTB⍕¨(((0,⍨≢⍕≢buff)∘⍕¨⍳≢buff),¨⊂'. '),¨↓buff
-     buff←↑(width-1){⍺>≢⍵:⍵ ⋄ ((⍺-3)↑⍵),'...'}¨buff
-     ⍞←buff
-     ⎕←''
-     val←⍞,0/⍞←caption
-     val←(≢caption)↓val
-     {⍵:.}val≡'∘∘∘'
-     :If 0=≢val
-         flag←1
-     :ElseIf ∨/b←⊃⎕VFI val
-     :AndIf 1=≢b
-         no←2⊃⎕VFI val
-         :If no∊0,⍳≢commits
-             flag←1
-         :Else
-             0 0⍴⍞,⍞←'Please enter a number between 1 and ',(⍕≢commits),' or nothing to quit; press <enter> to continue'
-         :EndIf
-     :EndIf
- :Until flag
+  no←{alias}GetNumberOfCommits(commits branch folder caption);flag;b;buff;width;sep;q
+⍝ Asks the user for the number of commits to be processed.
+⍝ The optional left argument can be used to defien an alias for the CommTools.
+⍝ This can be used to automate the test case.
+ alias←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'alias'
+ width←⎕PW
+ sep←⎕UCS 13
+ q←width↑('--- Commits in branch "',branch,'" of project "',folder,'"'),' ',⎕PW⍴'-'
+ buff←(↑commits[;1]),' ',(↑commits[;2]),' ',(↑commits[;3]),' ',↑commits[;4]
+ buff←A.DTB⍕¨(((0,⍨≢⍕≢buff)∘⍕¨⍳≢buff),¨⊂'. '),¨↓buff
+ q←q,sep,(⊃,/buff,¨sep),sep,caption
+ no←((≢commits)∘{⍵∊⍳⍺}##.CommTools.AskForNumber)alias,q ⍝ caption
+ :If 0=≢no
+     no←0
+ :EndIf

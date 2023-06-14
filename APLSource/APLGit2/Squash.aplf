@@ -1,4 +1,4 @@
- r←{x}Squash y;msg;noOf;folder;currentBranch;buff;rc;more;commits;historyPath;space;noOf;parms;allCommits;noOf_
+ r←{x}Squash y;msg;noOf;folder;currentBranch;buff;rc;more;commits;historyPath;space;noOf;parms;allCommits;noOf_;caption;alias
 ⍝ Squashes some commits of the current branch into a single one.\\
 ⍝ You can provide as a right argument:\\
 ⍝  * A char vector; treated as commit message
@@ -40,33 +40,41 @@
      :If noOf>0
          noOf_←noOf
      :Else
-         noOf_←U.GetNumberOfCommits commits currentBranch folder'How many commits would you like to squash? (empty=quit) '
+         caption←'How many commits would you like to squash? Maximum is ',(⍕≢commits),'; (empty=quit) '
+         noOf_←'NoOfSquashs@'U.GetNumberOfCommits commits currentBranch folder caption
      :EndIf
  :EndIf
  :If 0<noOf_
      :If 0=≢msg
-         ⍞←'Provide a meaningful commit message in the editor:'
-         ⎕SE.⎕SHADOW'TEMP'
-         'TEMP'⎕SE.⎕NS''
-         :If 0=≢⎕SE.TEMP.CommitMsg←{0=≢⍵:⍵ ⋄ ⊃{⍺,(⎕UCS 13),⍵}/⍵}{⍵/⍨0<≢¨⍵~¨⊂' .'}commits[⍳noOf_;4]
-             historyPath←(({⍵,'.',(⍵⍳'.')↓⍵}space)),'.History'
-             :If 0<⎕NC historyPath
-                 ⎕SE.TEMP.CommitMsg←{1↓⍵↑⍨1++/∧\'*'≠1↓⊃¨⍵}⍎historyPath
-             :ElseIf 0<|⎕NC⊂historyPath
-                 :Trap 0
-                     ⍝ Assumes something like "* Foo 1.2.3 from xx.xx.xxx" with an indented sub list:
-                     ⎕SE.TEMP.CommitMsg←{(1↓⍵)↑⍨+/∧\' '=1↓,1↑[2]⍵}2↓[2]A.DLB 2↓180⌶historyPath
-                     ⎕SE.TEMP.CommitMsg←,{⍵↓[2]⍨⌊/+/∧\' '=⍵}⎕SE.TEMP.CommitMsg
-                 :EndTrap
-             :EndIf
-         :EndIf
-         ⎕SE.TEMP.⎕ED'CommitMsg'
-         msg←⎕SE.TEMP.CommitMsg
-         :If 2=≡msg
-             msg←1↓⊃,/';',¨msg
+         :If 0<CommTools.⎕NC'AskForNumber_Answers'
+         :AndIf 0<≢CommTools.AskForNumber_Answers
+             alias←'NoOfSquashsComment@'
+         :AndIf (⊂alias)∊CommTools.AskForNumber_Answers[;1]
+             msg←alias{⊃⍵[⍵[;1]⍳⊂⍺;2]}CommTools.AskForNumber_Answers
          :Else
-             msg←(~(⎕UCS 13 13)⍷msg)/msg
-             msg←(-(⎕UCS 13)=¯1↑msg)↓msg
+             ⍞←'Provide a meaningful commit message in the editor:'
+             ⎕SE.⎕SHADOW'TEMP'
+             'TEMP'⎕SE.⎕NS''
+             :If 0=≢⎕SE.TEMP.CommitMsg←{0=≢⍵:⍵ ⋄ ⊃{⍺,(⎕UCS 13),⍵}/⍵}{⍵/⍨0<≢¨⍵~¨⊂' .'}commits[⍳noOf_;4]
+                 historyPath←(({⍵,'.',(⍵⍳'.')↓⍵}space)),'.History'
+                 :If 0<⎕NC historyPath
+                     ⎕SE.TEMP.CommitMsg←{1↓⍵↑⍨1++/∧\'*'≠1↓⊃¨⍵}⍎historyPath
+                 :ElseIf 0<|⎕NC⊂historyPath
+                     :Trap 0
+                     ⍝ Assumes something like "* Foo 1.2.3 from xx.xx.xxx" with an indented sub list:
+                         ⎕SE.TEMP.CommitMsg←{(1↓⍵)↑⍨+/∧\' '=1↓,1↑[2]⍵}2↓[2]A.DLB 2↓180⌶historyPath
+                         ⎕SE.TEMP.CommitMsg←,{⍵↓[2]⍨⌊/+/∧\' '=⍵}⎕SE.TEMP.CommitMsg
+                     :EndTrap
+                 :EndIf
+             :EndIf
+             ⎕SE.TEMP.⎕ED'CommitMsg'
+             msg←⎕SE.TEMP.CommitMsg
+             :If 2=≡msg
+                 msg←1↓⊃,/';',¨msg
+             :Else
+                 msg←(~(⎕UCS 13 13)⍷msg)/msg
+                 msg←(-(⎕UCS 13)=¯1↑msg)↓msg
+             :EndIf
          :EndIf
      :EndIf
      'Sqash requires a meaningful message'U.Assert 0<≢msg~' .'

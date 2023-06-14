@@ -13,10 +13,10 @@
      :If 0<≢space
          ref←⍎space
          cfg←⎕JSON⍠('Dialect' 'JSON5')⊣⊃F.NGET ref.CiderConfig.HOME,'/cider.config'
-     :AndIf 0<≢cfg.CIDER.tatinFolder
-         installFolders←{1⊃'='(≠⊆⊢)⍵}¨','(≠⊆⊢)cfg.CIDER.tatinFolder
-         installFolders←{⍵,(~(¯1↑⍵)∊'/\')/'/'}¨installFolders
-         q←'Install folders: ',⊃{⍺,'/ and ',⍵,'/'}/installFolders
+     :AndIf 0<≢(⊂'')~⍨cfg.CIDER.(dependencies dependencies_dev).tatin
+         installFolders←{1⊃'='(≠⊆⊢)⍵}¨(⊂'')~⍨cfg.CIDER.(dependencies dependencies_dev).tatin
+         installFolders←F.AddTrailingSep¨installFolders
+         q←'Install folders: ',⊃{⍺,' and ',⍵}/installFolders
          q,←(⎕UCS 13),'  Add special statements for them?'
          :If quiet
          :OrIf CommTools.YesOrNo q

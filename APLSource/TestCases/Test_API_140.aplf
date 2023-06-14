@@ -3,19 +3,12 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- :If batchFlag
-     →0,R←T._NoBatchTest
- :EndIf
-
- msg←⊂' This test needs you: it will attempt to squash all commits (2) of the current branch ("dev") into a single one.'
- msg,←⊂' Therefore, when questioned, enter "2" for the number of commits to be squashed.'
- C.Pause msg
-
  tempFolder←FilesAndDirs.GetTempSubDir⊃⎕SI
  zipfile←##.CiderConfig.HOME,'/TestData/TestProject.zip'
  zipfile ZipArchive.UnzipTo tempFolder
 
  allCommits1←##.APLGit2.Log tempFolder
+ ##.APLGit2.CommTools.AskForNumber_Answers←1 2⍴'NoOfSquashs@' 2
  noOf←tempFolder ##.APLGit2.Squash'All my changes'
  Assert 2=noOf  ⍝ If that fails the user did not enter "2"
  allCommits2←##.APLGit2.Log tempFolder
@@ -27,6 +20,7 @@
  R←T._OK
 
 ∆TidyUp:
+ ##.APLGit2.CommTools.Cleanup
  (rc msg)←FilesAndDirs.RmDirByForce tempFolder
  msg Assert rc=0
 ⍝Done
