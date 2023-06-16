@@ -6,6 +6,7 @@
      cfg←⎕JSON⍠('Dialect' 'JSON5')⊢⊃⎕NGET C.HOME,'/apl-package.json'
      version←M.CompileVersionNumberPattern cfg
      M.RecreateFolder path
+     {}M.CreateAPIfromCFG(⍎'##.',cfg.name)cfg
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
      parms.targetPath←path
      parms.version←version
