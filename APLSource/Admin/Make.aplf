@@ -1,9 +1,11 @@
  Make flag;M;C;path;zipFilename;res;version;cfg;parms
+⍝ "Make" a new version of this project
  :If flag
      M←⎕SE.MakeHelpers
      C←##.CiderConfig
      path←C.HOME,'/',C.CIDER.distributionFolder
      cfg←⎕JSON⍠('Dialect' 'JSON5')⊢⊃⎕NGET C.HOME,'/apl-package.json'
+     M.FetchLaterUserCommand cfg C'[MyUCMDs]'
      version←M.CompileVersionNumberPattern cfg
      M.RecreateFolder path
      {}M.CreateAPIfromCFG(⍎'##.',cfg.name)cfg
@@ -12,10 +14,11 @@
      parms.version←version
      zipFilename←⎕SE.Tatin.BuildPackage parms
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
-     :If 1 M.YesOrNo'Install new version in MyUCMDs?'
-         {}##.APLGit2.FilesAndDirs.RmDirByForce M.GetMyUCMDsFolder'APLGit2'
+     :If 0<≢cfg.userCommandScript
+     :AndIf 1 M.YesOrNo'Install new version in MyUCMDs?'
+         {}M.##.FilesAndDirs.RmDirByForce M.GetMyUCMDsFolder cfg.name
          res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]'
          ⎕←'  New version installed as user command in MyUCMDs/: ',res
      :EndIf
  :EndIf
-⍝Done
+ ⍝Done
