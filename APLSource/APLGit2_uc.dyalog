@@ -60,14 +60,6 @@
           r,←c
      
           c←⎕NS''
-          c.Name←'CurrentBranch'
-          c.Desc←'Returns the name of the current branch'
-          c.Group←'APLGit2'
-          c.Parse←'1s'
-          c._Project←1
-          r,←c
-     
-          c←⎕NS''
           c.Name←'Diff'
           c.Desc←'Compares the working directory with HEAD'
           c.Group←'APLGit2'
@@ -120,14 +112,6 @@
           c.Desc←'Returns "yes" or "no" depending on whether there is a ./.git folder'
           c.Group←'APLGit2'
           c.Parse←'1s'
-          c._Project←1
-          r,←c
-     
-          c←⎕NS''
-          c.Name←'ListBranches'
-          c.Desc←'Lists all branches for a Git-managed project'
-          c.Group←'APLGit2'
-          c.Parse←'1s -a -r'
           c._Project←1
           r,←c
      
@@ -215,14 +199,10 @@
               r←AddGitIgnore folder
           :Case ⎕C'ChangeLog'
               r←ChangeLog space folder Args
-          :Case ⎕C'Branch'
-              r←ListBranches space folder Args
           :Case ⎕C'Commit'
               r←Commit space folder Args
           :Case ⎕C'CompareCommits'
               r←CompareCommits space folder Args
-          :Case ⎕C'CurrentBranch'
-              r←CurrentBranch space folder Args
           :Case ⎕C'Diff'
               r←Diff space folder Args
           :Case ⎕C'GetDefaultProject'
@@ -453,9 +433,6 @@
           '"max" must be a positive integer'Assert flag
           r←value↑r
       :EndIf
-    ∇
-    ∇ r←CurrentBranch(space folder args)
-      r←⎕SE.APLGit2.CurrentBranch folder
     ∇
 
     ∇ r←Commit(space folder args);msg;ref;branch;rc;data;flag

@@ -19,17 +19,18 @@
 
  G.CommTools.YesOrNo_Answers←1 2⍴'Add .gitignore for APLers to ' 'Y'
  G.CommTools.YesOrNo_Answers⍪←'Add special statements for them?' 'N'
+ G.CommTools.YesOrNo_Answers⍪←'Would you like to add the destination folder' 'N'
  res←G.AddGitIgnore tempFolder
  →T.GoToTidyUp~∨/'.gitignore created in'⍷res
  →T.GoToTidyUp~⎕NEXISTS tempFolder,'/.gitignore'
  data←⊃FilesAndDirs.NGET(tempFolder,'/.gitignore')1
- expected←'aplcore' 'CONTINUE.dws' 'conga.crash'
+ expected←'aplcore' 'CONTINUE' 'CONTINUE.dws' 'conga.crash'
  →T.GoToTidyUp expected≢data
 
  G.CommTools.YesOrNo_Answers[2;]←'Add special statements for them?' 'Y'
  G.CommTools.Select_Choices←1 2⍴'Select desired action on' 2
  res←G.AddGitIgnore tempFolder
- expected←'aplcore' 'CONTINUE.dws' 'conga.crash' '/packages_dev/*' '!/packages_dev/apl-dependencies.txt' '!/packages_dev/apl-buildlist.json'
+ expected←'aplcore' 'CONTINUE' 'CONTINUE.dws' 'conga.crash' '/packages_dev/*' '!/packages_dev/apl-dependencies.txt' '!/packages_dev/apl-buildlist.json'
  data←⊃FilesAndDirs.NGET(tempFolder,'/.gitignore')1
  →T.GoToTidyUp≢/FilesAndDirs.EnforceSlash¨¨expected data
 
