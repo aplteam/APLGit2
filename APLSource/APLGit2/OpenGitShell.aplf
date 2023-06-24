@@ -5,7 +5,7 @@
 ⍝   * Fully qualified name of a namespace that is an opened Cider project\\
 ⍝   * A dot (`.`) for "current directory"
 ⍝ Returns always 0\\
-⍝ This has been tested on Windows, Mac-OS and Ubuntu.
+⍝ This has been tested on Windows, Mac OS and Ubuntu.
  r←0
  :If (,'.')≡,y
      path←'.'

@@ -2,7 +2,7 @@
 ⍝ `y` may be either the name of a namespace or a folder.\\
 ⍝ That defines an opened Cider project; if it does not an error is thrown.\\
 ⍝  * In case `y` is '?' the user is presented a list of opened Cider projects to select from
-⍝  * In case `y` is empty DEFAULT_PROJECT←'' is executed
+⍝  * In case `y` is empty `DEFAULT_PROJECT←''` is executed\\
 ⍝ `force` is useful for test cases in order to avoid interaction with a user.\\
 ⍝ Returns (space folder) for the selected project or '' if there isn't one set.
  force←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'force'

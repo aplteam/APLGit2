@@ -1,12 +1,12 @@
  r←{parms_}Log y;buff;cmd;msg;rc;⎕TRAP;path;parms;folder;space;unwantedBranches;list
 ⍝ Returns the log of commits.\\
 ⍝ The result depends on `verbose`.
-⍝ * If it's 0 (the default) then r is a nested matrix with four columns:\\
+⍝ * If it's 0 (the default), then `r` is a nested matrix with four columns:\\
 ⍝    1. Hash of the commit
 ⍝    2. Committer
 ⍝    3. Commit date
 ⍝    4. Commit message; multi-line messages are compressed
-⍝ * It it's 1 r is a simple character matrix
+⍝ * It it's 1, `r` is a simple character matrix
 ⍝ With the optional `since` you can limit the result by date.\\
 ⍝ For the date two formats are supported:
 ⍝  * 'YYY-MM-DD' as text

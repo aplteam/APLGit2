@@ -1,0 +1,19 @@
+ R←Test_API_153(stopFlag batchFlag);⎕TRAP;tempFolder;res;buff;expected
+⍝ Create a .gitignore file with AddGitignore after having created a file .gitignore manually
+⍝ This must result in a merge operation
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempFolder←FilesAndDirs.GetTempSubDir'APLGit2-Tests-',⊃⎕SI
+ (⊂'/AppData/' '/Assets/')FilesAndDirs.NPUT tempFolder,'/.gitignore'
+ res←1 G.AddGitIgnore tempFolder
+ →T.GoToTidyUp('.gitignore merged in ',tempFolder)≢res
+ buff←⊃FilesAndDirs.NGET(tempFolder,'/.gitignore')1
+ expected←'/AppData/' '/Assets/' 'aplcore' 'CONTINUE' 'CONTINUE.dws' 'conga.crash'
+ →T.GoToTidyUp expected≢buff
+
+ R←T._OK
+
+∆TidyUp:
+ FilesAndDirs.RmDir tempFolder
+⍝Done

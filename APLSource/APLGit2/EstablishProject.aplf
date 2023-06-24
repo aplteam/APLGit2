@@ -1,10 +1,10 @@
  (namespace folder)←{noSelect}EstablishProject y;list;folder;ind;bool;msg;plural;flag
 ⍝ If `y` is empty:
 ⍝  * In case of a single open Cider project its project path is taken.
-⍝  * If there are several Cider projects open then the user will be asked whether she wants to act on DEFAULT_PROJECT
+⍝  * If there are several Cider projects open then the user will be asked whether she wants to act on `DEFAULT_PROJECT`
 ⍝    if that points to an open Cider project. If she refuses she will be prompted for the correct one.\\
 ⍝ Otherwise `y` must be the name of an opened Cider project or a path to a project.\\
-⍝ Note that projects defined this way cannot become the default project. See ]APLGit2.SetDefaultProject for that.\\
+⍝ Note that projects defined this way cannot become the default project. See `]APLGit2.SetDefaultProject` for that.\\
 ⍝ Returns a two-column matrix with namespace name and folder, or both empty.\\
 ⍝ In case a path is specified it does not have to be an opened Cider project. However, this will effect only a few
 ⍝ commands (like `IsDirty`, `OpenGitShell` and `Init`) since most commands are bound to be executed on a Cider project.\\

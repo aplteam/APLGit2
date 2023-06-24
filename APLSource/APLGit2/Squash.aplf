@@ -9,8 +9,8 @@
 ⍝ (commits) will be presented to you for selection.\\
 ⍝ You may provide a meaningful message as the first right argument but if you don't you will be prompted.
 ⍝ If you still do not provide a meaningful message the function will throw an error.\\
-⍝ In case of the current branch being "main" or "master" or any uncommited changes an error is thrown.\\
-⍝ The number of commits to be squashed might be provided as (additional) right argument.
+⍝ In case the current branch is either "main" or "master" or there  uncommited changes, an error is thrown.\\
+⍝ The number of commits to be squashed might be provided as (additional) right argument.\\
 ⍝ For what `⍺` can actually be see `EstablishProject`.\\
 ⍝ Returns the number of commits that were eventually squashed.\\
  r←0
