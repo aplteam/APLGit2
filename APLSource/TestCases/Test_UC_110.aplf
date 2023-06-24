@@ -1,4 +1,4 @@
- R←Test_UC_110(stopFlag batchFlag);⎕TRAP;stop;rc;msg;buff;tempFolder;folder;q;parms;log;success
+ R←Test_UC_110(stopFlag batchFlag);⎕TRAP;stop;rc;msg;buff;tempFolder;folder;q;parms;log;success;sourcePath
 ⍝ Attempts to run "]CompareCommits" (uses ]CompareFiles for putting diffs on display)
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -18,9 +18,13 @@
      →0,R←T._NoBatchTest
  :EndIf
 
+ sourcePath←##.CiderConfig.HOME,'/TestData/CommTools.zip'
+ tempFolder←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ sourcePath ZipArchive.UnzipTo tempFolder
+
  parms←⎕SE.Cider.CreateOpenParms''
  parms.quietFlag←1
- parms.folder←##.CiderConfig.HOME,'/TestData/CommTools'
+ parms.folder←tempFolder,'/CommTools'
  (success log)←⎕SE.Cider.OpenProject parms
  Assert success
 
@@ -36,4 +40,5 @@
 ∆TidyUp:
  Assert ⎕SE.Cider.CloseProject'#.CommTools'
  #.⎕EX'CommTools'
+ FilesAndDirs.RmDir tempFolder
 ⍝Done

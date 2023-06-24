@@ -1,17 +1,20 @@
- R←Test_API_020(stopFlag batchFlag);⎕TRAP;result;parms;list;success
+ R←Test_API_020(stopFlag batchFlag);⎕TRAP;result;parms;list;success;sourcePath;tempFolder
 ⍝ Runs "Diff"
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
+ sourcePath←##.CiderConfig.HOME,'/TestData/CommTools.zip'
+ tempFolder←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ sourcePath ZipArchive.UnzipTo tempFolder
 
  parms←⎕SE.Cider.CreateOpenParms''
  parms.quietFlag←1
- parms.folder←##.CiderConfig.HOME,'/TestData/CommTools'
+ parms.folder←tempFolder,'/CommTools'
  parms.watch←'ns'
- (success list)← ⎕SE.Cider.OpenProject parms
+ (success list)←⎕SE.Cider.OpenProject parms
  Assert success
 
-  result←G.DiffBranches #.CommTools
+ result←G.DiffBranches #.CommTools
  →T.PassesIf 0<≢result
 
  result←1 G.Diff #.CommTools
@@ -21,4 +24,5 @@
 ∆TidyUp:
  Assert ⎕SE.Cider.CloseProject'#.CommTools'
  #.⎕EX'CommTools'
+ FilesAndDirs.RmDir tempFolder
 ⍝Done
