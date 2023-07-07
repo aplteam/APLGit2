@@ -28,7 +28,7 @@
           r,←c
      
           c←⎕NS''
-          c.Name←'Branch'
+          c.Name←'ListBranches'
           c.Desc←'Lists all branches for a Git-managed project'
           c.Group←'APLGit2'
           c.Parse←'1s -a -r'
@@ -207,7 +207,7 @@
       :Case ⎕C'GetDefaultProject'
           r←GetDefaultProject ⍬
       :Case ⎕C'GetTagOfLatestRelease'
-          r←GetTagOfLatestRelease Args
+          r←GetTagOfLatestRelease space folder Args
       :Case ⎕C'GetTagOfLatestRelease'
           r←GetTagOfLatestRelease Args
       :Case ⎕C'RefLog'
@@ -249,31 +249,15 @@
       :EndSelect
     ∇
 
-    ∇ r←GetTagOfLatestRelease args;username;path;wsPathRef;project;l
+    ∇ r←GetTagOfLatestRelease(project path args);username;wsPathRef;project;l
       r←''
-      project←args._1
       :If 0≡args.username
-          :If 0≡args._1
-          :OrIf 0=≢args._1
-              path←⎕SE.Cider.GetProjectPath''
-              →(0=≢path)/0
-              wsPathRef←⍎{l←⎕SE.Cider.ListOpenProjects 0 ⋄ ⊃l[l[;2]⍳⊂⍵;]}path
-              username←{(¯1+≢⍵)⊃⍵}'/'(≠⊆⊢)wsPathRef.CiderConfig.CIDER.project_url
-          :Else
-              l←⎕SE.Cider.ListOpenProjects 0
-              :Trap 0
-                  wsPathRef←⍎1⊃l[({{⌽⍵↑⍨¯1+⍵⍳'.'}⌽⍵}¨{⍵[;1]}l)⍳⊂{{⌽⍵↑⍨¯1+⍵⍳'.'}⌽⍵}project;]
-              :Else
-                  _errno ⎕SIGNAL⍨'Could not determine GitHub username'
-              :EndTrap
-              username←wsPathRef.CiderConfig.CIDER.githubUsername
-          :EndIf
+          wsPathRef←⍎{l←⎕SE.Cider.ListOpenProjects 0 ⋄ ⊃l[l[;2]⍳⊂⍵;]}path
+          username←{(¯1+≢⍵)⊃⍵}'/'(≠⊆⊢)wsPathRef.CiderConfig.CIDER.project_url
       :Else
           username←args.username
       :EndIf
-      :If 0≡project
-          project←wsPathRef.CiderConfig.CIDER.projectSpace
-      :EndIf
+      project←wsPathRef.CiderConfig.CIDER.projectSpace
       r←args.verbose G.GetTagOfLatestRelease username project
     ∇
 
@@ -514,8 +498,6 @@
               r,←⊂']APLGit2.add <filter> -project='
           :Case ⎕C'AddGitIgnore'
               r,←⊂']APLGit2.AddGitIgnore [space|folder]'
-          :Case ⎕C'Branch'
-              r,←⊂']APLGit2.Branch [space|folder] -a -r'
           :Case ⎕C'ChangeLog <apl-name> -project='
               r,←⊂']APLGit2.ChangeLog <filter> -project='
           :Case ⎕C'Commit'
@@ -576,13 +558,6 @@
               r,←⊂''
               r,←⊂'The user will be asked a couple of questions, and she will be able to edit the result'
               r,←⊂'of her choices before it is written to file.'
-          :Case ⎕C'Branch'
-              r,←⊂'List all branches, by default local ones.'
-              r,←⊂''
-              r,←⊂'You may specify two mutually exclusive options in order to change its behaviour:'
-              r,←⊂' * -a stands for "all": list all local and remote branches'
-              r,←⊂' * -r stands for "remote": list just remote branches'
-              r,←AddLevel3HelpInfo'ListBranches'
           :Case ⎕C'ChangeLog'
               r,←⊂'Takes an APL name and returns a matrix with zero or more rows and 4 columns with'
               r,←⊂'information regarding all commits the given APL object was changed:'
@@ -676,8 +651,7 @@
               r,←⊂'Returns the tag number of the latest release.'
               r,←⊂'Drafts are ignored.'
               r,←⊂''
-              r,←⊂'-verbose If specified the date of the commit and the caption of the release are returned as well.'
-              r,←AddLevel3HelpInfo'IsGitProject'
+              r,←⊂'-verbose   If specified the date of the commit and the caption of the release are returned as well.'
           :Case ⎕C'ListBranches'
               r,←⊂'List all branches, by default local ones.'
               r,←⊂''
@@ -717,7 +691,6 @@
               r,←⊂''
               r,←⊂'-all   If you want all records then specifiy the -all flag.'
               r,←⊂'-max   If you want a specific number then specify the max= modifier.'
-              r,←AddLevel3HelpInfo'RefLog'
           :Case ⎕C'SetDefaultProject'
               r,←⊂'Use this to specify a default project.'
               r,←⊂'Commands that require a project will act on the default project in case it was set.'
@@ -762,15 +735,15 @@
     ∇ r←AddProjectOptions flag
       r←''
       r,←⊂'The ]APLGit2.* user commands are particularly useful when used in conjunction with the project'
-      r,←⊂'manager Cider, but it can be used without Cider as well, but then you must specify the folder'
-      r,←⊂'you wish the user command to act on. APLGit2 does not accept URLs pointing to GitHub, it works'
-      r,←⊂'only locally.'
+      r,←⊂'manager Cider, but they can be used without Cider as well, though you must then specify the'
+      r,←⊂'folder you wish the user command to act on. APLGit2 does not accept URLs pointing to GitHub,'
+      r,←⊂'it works only locally.'
       r,←⊂''
       r,←⊂'By default a user command will act on the currently opened Cider project if there is just one.'
       r,←⊂'If there are multiple open Cider projects the user will be asked which one to act on.'
       r,←⊂''
       r,←⊂'Once a default project got established and there are several Cider projects opened the user will'
-      r,←⊂'be asked if she wants to act on the default project. If she refuses a list with all opened Cider'
+      r,←⊂'be asked if she wants to act on the default project. If she refuses, a list with all opened Cider'
       r,←⊂'projects will be presented to her.'
       :If flag
           r,←⊂''

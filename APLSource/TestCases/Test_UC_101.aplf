@@ -43,11 +43,6 @@
  →T.GoToTidyUp 0<≢msg
  →T.GoToTidyUp'Clean'≢buff
 
- (rc msg buff)←stop ∆UCMD'CurrentBranch "',tempDir,'"'
- msg Assert rc=0
- →T.GoToTidyUp 0<≢msg
- →T.GoToTidyUp~(⊂buff)∊'master' 'main'
-
  (rc msg buff)←stop ∆UCMD'ListBranches "',tempDir,'"'
  msg Assert rc=0
  →T.GoToTidyUp 0<≢msg

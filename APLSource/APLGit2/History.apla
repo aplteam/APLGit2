@@ -1,5 +1,8 @@
 (
- '* 0.13.1 ⋄ 2023-06-07'
+ '* 0.14.0 ⋄ 2023-06-07'
+ '  * BREAKING CHANGES'
+ '    * User command `Branch` removed: see `ListBranches`'
+ '    * User command `CurrentBranch` removed: see `ListBranches`'
  '  * If APLGit2 is not already in ⎕SE, it loads (kind of) itself now'
  '  * Bug fixes'
  '    * `GetTagOfLatestRelease` did not establish the GitHub username correctly'

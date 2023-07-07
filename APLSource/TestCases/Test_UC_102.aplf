@@ -60,11 +60,6 @@
  →T.GoToTidyUp 0<≢msg
  →T.GoToTidyUp'Clean'≢buff
 
- (rc msg buff)←stop ∆UCMD'CurrentBranch'
- msg Assert rc=0
- →T.GoToTidyUp 0<≢msg
- →T.GoToTidyUp~(⊂buff)∊'main' 'master'
-
  (rc msg buff)←stop ∆UCMD'ListBranches'
  msg Assert rc=0
  →T.GoToTidyUp 0<≢msg
