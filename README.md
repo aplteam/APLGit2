@@ -33,15 +33,19 @@ For example, the  `Commit` API function just does that: executing `git commit`. 
 ## Preconditions
 
 * The Git bash must be installed and available on the environment variable `%PATH%`
-* .NET Core 3.1 must be installed
 * The Git config parameters `user.name` and `user.email` must be set
 
-`]APLGit2.GoToGitHub` requires you to host your project on GitHub, but all other commands are agnostic in this respect
+Two functions rely on you hosting your project(s) on GitHub: 
+
+* `GetTagOfLatestRelease`
+* `]APLGit2.GoToGitHub`
+
+All other commands are agnostic in this respect.
 
 
 ## APLGit2 and Cider
 
-Note that `]APLGit2.*` works particularly well in conjunction with [Cider](https://github.com/aplteam/Cider "Link to Cider on GitHub"), though this is not a requirement. 
+`]APLGit2.*` works particularly well in conjunction with [Cider](https://github.com/aplteam/Cider "Link to Cider on GitHub"), though this is not a requirement. 
 
 * If a single Cider project is open, APLGit2 will always act on that project if no folder is specified
 * If multiple Cider projects are open, the user is asked which project to act on
@@ -59,34 +63,42 @@ APLGit2 can be installed as a Tatin package:
 ]Tatin.InstallPackages [tatin]aplgit2 [MyUCMDs]
 ```
 
+This will make the user commands of `APLGit2` available, but it will not establish the API. However, executing any of its user commands will force `APLGit2` to load the API into `⎕SE`. For that, executing `]APLGIT2.Version` will do.
 
-## Methods
+If you want the API to be available right from the start then please consult the article [Dyalog User Commands](https://aplwiki.com/wiki/Dyalog_User_Commands "Link to the APL wiki").
+
+
+## Commands and API functions
+
+User commands start with an `]`, API function don't.
 
 ```
- Add                    Execute the Git "Add" commands with the -A flag on "."
- AddGitIgnore           Adds a file `.gitignore` to a path with defaults useful for APLers
- ChangeLog              Takes an APL name and lists all commits the object was part of          
- Commit                 Performs a commit on the current branch                                
- CompareCommits         Takes two hashes and compares all changes between them
- CurrentBranch          Returns the name of the current branch            
- Diff                   Returns files in the working directory that are different from HEAD
- EstablishProjects      Works out (or asks the user) in order to establish a project
- GetDefaultProject      Returns namespace and folder of the current default project, if any     
- GetPathFromProject     Takes a project (namespace or alias) and returns its path on disk
- GetProjectFromPath     Take a project path and returns the project's name
- GoToGitHub             For a project "Foo/Goo", this opens https://github.com/Foo/Goo
- Init                   Initialises project with Git, including .gitignore & .gitattributes
- IsDirty                Reports uncommitted changes and/or untracked files
- IsGitInstalled         Check whether the Git bash is installed and returns a Boolean
- IsGitProject           Returns "yes" or "no" depending on whether there is a ./.git folder    
- ListBranches           Lists all branches for a Git-managed project                            
- Log                    Returns the log of commits.\\
- OpenGitShell           Opens a Git shell for a Git-managed project                             
- RefLog                 Prints a log of all references to the session
- SetDefaultProject      Specifies the project to be used in case no project is specified   
- Squash                 Squashes some commits; The user will be questioned which ones
- Status                 Reports all untracked files and/or all uncommitted changes
- Version                APLGit2's version: returns name, version number & version date
+ ]Add                    Execute the Git "Add" commands with the -A flag on "."
+ ]AddGitIgnore           Adds a file `.gitignore` to a path with defaults useful for APLers
+ ]ChangeLog              Takes an APL name and lists all commits the object was part of          
+ ]Commit                 Performs a commit on the current branch                                
+ ]CompareCommits         Takes two hashes and compares all changes between them
+ ]Diff                   Returns files in the working directory that are different from HEAD
+  EstablishProject       Works out the project to act on
+ ]GetDefaultProject      Returns the default project, if any
+  GetPathFromProjec      Get the path on disk where the project specified lived
+  GetProjectFromPath     Get the path in the workspace from the disk path of a project
+ ]GetDefaultProject      Returns namespace and folder of the current default project, if any     
+ ]GetTagOfLatestRelease  Returns the tag of the latest release
+ ]GoToGitHub             For a project "Foo/Goo", this opens https://github.com/Foo/Goo
+ ]Init                   Initialises project with Git, including .gitignore & .gitattributes
+ ]IsDirty                Reports uncommitted changes and/or untracked files
+ ]IsGitProject           Returns "yes" or "no" depending on whether there is a ./.git folder    
+  IsGitInstalled         Checks whether Git is installed and retuns 1 in case it is
+ ]ListBranches           Lists all branches for a Git-managed project                            
+ ]Log                    Returns the log of commits.\\
+  Methods                Like `Public` plus comment in first line
+ ]OpenGitShell           Opens a Git shell for a Git-managed project                             
+ ]RefLog                 Prints a log of all references to the session
+ ]SetDefaultProject      Specifies the project to be used in case no project is specified   
+ ]Squash                 Squashes some commits; The user will be questioned which ones
+ ]Status                 Reports all untracked files and/or all uncommitted changes
+ ]Version                APLGit2's version: returns name, version number & version date
 ```
 
 Note that `CurrentBranch` is available as an API function but not as a user command. This is because internally it is often needed, but there is hardly any need for a user command, in particular because the command `]ListBranches` and `]Status` both report the current branch anyway.
