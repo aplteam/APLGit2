@@ -175,11 +175,11 @@
 
     ∇ r←Run(Cmd Args);folder;G;space;max;ns;msg;noOf
       :Access Shared Public
+      :If 0=⎕SE.⎕NC'APLGit2'
+          {}⎕SE.Tatin.LoadDependencies(⊃⎕NPARTS ##.SourceFile)'⎕SE'
+      :EndIf
       G←⎕SE.APLGit2
-      :Select ⎕C Cmd
-      :CaseList ⎕C'Version' 'GetTagOfLatestRelease'
-          r←''
-      :CaseList ⎕C'Log' 'Squash'
+      :If (⊂⎕C Cmd)∊⎕C'Log' 'Squash'
           :If 0≢Args._1
           :AndIf ~⊃⊃⎕VFI Args._1~'-'  ⍝ Neither a positive integer nor "yyyy-mm-dd"
               (r space folder)←GetSpaceAndFolder Cmd Args
@@ -190,61 +190,63 @@
           :EndIf
       :Else
           (r space folder)←GetSpaceAndFolder Cmd Args
-      :EndSelect
-      :If 0=≢r
-          :Select ⎕C Cmd
-          :Case ⎕C'Add'
-              r←Add space folder Args
-          :Case ⎕C'AddGitIgnore'
-              r←AddGitIgnore folder
-          :Case ⎕C'ChangeLog'
-              r←ChangeLog space folder Args
-          :Case ⎕C'Commit'
-              r←Commit space folder Args
-          :Case ⎕C'CompareCommits'
-              r←CompareCommits space folder Args
-          :Case ⎕C'Diff'
-              r←Diff space folder Args
-          :Case ⎕C'GetDefaultProject'
-              r←GetDefaultProject ⍬
-          :Case ⎕C'GetTagOfLatestRelease'
-              r←GetTagOfLatestRelease Args
-          :Case ⎕C'GoToGitHub'
-              :If 0=⎕NC'space'
-              :OrIf 0=≢space
-                  r←GoToGitHub Args
-              :Else
-                  r←space GoToGitHub Args
-              :EndIf
-          :Case ⎕C'Init'
-              r←Init space folder Args
-          :Case ⎕C'IsDirty'
-              r←IsDirty space folder Args
-          :Case ⎕C'IsGitProject'
-              r←IsGitProject space folder Args
-          :Case ⎕C'ListBranches'
-              r←ListBranches space folder Args
-          :Case ⎕C'Log'
-              r←Log space folder Args
-          :Case ⎕C'OpenGitShell'
-              {}OpenGitShell space folder Args
-              r←''
-          :Case ⎕C'RefLog'
-              r←RefLog space folder Args
-          :Case ⎕C'SetDefaultProject'
-              r←G.SetDefaultProject{⍵/⍨0≠⍵}Args._1
-          :Case ⎕C'Squash'
-              msg←''Args.Switch'm'
-              noOf←⊃(//)⎕VFI(⍕(1+∧/Args._1∊⎕D)⊃Args.(_2 _1)),' +0'
-              r←⍪folder Squash msg noOf
-          :Case ⎕C'Status'
-              r←⍪Status space folder Args
-          :Case ⎕C'Version'
-              r←⎕SE.APLGit2.Version
-          :Else
-              ∘∘∘ ⍝ Huh?!
-          :EndSelect
       :EndIf
+      :Select ⎕C Cmd
+      :Case ⎕C'Add'
+          r←Add space folder Args
+      :Case ⎕C'AddGitIgnore'
+          r←AddGitIgnore folder
+      :Case ⎕C'ChangeLog'
+          r←ChangeLog space folder Args
+      :Case ⎕C'Commit'
+          r←Commit space folder Args
+      :Case ⎕C'CompareCommits'
+          r←CompareCommits space folder Args
+      :Case ⎕C'Diff'
+          r←Diff space folder Args
+      :Case ⎕C'GetDefaultProject'
+          r←GetDefaultProject ⍬
+      :Case ⎕C'GetTagOfLatestRelease'
+          r←GetTagOfLatestRelease Args
+      :Case ⎕C'GetTagOfLatestRelease'
+          r←GetTagOfLatestRelease Args
+      :Case ⎕C'RefLog'
+          r←RefLog space folder Args
+      :Case ⎕C'GoToGitHub'
+          :If 0=⎕NC'space'
+          :OrIf 0=≢space
+              r←GoToGitHub Args
+          :Else
+              r←space GoToGitHub Args
+          :EndIf
+      :Case ⎕C'Init'
+          r←Init space folder Args
+      :Case ⎕C'IsDirty'
+          r←IsDirty space folder Args
+      :Case ⎕C'IsGitProject'
+          r←IsGitProject space folder Args
+      :Case ⎕C'ListBranches'
+          r←ListBranches space folder Args
+      :Case ⎕C'Log'
+          r←Log space folder Args
+      :Case ⎕C'OpenGitShell'
+          {}OpenGitShell space folder Args
+          r←''
+      :Case ⎕C'RefLog'
+          r←RefLog space folder Args
+      :Case ⎕C'SetDefaultProject'
+          r←G.SetDefaultProject{⍵/⍨0≠⍵}Args._1
+      :Case ⎕C'Squash'
+          msg←''Args.Switch'm'
+          noOf←⊃(//)⎕VFI(⍕(1+∧/Args._1∊⎕D)⊃Args.(_2 _1)),' +0'
+          r←⍪folder Squash msg noOf
+      :Case ⎕C'Status'
+          r←⍪Status space folder Args
+      :Case ⎕C'Version'
+          r←⎕SE.APLGit2.Version
+      :Else
+          ∘∘∘ ⍝ Huh?!
+      :EndSelect
     ∇
 
     ∇ r←GetTagOfLatestRelease args;username;path;wsPathRef;project;l
@@ -256,19 +258,15 @@
               path←⎕SE.Cider.GetProjectPath''
               →(0=≢path)/0
               wsPathRef←⍎{l←⎕SE.Cider.ListOpenProjects 0 ⋄ ⊃l[l[;2]⍳⊂⍵;]}path
-              username←wsPathRef.CiderConfig.CIDER.githubUsername
+              username←{(¯1+≢⍵)⊃⍵}'/'(≠⊆⊢)wsPathRef.CiderConfig.CIDER.project_url
           :Else
-              :If 0=≢args._1
-                  _errno ⎕SIGNAL⍨'Could not determine GitHub username'
+              l←⎕SE.Cider.ListOpenProjects 0
+              :Trap 0
+                  wsPathRef←⍎1⊃l[({{⌽⍵↑⍨¯1+⍵⍳'.'}⌽⍵}¨{⍵[;1]}l)⍳⊂{{⌽⍵↑⍨¯1+⍵⍳'.'}⌽⍵}project;]
               :Else
-                  l←⎕SE.Cider.ListOpenProjects 0
-                  :Trap 0
-                      wsPathRef←⍎1⊃l[({{⌽⍵↑⍨¯1+⍵⍳'.'}⌽⍵}¨{⍵[;1]}l)⍳⊂{{⌽⍵↑⍨¯1+⍵⍳'.'}⌽⍵}project;]
-                  :Else
-                      _errno ⎕SIGNAL⍨'Could not determine GitHub username'
-                  :EndTrap
-                  username←wsPathRef.CiderConfig.CIDER.githubUsername
-              :EndIf
+                  _errno ⎕SIGNAL⍨'Could not determine GitHub username'
+              :EndTrap
+              username←wsPathRef.CiderConfig.CIDER.githubUsername
           :EndIf
       :Else
           username←args.username
