@@ -1,4 +1,4 @@
- R←Test_API_003(stopFlag batchFlag);⎕TRAP;result;qdmx
+ R←Test_API_160(stopFlag batchFlag);⎕TRAP;result;qdmx
 ⍝ Runs "Add" and "Commit"
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -13,13 +13,13 @@
 
  result←G.Add ∆Folder1
 
- result←'It''s a message' G.Commit ∆Folder1
+ result←'It''s a message'G.Commit ∆Folder1
  →T.PassesIf 2≤≢result
  →T.PassesIf 0∧.<≢¨result
 
  ∆ModifyCounter ∆Folder1
 
-(∆Folder1,'/APLSource/Counter.aplf') G.Add ∆Folder1
+ (∆Folder1,'/APLSource/Counter.aplf')G.Add ∆Folder1
  result←'It''s another message'G.Commit #.Proj_1
  →T.PassesIf 2≤≢result
  →T.PassesIf 0∧.<≢¨result

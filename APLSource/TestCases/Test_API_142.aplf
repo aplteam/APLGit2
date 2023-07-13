@@ -1,16 +1,20 @@
- R←Test_API_141(stopFlag batchFlag);⎕TRAP;tempFolder;allCommits1;allCommits2;zipfile;noOf;msg;rc
-⍝ Runs "Squash" with just a message but not the number of commits to be squased on branch "dev"
+ R←Test_API_142(stopFlag batchFlag);⎕TRAP;tempFolder;allCommits1;allCommits2;zipfile;noOf;msg;rc
+⍝ Runs "Squash" with the number of commits to be squased but no message on branch "dev"
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
+
+ :If ~batchFlag
+     R←T._NoBatchTest ⋄ →0
+ :EndIf
+
+ CommTools.Pause'This test needs you: when a ⎕ED window pops up, plug in "All my changes"'
 
  tempFolder←FilesAndDirs.GetTempSubDir⊃⎕SI
  zipfile←##.CiderConfig.HOME,'/TestData/TestProject.zip'
  zipfile ZipArchive.UnzipTo tempFolder
 
  allCommits1←##.APLGit2.Log tempFolder
- ##.APLGit2.CommTools.AskForNumber_Answers←1 2⍴'NoOfSquashs@' 2
- noOf←tempFolder ##.APLGit2.Squash'All my changes'
- Assert 2=noOf  ⍝ If that fails the user did not enter "2"
+ noOf←tempFolder ##.APLGit2.Squash 2
  allCommits2←##.APLGit2.Log tempFolder
 
  →T.GoToTidyUp 0≠+/allCommits1[1 2;4]∊allCommits2[;4]

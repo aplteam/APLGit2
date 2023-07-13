@@ -87,12 +87,13 @@ User commands start with an `]`, API function don't.
  ]GetTagOfLatestRelease  Returns the tag of the latest release
  ]GoToGitHub             For a project "Foo/Goo", this opens https://github.com/Foo/Goo
  ]Init                   Initialises project with Git, including .gitignore & .gitattributes
- ]IsDirty                Reports uncommitted changes and/or untracked files
+ ]IsDirty                Are there any uncommited changes?
  ]IsGitProject           Returns "yes" or "no" depending on whether there is a ./.git folder    
   IsGitInstalled         Checks whether Git is installed and retuns 1 in case it is
  ]ListBranches           Lists all branches for a Git-managed project                            
  ]Log                    Returns the log of commits.\\
   Methods                Like `Public` plus comment in first line
+ ]NoOfUntrackedFiles     Returns the number of untracked files in a project or folder
  ]OpenGitShell           Opens a Git shell for a Git-managed project                             
  ]RefLog                 Prints a log of all references to the session
  ]SetDefaultProject      Specifies the project to be used in case no project is specified   

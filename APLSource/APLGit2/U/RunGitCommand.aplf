@@ -1,5 +1,5 @@
  (rc msg result)←path RunGitCommand command;cmd;buff
- path←{'/'@(⍸'/'=⍵)⊣⍵}path
+ path←{'/'@(⍸'\'=⍵)⊣⍵}path
  cmd←'-C "',path,'" ',command
  buff←RunProcess'git'cmd
  (rc msg result)←buff.(ExitCode StdErr StdOut)

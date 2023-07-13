@@ -101,7 +101,7 @@
      
           c←⎕NS''
           c.Name←'IsDirty'
-          c.Desc←'Reports whether there are uncommited changes and/or untracked files'
+          c.Desc←'Reports whether there are uncommited changes'
           c.Group←'APLGit2'
           c.Parse←'1s'
           c._Project←1
@@ -120,6 +120,14 @@
           c.Desc←'Shows the commit logs'
           c.Group←'APLGit2'
           c.Parse←'2s -verbose'
+          c._Project←1
+          r,←c
+     
+          c←⎕NS''
+          c.Name←'NoOfUntrackedFiles'
+          c.Desc←'Returns the number of untracked files'
+          c.Group←'APLGit2'
+          c.Parse←'1s'
           c._Project←1
           r,←c
      
@@ -229,6 +237,8 @@
           r←ListBranches space folder Args
       :Case ⎕C'Log'
           r←Log space folder Args
+      :Case ⎕C'NoOfUntrackedFiles'
+          r←NoOfUntrackedFiles folder
       :Case ⎕C'OpenGitShell'
           {}OpenGitShell space folder Args
           r←''
@@ -285,9 +295,10 @@
       :EndIf
     ∇
 
-    ∇ {(filename1 filename2)}←CompareCommits(space folder args);hash1;hash2;flag;exe;parms;qdmx;name;default
+    ∇ {(filename1 filename2)}←CompareCommits(space folder args);hash1;hash2;flag;exe;parms;qdmx;name;default;hash1_;msg;rc;hash2_;buff
       (hash1 hash2)←{0≡⍵:'' ⋄ ⍵}¨args.(_1 _2)
-      (filename1 filename2)←folder G.CompareCommits hash1 hash2
+      buff←folder G.CompareCommits hash1 hash2
+      (filename1 filename2 hash1 hash2)←4↑buff,'' '' ⍝ Because old versions of CompareCommit did not return the hashes
       :If 0<+/⎕NEXISTS filename1 filename2
           :If Args.files
               ⎕←filename1 filename2
@@ -304,7 +315,10 @@
               :AndIf 0<≢exe
                   parms←⎕SE.CompareFiles.ComparisonTools.⍎'CreateParmsFor',name
                   parms.(file1 file2)←filename1 filename2
-                  parms.(caption1 caption2)←hash1 hash2
+                  (rc msg hash1_)←folder G.##.U.RunGitCommand'show ',hash1,' -q'
+                  parms.caption1←({⍵↓⍨⍵⍳' '}1⊃hash1_),' from ',{⍵↓⍨⍵⍳' '}3⊃hash1_
+                  (rc msg hash2_)←folder G.##.U.RunGitCommand'show ',hash1,' -q'
+                  parms.caption2←({⍵↓⍨⍵⍳' '}1⊃hash2_),' from ',{⍵↓⍨⍵⍳' '}3⊃hash2_
                   {}⎕SE.CompareFiles.Compare parms
                   ⎕NDELETE filename1 filename2
                   (filename1 filename2)←⊂''
@@ -393,6 +407,10 @@
       r←(r+1)⊃'Clean' 'Dirty'
     ∇
 
+    ∇ r←NoOfUntrackedFiles folder
+      r←⎕SE.APLGit2.NoOfUntrackedFiles folder
+    ∇
+
     ∇ r←IsGitProject(space folder args)
       r←(1+⎕SE.APLGit2.IsGitProject folder)⊃'no' 'yes'
     ∇
@@ -419,7 +437,7 @@
 
     ∇ r←Commit(space folder args);msg;ref;branch;rc;data;flag
       branch←⎕SE.APLGit2.CurrentBranch folder
-      :If ⎕SE.APLGit2.IsDirty folder ⍝ 0<'?'+.=⊃∘∪¨2↑¨1 ⎕SE.Git.Status folder
+      :If ⎕SE.APLGit2.NoOfUntrackedFiles folder
           :If 1=args.add
           :OrIf 1 ⎕SE.CommTools.YesOrNo'Branch "',branch,'" is dirty - shall Git''s "Add -A" command be executed?'
               (rc msg data)←folder ⎕SE.APLGit2.##.U.RunGitCommand'add -A'
@@ -433,9 +451,6 @@
           :If (,0)≢,Args.m
           :AndIf 0<≢Args.m
               msg←Args.m
-              :If (⊂branch)∊'main' 'master'
-                  ('You MUST specify a message for ',branch)Assert 0<≢msg~'.'
-              :EndIf
           :Else
               flag←0
               :Repeat
@@ -524,6 +539,8 @@
               r,←⊂']APLGit2.ListBranches [space|folder] -a -r'
           :Case ⎕C'Log'
               r,←⊂']APLGit2.Log [space|folder] -since= -verbose -max='
+          :Case ⎕C'NoOfUntrackedFiles'
+              r,←⊂']APLGit2.NoOfUntrackedFiles [space|folder]'
           :Case ⎕C'OpenGitShell'
               r,←⊂']APLGit2.OpenGitShell [space|folder]'
           :Case ⎕C'RefLog'
@@ -567,9 +584,8 @@
               r,←⊂' 4. Message of the commit'
           :Case ⎕C'Commit'
               r,←⊂'Record changes to the repository.'
-              r,←⊂'The branch should not be dirty (see ]APLGit2.IsDirty) but if it is anyway the user will be'
-              r,←⊂'asked whether she wants to record add additions changes and deletions first, read execute'
-              r,←⊂'"add -A"'
+              r,←⊂'There should not be any untracked files, but if there are anyway the user will be asked'
+              r,←⊂'whether she wants to add additions, changes & deletions first, read execute: "add -A"'
               r,←⊂''
               r,←⊂'-add  When the project is dirty then without the -add flag the user will be questioned'
               r,←⊂'      whether a "git add -A" command should be issued first. -add tells the user command'
@@ -578,9 +594,8 @@
               r,←⊂'-m=   If this is specified it is accepted as the message.'
               r,←⊂'      If it is not specified then the command will open an edit window for the message.'
               r,←⊂''
-              r,←⊂'Note that a message is required for the "main" (or the now deprecated "master") branch but'
-              r,←⊂'might be empty for other branches. Empty messages will become "..." which is not acceptable'
-              r,←⊂'but may be squashed before eventually merged into main.'
+              r,←⊂'Note that a message is epected for the "main" (or the now deprecated "master") branch but'
+              r,←⊂'the user will be asked if there is none anyway. Empty messages will become "...".'
               r,←⊂''
               r,←AddLevel3HelpInfo'Commit'
           :Case ⎕C'CompareCommits'
@@ -674,6 +689,8 @@
               r,←⊂''
               r,←⊂'-verbose By default a short report is provided. Overwrite with -verbose for a detailed report'
               r,←AddLevel3HelpInfo'Log'
+          :Case ⎕C'NoOfUntrackedFiles'
+              r,←⊂'Returns the number of untracked files.'
           :Case ⎕C'OpenGitShell'
               r,←⊂'Opens a Git Bash shell, either on the given project or, if no project was provided, the'
               r,←⊂'current directory.'

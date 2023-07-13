@@ -1,4 +1,12 @@
 (
+ '* 0.15.0 ⋄ 2023-07-12'
+ '  * BREAKING CHANGES: '
+ '    * The function `CompareCommits` establishes the hashes to be compared if they are not'
+ '      specified, making it a necessity to return those hashes as well.'
+ '    * The function `IsDirty` now indicates whether there are any uncommited changes.'
+ '  * New function `NoOfUntrackedFiles` added'
+ '  * `Squash` is now allowed to act on "main" ("master"), though a confirmation is required'
+ '  * A message is not enforced anymore by `Commit` on "main" (or "master"), though a confirmation is required'
  '* 0.14.0 ⋄ 2023-06-07'
  '  * BREAKING CHANGES'
  '    * User command `Branch` removed: see `ListBranches`'

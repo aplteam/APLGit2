@@ -20,6 +20,7 @@
  r,←⊂'ListBranches'
  r,←⊂'Log'
  r,←⊂'Methods'
+ r,←⊂'NoOfUntrackedFiles'
  r,←⊂'OpenGitShell'
  r,←⊂'RefLog'
  r,←⊂'SetDefaultProject'

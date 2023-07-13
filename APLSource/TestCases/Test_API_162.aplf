@@ -1,0 +1,23 @@
+ R←Test_API_162(stopFlag batchFlag);⎕TRAP;result;qdmx;tempFolder;zipfile;rc;msg
+⍝ Runs "Add" and "Commit" on "main" without a message and negative confirmation
+ tempFolder←FilesAndDirs.GetTempSubDir⊃⎕SI
+ zipfile←##.CiderConfig.HOME,'/TestData/GitProject.zip'
+ zipfile ZipArchive.UnzipTo tempFolder
+ Assert'main'≡G.CurrentBranch tempFolder
+ G.Add tempFolder
+
+ :Trap 0
+     G.CommTools.YesOrNo_Answers←1 2⍴'NoMsgOnCommit@' 'n'  ⍝ Without confirmation an eror must be thrown
+     {}''G.Commit tempFolder
+     →T.GoToTidyUp 1
+ :Else
+     qdmx←⎕DMX
+     →T.GoToTidyUp'Cancelled by user'≢qdmx.EM
+ :EndTrap
+
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempFolder
+ msg Assert rc=0
+⍝Done
