@@ -1,4 +1,4 @@
- R←Test_UC_101(stopFlag batchFlag);⎕TRAP;stop;rc;msg;tempDir
+ R←Test_UC_101(stopFlag batchFlag);⎕TRAP;stop;rc;msg;tempDir;buff
 ⍝ Runs all user commands on a Git-managed folder that is NOT a Cider project with a space in its name
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -21,10 +21,9 @@
  →T.GoToTidyUp 0<≢msg
  →T.GoToTidyUp'yes'≢buff
 
- (rc msg buff)←stop ∆UCMD'IsDirty "',tempDir,'"'
+ (rc msg buff)←stop ∆UCMD'NoOfUntrackedFiles "',tempDir,'"'
  msg Assert rc=0
- →T.GoToTidyUp 0<≢msg
- →T.GoToTidyUp'Dirty'≢buff
+ →T.GoToTidyUp 4≠buff
 
  (rc msg buff)←stop ∆UCMD'Status "',tempDir,'"'
  msg Assert rc=0

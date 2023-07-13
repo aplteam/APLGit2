@@ -38,10 +38,9 @@
  →T.GoToTidyUp 0<≢msg
  →T.GoToTidyUp'yes'≢buff
 
- (rc msg buff)←stop ∆UCMD'IsDirty'
+ (rc msg buff)←stop ∆UCMD'NoOfUntrackedFiles'
  msg Assert rc=0
- →T.GoToTidyUp 0<≢msg
- →T.GoToTidyUp'Dirty'≢buff
+ →T.GoToTidyUp 4≠buff
 
  (rc msg buff)←stop ∆UCMD'Status'
  msg Assert rc=0

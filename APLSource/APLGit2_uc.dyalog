@@ -437,9 +437,9 @@
 
     ∇ r←Commit(space folder args);msg;ref;branch;rc;data;flag
       branch←⎕SE.APLGit2.CurrentBranch folder
-      :If ⎕SE.APLGit2.NoOfUntrackedFiles folder
+      :If 0<⎕SE.APLGit2.NoOfUntrackedFiles folder
           :If 1=args.add
-          :OrIf 1 ⎕SE.CommTools.YesOrNo'Branch "',branch,'" is dirty - shall Git''s "Add -A" command be executed?'
+          :OrIf 1 ⎕SE.CommTools.YesOrNo'Branch "',branch,'" has unstaged changes etc - shall Git''s "Add -A" command be executed?'
               (rc msg data)←folder ⎕SE.APLGit2.##.U.RunGitCommand'add -A'
               msg Assert 0=rc
           :Else

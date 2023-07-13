@@ -1,9 +1,9 @@
  r←NoOfUntrackedFiles y;rc;more;path;project;buff
-⍝ Returns the number of untracked changes
+⍝ Returns the number of unstaged and untracked changes (new+modified+deleted)
  project←EstablishProject y
  'Not a Cider project'⎕SIGNAL 6/⍨0=≢project
  path←2⊃project
  (rc more buff)←path U.RunGitCommand'status --porcelain'
  more U.Assert 0=rc
- r←'?'+.=⊃¨buff
+ r←' '+.≠{⍵[;2]}↑buff
 ⍝Done
