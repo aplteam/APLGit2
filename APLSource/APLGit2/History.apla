@@ -1,4 +1,6 @@
 (
+ '* 0.15.2 ⋄ 2023-07-20'
+ '  * On Windows, .NET is not used anymore because APLGIT2 caused issues with .NET 6'
  '* 0.15.1 ⋄ 2023-07-13'
  '  * Newly introduced function `NoOfUntrackedFiles` was buggy '
  '* 0.15.0 ⋄ 2023-07-12'
