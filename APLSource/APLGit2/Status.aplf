@@ -9,6 +9,7 @@
  (space path)←EstablishProject y
  (rc more r)←path U.RunGitCommand('status',short/' --short')
  more U.Assert 0=rc
+ ((≢'fatal:')↓more)U.Assert'fatal:'{⍺≢(≢⍺)↑⍵}more
  :If ~short
      ind←⍸∨/¨'On branch'∘⍷¨r
      branch←⊃¯1↑' '(≠⊆⊢)ind⊃r
