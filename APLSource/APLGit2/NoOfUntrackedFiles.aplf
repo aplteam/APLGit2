@@ -5,5 +5,9 @@
  path←2⊃project
  (rc more buff)←path U.RunGitCommand'status --porcelain'
  more U.Assert 0=rc
- r←' '+.≠{⍵[;2]}↑buff
+ :If 0=≢buff
+     r←0
+ :Else
+     r←' '+.≠{⍵[;2]}↑buff
+ :EndIf
 ⍝Done
