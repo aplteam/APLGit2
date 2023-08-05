@@ -1,0 +1,21 @@
+ R←Test_API_170(stopFlag batchFlag);⎕TRAP;tempFolder;zipfile;rc;msg;noOf1;noOf2
+⍝ Runs "NoOfUntrackedFiles"
+ tempFolder←FilesAndDirs.GetTempSubDir⊃⎕SI
+ zipfile←##.CiderConfig.HOME,'/TestData/GitProject.zip'
+ zipfile ZipArchive.UnzipTo tempFolder
+ Assert'main'≡G.CurrentBranch tempFolder
+
+ noOf1←G.NoOfUntrackedFiles tempFolder
+ (⊂'test1')⎕NPUT tempFolder,'/test1.txt'
+ (⊂'test2')⎕NPUT tempFolder,'/test2.txt'
+ (⊂'test3')⎕NPUT tempFolder,'/test3.txt'
+ noOf2←G.NoOfUntrackedFiles tempFolder
+
+ →T.GoToTidyUp 3≠noOf2-noOf1
+
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempFolder
+ msg Assert rc=0
+⍝Done

@@ -1,5 +1,7 @@
 (
- '* 0.15.3 ⋄ 2023-08-02'
+ '* 0.15.3 ⋄ 2023-08-05'
+ '  * `RunGitCommand` now throws errors with appropriate messages in case Git is not installed or essential'
+ '    Git variable (email, user) are not defined'
  '  * Bug fixes'
  '    * `NoOfUntrackedFiles` crashed in case of an empty result of status --porcelain'
  '* 0.15.2 ⋄ 2023-07-20'

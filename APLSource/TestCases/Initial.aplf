@@ -20,19 +20,19 @@
  #.Proj_1.(⎕IO ⎕ML)←1
  #.Proj_1.⎕FX↑'r←WhoAmI' 'r←''Proj_1'''
  (∆Folder1,'/cider.config')⎕NCOPY ##.CiderConfig.HOME,'/TestData/cider.config.1'
- result←⎕SE.UCMD'Cider.CreateProject ',∆Folder1,' #.Proj_1 -acceptConfig -noEdit -quiet'
+ result←⎕SE.UCMD'Cider.CreateProject ',∆Folder1,' #.Proj_1 -acceptConfig -noEdit -quiet -ignoreUserExec'
  {}∆Initialize ∆Folder1
  (⊂'r←Hello' 'r←''worlt''')⎕NPUT ∆Folder1,'/APLSource/help.aplf'
  G.Add ∆Folder1
  buff←'Function added'G.Commit ∆Folder1
- (⊂'r←Hello' 'r←''World''')⎕NPUT (∆Folder1,'/APLSource/help.aplf') 1
+ (⊂'r←Hello' 'r←''World''')⎕NPUT(∆Folder1,'/APLSource/help.aplf')1
  G.Add ∆Folder1
 
  'Proj_2'#.⎕NS''
  #.Proj_2.(⎕IO ⎕ML)←1
  #.Proj_2.⎕FX↑'r←WhoAmI' 'r←''Proj_2'''
  (∆Folder2,'/cider.config')⎕NCOPY ##.CiderConfig.HOME,'/TestData/cider.config.2'
- result←⎕SE.UCMD'Cider.CreateProject "',∆Folder2,'" #.Proj_2 -acceptConfig -noEdit -quiet'
+ result←⎕SE.UCMD'Cider.CreateProject "',∆Folder2,'" #.Proj_2 -acceptConfig -noEdit -quiet -ignoreUserExec'
  {}∆Initialize ∆Folder2
  (⊂'r←Hello2' 'r←''Galaxy''')⎕NPUT ∆Folder2,'/APLSource/help2.aplf'
 

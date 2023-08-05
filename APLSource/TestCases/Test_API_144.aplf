@@ -12,7 +12,7 @@
  Assert'main'≡G.CurrentBranch tempFolder
 
  :Trap 0
-     G.CommTools.YesOrNo_Answers←1 2⍴'SquashOnMain@' 'n'  ⍝ Without confirmation an eror must be thrown
+     G.CommTools.YesOrNo_Answers←1 2⍴'SquashOnMain@' 'n'  ⍝ Without confirmation an error must be thrown
      {}tempFolder G.Squash'Squash first two commit' 2
      →T.GoToTidyUp 1
  :Else

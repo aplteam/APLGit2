@@ -10,7 +10,7 @@
  G.Add tempFolder
  log←G.Log tempFolder
 
- G.CommTools.YesOrNo_Answers←1 2⍴'NoMsgOnCommit@' 'y'  ⍝ Without confirmation an eror must be thrown
+ G.CommTools.YesOrNo_Answers←1 2⍴'NoMsgOnCommit@' 'y'  ⍝ Without confirmation an error must be thrown
  {}''G.Commit tempFolder
  log2←G.Log tempFolder
  →T.GoToTidyUp 1≠-/≢¨log2 log               ⍝ One less than before

@@ -11,7 +11,7 @@
  res←G.Add tempDir
  Assert res=0
  res←'First test commit'G.Commit tempDir
- Assert∨/'1 file changed, 1 insertion(+)'⍷∊res
+ Assert∨/'2 files changed'⍷∊res
  (⊂'second')⎕NPUT(tempDir,'/myFile.txt')1
  res←G.Add tempDir
  Assert res=0

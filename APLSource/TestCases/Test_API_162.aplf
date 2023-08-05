@@ -7,7 +7,7 @@
  G.Add tempFolder
 
  :Trap 0
-     G.CommTools.YesOrNo_Answers←1 2⍴'NoMsgOnCommit@' 'n'  ⍝ Without confirmation an eror must be thrown
+     G.CommTools.YesOrNo_Answers←1 2⍴'NoMsgOnCommit@' 'n'  ⍝ Without confirmation an error must be thrown
      {}''G.Commit tempFolder
      →T.GoToTidyUp 1
  :Else

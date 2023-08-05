@@ -1,4 +1,4 @@
- {r}←RunProcess(EXE command);cmd;folder;i;msg;op;p;pfn;re;ro;rtc;t;⎕IO;⎕USING;tfn;buff;dmx
+ {r}←RunProcess(EXE command);cmd;folder;i;msg;op;p;pfn;re;ro;rtc;t;⎕IO;⎕USING;tfn;buff;dmx;success;rc
 ⍝ Runs EXE and returns a namespace with all sorts of variables, among them StdOut and StdErr.
 ⍝ Cannot run in elevated mode because for that we would need to set i.Verb to 'runas' which
 ⍝ we can't because "UseShellEexecute" must be set to 1 for this which we can't because we must
@@ -6,8 +6,7 @@
 ⍝ ⍵[0] ←→ Executable
 ⍝ ⍵[1] ←→ Argument
  r←⎕NS''
- :If 'Win'≡A.GetOperatingSystem ⍬
- :AndIf 0
+ :If 0 ⍝ 'Win'≡A.GetOperatingSystem ⍬
      ⍝ We don't use .NET on Windows anymore because of incompatabilities between
      ⍝ .NET Framework (v4) and .NET Core (v3.1, v6, v7, ...) 2023-07-20
      ⎕IO←0

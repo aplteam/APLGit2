@@ -5,14 +5,18 @@
  (rc msg result)←buff.(ExitCode StdErr StdOut)
  :Select rc
  :Case 127
-     msg←'It appears that Git is not installed'
+     'It appears that Git is not installed'⎕SIGNAL 127
  :Case 128
      :If ∨/'Who are you'⍷msg
-         msg←'Who are you? (set user.email and user.name)'
+         'Who are you? (set user.email and user.name)'⎕SIGNAL 128
      :EndIf
  :Else
-     :If 0=≢msg
-         msg←command,' => ',path
+     :If ∨/'''git'' is not recognized'⍷msg
+         'It appears that Git is not installed'⎕SIGNAL 127
+     :Else
+         :If 0=≢msg
+             msg←command,' => ',path
+         :EndIf
      :EndIf
  :EndSelect
 ⍝Done
