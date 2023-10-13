@@ -15,6 +15,9 @@
  :Else
      (rc more buff)←folder U.RunGitCommand'diff HEAD --name-only'
      more U.Assert 0=rc
-     r←(⎕SE.Link.GetItemName(⊂folder,'/'),¨buff),[1.5]buff
+     r←''
+     :If 0<≢buff
+         r←(⎕SE.Link.GetItemName(⊂folder,'/'),¨buff),[1.5]buff
+     :EndIf
  :EndIf
 ⍝Done

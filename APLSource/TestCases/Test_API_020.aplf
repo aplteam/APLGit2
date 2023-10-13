@@ -8,7 +8,7 @@
  sourcePath ZipArchive.UnzipTo tempFolder
 
  parms←⎕SE.Cider.CreateOpenParms''
- parms.quietFlag←1
+ parms.batch←1
  parms.folder←tempFolder,'/CommTools'
  parms.watch←'ns'
  (success list)←⎕SE.Cider.OpenProject parms

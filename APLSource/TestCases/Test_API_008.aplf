@@ -13,7 +13,7 @@
  (tempFolder,'/')⎕NCOPY⍠('Wildcard' 1)⊢##.CiderConfig.HOME,'/TestData/CiderProject/*'
  parms←⎕SE.Cider.CreateOpenParms''
  parms.folder←tempFolder
- parms.quietFlag←1
+ parms.batch←1
  parms.watch←'ns'
  {}⎕SE.Cider.OpenProject parms
 
