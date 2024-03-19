@@ -1,6 +1,6 @@
  r←{option}ListBranches y;path;buff;more;rc;space;⎕TRAP
 ⍝ Returns a vector of vector with branch names (the current branch starts with "\* ") or ''.\\
-⍝ `option` might be either -a ("all") or -r ("remote"); there is no default.\\
+⍝ `option` might be either "a" (for "all") or "r" (for "remote"); defaults to local branches only.\\
 ⍝ `y` must be one of:
 ⍝   * Fully qualfied name of a namespace  that is an opened Cider project
 ⍝   * Fully qualified path to a Git-managed project
