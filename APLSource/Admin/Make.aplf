@@ -8,7 +8,7 @@
      M.FetchLaterUserCommand cfg C'[MyUCMDs]'
      version←M.CompileVersionNumberPattern cfg
      M.RecreateFolder path
-     {}M.CreateAPIfromCFG(⍎'##.',cfg.name)cfg
+     M.CreateAPI ##.APLGit2 ##.APLGit2.Public
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
      parms.targetPath←path
      parms.version←version

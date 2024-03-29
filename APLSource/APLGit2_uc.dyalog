@@ -314,7 +314,8 @@
     ∇ {(filename1 filename2)}←CompareCommits(space folder args);hash1;hash2;flag;exe;parms;qdmx;name;default;hash1_;msg;rc;hash2_;buff
       (hash1 hash2)←{0≡⍵:'' ⋄ ⍵}¨args.(_1 _2)
       buff←folder G.CompareCommits hash1 hash2
-      (filename1 filename2 hash1 hash2)←4↑buff,'' '' ⍝ Because old versions of CompareCommit did not return the hashes
+      (filename1 filename2 hash1 hash2)←4↑buff,'' ''    ⍝ Because old versions of CompareCommit did not return the hashes
+      (hash1 hash2)←{⍵↑⍨¨⌊/0~⍨≢¨⍵}hash1 hash2           ⍝ Short version suffices
       :If 0<+/⎕NEXISTS filename1 filename2
           :If Args.files
               ⎕←filename1 filename2
@@ -333,7 +334,7 @@
                   parms.(file1 file2)←filename1 filename2
                   (rc msg hash1_)←folder G.##.U.RunGitCommand'show ',hash1,' -q'
                   parms.caption1←({⍵↓⍨⍵⍳' '}1⊃hash1_),' from ',{⍵↓⍨⍵⍳' '}3⊃hash1_
-                  (rc msg hash2_)←folder G.##.U.RunGitCommand'show ',hash1,' -q'
+                  (rc msg hash2_)←folder G.##.U.RunGitCommand'show ',hash2,' -q'
                   parms.caption2←({⍵↓⍨⍵⍳' '}1⊃hash2_),' from ',{⍵↓⍨⍵⍳' '}3⊃hash2_
                   {}⎕SE.CompareFiles.Compare parms
                   ⎕NDELETE filename1 filename2
