@@ -1,11 +1,10 @@
- R←Test_API_130(stopFlag batchFlag);⎕TRAP;fn2;fn1
-⍝ Runs "CompareCommits" on two hashes
+ R←Test_API_131(stopFlag batchFlag);⎕TRAP;fn2;fn1
+⍝ Runs "CompareCommits" on a dot
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- (fn1 fn2)←2↑#.APLGit2 ##.APLGit2.CompareCommits'ac76e76' '627fa88'
+ (fn1 fn2)←2↑#.APLGit2 ##.APLGit2.CompareCommits'.'
 
- 'Working dir is dirty - commit and then continue'Assert 0<+/≢¨fn1 fn2
  →T.GoToTidyUp~∧/⎕NEXISTS fn1 fn2
 
  R←T._OK

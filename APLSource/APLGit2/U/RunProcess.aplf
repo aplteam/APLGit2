@@ -6,9 +6,7 @@
 ⍝ ⍵[0] ←→ Executable
 ⍝ ⍵[1] ←→ Argument
  r←⎕NS''
- :If 0 ⍝ 'Win'≡A.GetOperatingSystem ⍬
-     ⍝ We don't use .NET on Windows anymore because of incompatabilities between
-     ⍝ .NET Framework (v4) and .NET Core (v3.1, v6, v7, ...) 2023-07-20
+ :If 'Win'≡A.GetOperatingSystem ⍬
      ⎕IO←0
      ⎕USING←'System' 'System.IO' 'System.Diagnostics,System.dll'
      p←⎕NEW Process
@@ -30,9 +28,25 @@
      {}⎕TSYNC op t
      r.ExitCode←p.ExitCode
      rtc←{' '@((⎕UCS 9)∘=)⍵}
-     pfn←{⍵⊆⍨~⍵∊⎕UCS 10 13}
-     r.StdOut←pfn rtc r.StdOut
-     r.StdErr←pfn rtc r.StdErr
+     :If 0<≢r.StdOut
+         :If ∨/(⎕UCS 10 13)⍷r.StdOut
+             pfn←{(⎕UCS 10 13)A.Split ⍵}
+         :Else
+             pfn←{(⎕UCS 10)A.Split ⍵}
+         :EndIf
+         r.StdOut←pfn rtc r.StdOut
+     :EndIf
+     :If 0<≢r.StdErr
+         :If (⎕UCS 13)∊r.StdErr
+             pfn←{(⎕UCS 10 13)A.Split ⍵}
+         :Else
+             pfn←{(⎕UCS 10)A.Split ⍵}
+         :EndIf
+         r.StdErr←pfn rtc r.StdErr
+     :EndIf
+     :If 1<|≡r.StdOut
+         r.StdOut←(-+/∧\0=⌽≢¨r.StdOut)↓r.StdOut  ⍝ Remove trailing empty lines
+     :EndIf
  :Else
      ⎕IO←1
      r←⎕NS''

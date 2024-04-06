@@ -21,13 +21,23 @@
          hash2←GetMostRecentAncestor folder
      :ElseIf 1=≢y
      :OrIf 1=+/0=≢¨y
-         hash1←GetLastCommit folder
-         hash2←1⊃,y
+         :If (,'.')≡,1⊃,y
+             hash1←'.'
+             hash2←GetLastCommit folder
+         :Else
+             hash1←GetLastCommit folder
+         :EndIf
      :Else
          (hash1 hash2)←y~''⍬ 0
      :EndIf
      'The two hashes match - that makes no sense'U.Assert hash1≢hash2
-     :If 0<≢list←folder DiffBetween hash1 hash2
+     (hash1 hash2)←{⍵↑⍨¨8⌊≢¨⍵}hash1 hash2
+     :If (,'.')≡,hash1
+         list←↑{⍵{((⍵-1)↑⍺)(⍵↓⍺)}⍵⍳' '}∘A.DLB¨1↓1 Status folder
+     :Else
+         list←folder DiffBetween hash1 hash2
+     :EndIf
+     :If 0<≢list
          :If F.IsFile folder,'/cider.config'
              cfg←⊃F.NGET folder,'/cider.config'
              ns←⎕JSON⍠('Dialect' 'JSON5')⊣cfg

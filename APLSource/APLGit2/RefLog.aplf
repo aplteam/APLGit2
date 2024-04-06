@@ -1,4 +1,4 @@
-r←{x}RefLog restrictFlag;space;folder;rc;more;branch;buff
+ r←{x}RefLog restrictFlag;space;folder;rc;more;branch;buff
 ⍝ Execute Git's "reflog" command.\\
 ⍝ Returns a matrix with zero or more rows and these columns:\\
 ⍝ * `[1]` Hash
