@@ -1,8 +1,13 @@
- R←Test_API_131(stopFlag batchFlag);⎕TRAP;fn2;fn1
+ R←Test_API_131(stopFlag batchFlag);⎕TRAP;fn2;fn1;name;flag
 ⍝ Runs "CompareCommits" on a dot
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
+ :If flag←∨/'nothing to commit, working tree clean'⍷∊##.APLGit2.Status'#.APLGit2'   ⍝ Only possible if there are files in the working area
+     name←{⍵[?80⍴≢⍵]}⎕A,⎕D,'_',⎕C ⎕A
+     ##.APLGit2.⎕FX('r←',name)'r←42'
+     {}⎕SE.Link.Add'##.APLGit2.',name
+ :EndIf
  (fn1 fn2)←2↑#.APLGit2 ##.APLGit2.CompareCommits'.'
 
  →T.GoToTidyUp~∧/⎕NEXISTS fn1 fn2
@@ -12,4 +17,7 @@
 ∆TidyUp:
  :Trap 0 ⋄ FilesAndDirs.DeleteFile fn1 ⋄ :EndTrap
  :Trap 0 ⋄ FilesAndDirs.DeleteFile fn2 ⋄ :EndTrap
-⍝Done
+ :If flag
+     {}⎕SE.Link.Expunge'##.APLGit2.',name
+ :EndIf
+ ⍝Done

@@ -22,7 +22,7 @@
  (∆Folder1,'/cider.config')⎕NCOPY ##.CiderConfig.HOME,'/TestData/cider.config.1'
  result←⎕SE.UCMD'Cider.CreateProject ',∆Folder1,' #.Proj_1 -acceptConfig -noEdit -batch -ignoreUserExec'
  {}∆Initialize ∆Folder1
- (⊂'r←Hello' 'r←''worlt''')⎕NPUT ∆Folder1,'/APLSource/help.aplf'
+ (⊂'r←Hello' 'r←''world''')⎕NPUT ∆Folder1,'/APLSource/help.aplf'
  G.Add ∆Folder1
  buff←'Function added'G.Commit ∆Folder1
  (⊂'r←Hello' 'r←''World''')⎕NPUT(∆Folder1,'/APLSource/help.aplf')1

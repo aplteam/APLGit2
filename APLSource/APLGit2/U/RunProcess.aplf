@@ -1,4 +1,4 @@
- {r}←RunProcess(EXE command);cmd;folder;i;msg;op;p;pfn;re;ro;rtc;t;⎕IO;⎕USING;tfn;buff;dmx;success;rc
+ {r}←RunProcess(EXE command);cmd;folder;i;msg;op;p;pfn;re;ro;rtc;t;⎕IO;⎕USING;tfn;buff;dmx;success;rc;dotnet
 ⍝ Runs EXE and returns a namespace with all sorts of variables, among them StdOut and StdErr.
 ⍝ Cannot run in elevated mode because for that we would need to set i.Verb to 'runas' which
 ⍝ we can't because "UseShellEexecute" must be set to 1 for this which we can't because we must
@@ -6,9 +6,20 @@
 ⍝ ⍵[0] ←→ Executable
 ⍝ ⍵[1] ←→ Argument
  r←⎕NS''
+ ⎕IO←0
  :If 'Win'≡A.GetOperatingSystem ⍬
-     ⎕IO←0
+     dotnet←2250⌶0
+ :AndIf 1=1⊃dotnet                  ⍝ Bridge successfully loaded?
+ :AndIf 2=0⊃dotnet                  ⍝ .NET Framework? (Rather than .NET)
+⍝    ('.NET Bridge DLL not loaded; (',2⊃dotnet,')')Assert 1=1⊃dotnet
+⍝     :Select 0⊃dotnet
+⍝     :Case 1            ⍝ .NET
+⍝         ⎕USING←'System' 'System.IO' 'System.Diagnostics'
+⍝     :Case 2            ⍝ .NET Framework
      ⎕USING←'System' 'System.IO' 'System.Diagnostics,System.dll'
+⍝     :Else
+⍝         '.NET is not available but required'Assert 0
+⍝     :EndSelect
      p←⎕NEW Process
      i←p.StartInfo
      i.FileName←EXE
