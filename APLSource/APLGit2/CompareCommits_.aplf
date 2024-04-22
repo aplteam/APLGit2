@@ -1,4 +1,4 @@
- {noofBytes}←CompareCommits_(list branch1 branch2 folder currentBranch hash1 hash2 filename1 filename2);thisFile;extension;wsName;header;nc;buff1;rc;more;buff2;name
+  {noofBytes}←CompareCommits_(list branch1 branch2 folder currentBranch hash1 hash2 filename1 filename2);thisFile;extension;wsName;header;nc;buff1;rc;more;buff2;name
  noofBytes←0
  :For thisFile :In list[;2]
      extension←⎕C 3⊃⎕NPARTS thisFile
@@ -18,7 +18,11 @@
              :EndIf
          :Else
              :If (,'.')≡,hash1
-                 buff1←⊃⎕NGET(folder,'/',thisFile)1
+                 :If ⎕NEXISTS folder,'/',thisFile
+                     buff1←⊃⎕NGET(folder,'/',thisFile)1
+                 :Else
+                     buff1←''
+                 :EndIf
              :Else
                  (rc more buff1)←folder U.RunGitCommand('show  --raw ',hash1,':',thisFile)
                  :If 0≠rc
