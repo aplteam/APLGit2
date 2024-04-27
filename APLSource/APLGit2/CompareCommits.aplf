@@ -39,7 +39,7 @@
      :Else
          list←folder DiffBetween hash1 hash2
      :EndIf
-     :If 0<≢list
+     :If 0<≢∊list
          :If F.IsFile folder,'/cider.config'
              cfg←⊃F.NGET folder,'/cider.config'
              ns←⎕JSON⍠('Dialect' 'JSON5')⊣cfg
