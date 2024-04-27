@@ -1,6 +1,6 @@
 {
   packageID: [
-    "aplteam-ZipArchive-1.1.0",
+    "aplteam-ZipArchive-1.2.0",
     "aplteam-Tester2-3.7.0",
     "aplteam-FilesAndDirs-5.7.1",
     "aplteam-CommTools-1.7.1",
@@ -11,7 +11,7 @@
     "aplteam-OS-3.1.1",
     "aplteam-IniFiles-5.0.3",
     "aplteam-GitHubAPIv3-0.7.0",
-    "aplteam-DotNetZip-2.0.2",
+    "aplteam-DotNetZip-2.1.0",
   ],
   principal: [
     1,

@@ -3,7 +3,7 @@
  ⎕SE.Link.NOTIFY←∆LINK_NOTIFY_WAS
  openProjects←⎕SE.Cider.ListOpenProjects 0
  openProjects←('#.Proj_'∘{⍺≡(≢⍺)↑⍵}¨openProjects[;1])⌿openProjects
- {}⎕SE.Cider.CloseProject¨openProjects[;1]
+ {}0 ⎕SE.Cider.CloseProject¨openProjects[;1]
 
  :If 0<⎕NC'∆TempDir'
      Assert 0=⊃buff←FilesAndDirs.RmDirByForce ∆TempDir   ⍝ Requires admin rights

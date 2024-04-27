@@ -1,8 +1,8 @@
 (
- '* 0.16.0 ⋄ 2024-04-22'
+ '* 0.16.0 ⋄ 2024-04-27'
  '  * `CompareCommits` now allows comparing the last commit with the working area (default) or any other commit'
  '  * `CompareCommits` does not block anymore   '
- '  * `CompareCommits` is significant faster now on Winddows with .NET Framework (but not on .NET!)'
+ '  * `CompareCommits` is significant faster now on Windows with any flavour of .NET '
  '  * Bug fixes                                              '
  '    * `CompareCommits` showed the same hash on both panels'
  '    * `CompareCommits` crashed on files that were deleted in the working area'

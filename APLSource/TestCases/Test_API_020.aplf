@@ -22,7 +22,7 @@
  R←T._OK
 
 ∆TidyUp:
- Assert ⎕SE.Cider.CloseProject'#.CommTools'
+ Assert 0 ⎕SE.Cider.CloseProject'#.CommTools'
  #.⎕EX'CommTools'
  FilesAndDirs.RmDir tempFolder
 ⍝Done

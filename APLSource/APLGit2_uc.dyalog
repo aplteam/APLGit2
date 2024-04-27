@@ -1,4 +1,4 @@
-﻿:Class APLGit2_uc
+:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
 
@@ -346,7 +346,7 @@
                   msg Assert rc=0
                   parms.caption2←(hash2,{⍵↓⍨⍵⍳' '}{⍵↓⍨⍵⍳' '}1⊃hash2_),' from ',{⍵↓⍨⍵⍳' '}3⊃hash2_
                   {}⎕SE.CompareFiles.Compare parms
-                  ⎕DL 1.2×{0=⍵.⎕NC'.edit1':0 ⋄ 0=⍵.(edit1+edit2)}parms ⍝ Avoild deletion/early deletion
+                  ⎕DL 1.2×{0=⍵.⎕NC'edit1':0 ⋄ 0=⍵.(edit1+edit2)}parms ⍝ Avoild deletion/early deletion
                   ⎕NDELETE filename1 filename2
                   (filename1 filename2)←⊂''
               :Else

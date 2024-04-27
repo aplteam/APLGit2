@@ -7,19 +7,14 @@
 ⍝ ⍵[1] ←→ Argument
  r←⎕NS''
  ⎕IO←0
- :If 'Win'≡A.GetOperatingSystem ⍬
-     dotnet←2250⌶0
- :AndIf 1=1⊃dotnet                  ⍝ Bridge successfully loaded?
- :AndIf 2=0⊃dotnet                  ⍝ .NET Framework? (Rather than .NET)
-⍝    ('.NET Bridge DLL not loaded; (',2⊃dotnet,')')Assert 1=1⊃dotnet
-⍝     :Select 0⊃dotnet
-⍝     :Case 1            ⍝ .NET
-⍝         ⎕USING←'System' 'System.IO' 'System.Diagnostics'
-⍝     :Case 2            ⍝ .NET Framework
-     ⎕USING←'System' 'System.IO' 'System.Diagnostics,System.dll'
-⍝     :Else
-⍝         '.NET is not available but required'Assert 0
-⍝     :EndSelect
+ dotnet←2250⌶0
+ :If 1=1⊃dotnet                  ⍝ Bridge successfully loaded?
+     :Select 0⊃dotnet
+     :Case 1            ⍝ .NET
+         ⎕USING←'System' 'System.IO' 'System.Diagnostics,System.Diagnostics.Process'
+     :Case 2            ⍝ .NET Framework
+         ⎕USING←'System' 'System.IO' 'System.Diagnostics,System.dll'
+     :EndSelect
      p←⎕NEW Process
      i←p.StartInfo
      i.FileName←EXE
@@ -59,6 +54,7 @@
          r.StdOut←(-+/∧\0=⌽≢¨r.StdOut)↓r.StdOut  ⍝ Remove trailing empty lines
      :EndIf
  :Else
+     '.NET is not available but required on Windows'Assert'Win'≢A.GetOperatingSystem ⍬
      ⎕IO←1
      r←⎕NS''
      r.ExitCode←0
