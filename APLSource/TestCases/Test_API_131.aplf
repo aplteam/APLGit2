@@ -5,8 +5,8 @@
 
  buff←##.APLGit2.Status'#.APLGit2'
  :If flag←∨/'nothing to commit, working tree clean'⍷∊##.APLGit2.Status'#.APLGit2'   ⍝ Only possible if there are files in the working area
-     name←{⍵[?80⍴≢⍵]}⎕A,⎕D,'_',⎕C ⎕A
-     ##.APLGit2.⎕FX('r←',name)'r←42'
+     name←{⍵[?80⍴≢⍵]}⎕A,'_',⎕C ⎕A
+     Assert ' '=1↑0⍴⊃##.APLGit2.⎕FX('r←',name)'r←42'
      {}⎕SE.Link.Add'##.APLGit2.',name
  :EndIf
  (fn1 fn2)←2↑#.APLGit2 ##.APLGit2.CompareCommits'.'
