@@ -38,7 +38,7 @@
 
 ∆TidyUp:
  G.CommTools.Cleanup
- {}⎕SE.Cider.CloseProject'#.BooBoo'
+ {}0 ⎕SE.Cider.CloseProject'#.BooBoo'
  Assert 0=⊃buff←FilesAndDirs.RmDir tempFolder
  #.⎕EX'BooBoo'
 ⍝Done

@@ -7,7 +7,7 @@
 
  A←APLTreeUtils2
  F←FilesAndDirs
- G←##.APLGit2
+ G←APLGit2←##.APLGit2
  C←CommTools
 
  G.∆TestFlag←1

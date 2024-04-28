@@ -3,7 +3,7 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- :If ~batchFlag
+ :If batchFlag
      R←T._NoBatchTest ⋄ →0
  :EndIf
 
