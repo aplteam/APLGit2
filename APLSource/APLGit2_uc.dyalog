@@ -1,4 +1,4 @@
-:Class APLGit2_uc
+﻿:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
 
@@ -247,7 +247,6 @@
           →noProjectSelected/0
           r←ListBranches space folder Args
       :Case ⎕C'Log'
-          →noProjectSelected/0
           r←Log space folder Args
       :Case ⎕C'NoOfUntrackedFiles'
           →noProjectSelected/0
