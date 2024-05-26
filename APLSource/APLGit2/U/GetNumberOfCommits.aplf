@@ -1,6 +1,6 @@
   no←{alias}GetNumberOfCommits(commits branch folder caption);flag;b;buff;width;sep;q
 ⍝ Asks the user for the number of commits to be processed.
-⍝ The optional left argument can be used to defien an alias for the CommTools.
+⍝ The optional left argument can be used to define an alias for the CommTools.
 ⍝ This can be used to automate the test case.
  alias←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'alias'
  width←⎕PW

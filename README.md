@@ -10,7 +10,7 @@
 
 Experience tells us that trying to support all sorts of Git commands from within APL is a recipe for trouble. For example, the Git command "checkout" should not be performed from within an APL session. 
 
-More complex stuff like `Merge`, `Push` and `Pull` can quickly run into a problem without the user doing anything wrong, and when they do, you are stuck in the middle of something within the call that executed a Git command. 
+More complex stuff like `Merge`, `Push` and `Pull` can quickly run into a problem without the user doing anything wrong, and when they do, you are stuck in the middle of something within the call that executed a Git command, leaving you in the dark about how far things got.
 
 Therefore, `APLGit2` offers only a limited number of useful commands from within APL while working on a project. For anything else we suggest using GitBash. `APLGit2` makes this easy because `]APLGit2.OpenGitShell` opens a Git Bash within the current project (if there is just one open) or in the specified/selected project.
 
@@ -103,3 +103,4 @@ User commands start with an `]`, API function don't.
 ```
 
 Note that `CurrentBranch` is available as an API function but not as a user command. This is because internally it is often needed, but there is hardly any need for a user command, in particular because the command `]ListBranches` and `]Status` both report the current branch anyway.
+

@@ -1,4 +1,8 @@
 (
+ '* 0.17.0 ⋄ 2024-05-26'
+ '  * The API function `Commit` now accepts a 1 as left argument, resulting in `commit --amend --no-edit`, allowing'
+ '    latest changes to be added to the last commit.'
+ '  * The user command ]APLGit2.Commit now has a flag `-amend`'
  '* 0.16.0 ⋄ 2024-04-28'
  '  * Compatible with both .NET and .NET framework'
  '  * `CompareCommits` now allows comparing the last commit with the working area (default) or any other commit'

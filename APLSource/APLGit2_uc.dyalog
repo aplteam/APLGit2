@@ -47,7 +47,7 @@
           c.Name←'Commit'
           c.Desc←'Performs a commit on the current branch'
           c.Group←'APLGit2'
-          c.Parse←'1s -m= -add'
+          c.Parse←'1s -m= -add -amend'
           c._Project←1
           r,←c
      
@@ -320,11 +320,11 @@
       (filename1 filename2 hash1 hash2)←4↑buff,'' ''    ⍝ Because old versions of CompareCommit did not return the hashes
       (hash1 hash2)←{⍵↑⍨¨8⌊≢¨⍵}hash1 hash2              ⍝ Short version suffices
       :If 0<+/⎕NEXISTS filename1 filename2
-          :If Args.files
+          :If args.files
               ⎕←filename1 filename2
           :Else
               :If flag←9=⎕SE.⎕NC'CompareFiles'
-                  default←''Args.Switch'use'
+                  default←''args.Switch'use'
                   :Trap 911
                       (exe name)←⎕SE.CompareFiles.EstablishCompareEXE default
                   :Else
@@ -355,18 +355,18 @@
       :EndIf
     ∇
 
-    ∇ (r space folder)←GetSpaceAndFolder(Cmd Args)
+    ∇ (r space folder)←GetSpaceAndFolder(Cmd args)
       r←0 0⍴''
       space←folder←''
       :If ~(⊂Cmd)∊'GetDefaultProject' 'SetDefaultProject' 'Version'
           :If ({⍵⊃⍨⍸⍵.Name≡¨⊂Cmd}List)._Project
-          :AndIf 0≢Args._1
-              (space folder)←GetSpaceAndFolder_ Args._1
-              ('Project <',Args._1,'> not found on disk')Assert 0<≢folder
-          :ElseIf 2=Args.⎕NC'project'
-          :AndIf (,0)≢,Args.project
-          :AndIf 0<≢Args.project
-              (space folder)←GetSpaceAndFolder_ Args.project
+          :AndIf 0≢args._1
+              (space folder)←GetSpaceAndFolder_ args._1
+              ('Project <',args._1,'> not found on disk')Assert 0<≢folder
+          :ElseIf 2=args.⎕NC'project'
+          :AndIf (,0)≢,args.project
+          :AndIf 0<≢args.project
+              (space folder)←GetSpaceAndFolder_ args.project
           :Else
               (space folder)←G.EstablishProject''
           :EndIf
@@ -474,9 +474,12 @@
           :EndIf
       :EndIf
       :If ⎕SE.APLGit2.IsDirty folder
-          :If (,0)≢,Args.m
-          :AndIf 0<≢Args.m
-              msg←Args.m
+          :If (,0)≢,args.amend
+              r←⍪1 ⎕SE.APLGit2.Commit folder
+              :Return
+          :ElseIf (,0)≢,args.m
+          :AndIf 0<≢args.m
+              msg←args.m
           :Else
               flag←0
               :Repeat
@@ -508,7 +511,7 @@
     ∇
 
     ∇ r←Status(space folder args);short
-      short←Args.Switch'short'
+      short←args.Switch'short'
       r←short G.Status folder
     ∇
 
@@ -613,12 +616,16 @@
               r,←⊂'There should not be any untracked files, but if there are anyway the user will be asked'
               r,←⊂'whether she wants to add additions, changes & deletions first, read execute: "add -A"'
               r,←⊂''
-              r,←⊂'-add  When the project is dirty then without the -add flag the user will be questioned'
-              r,←⊂'      whether a "git add -A" command should be issued first. -add tells the user command'
-              r,←⊂'      to do that in any case, without questioning the user.'
+              r,←⊂'-add    When the project is dirty then without the -add flag the user will be questioned'
+              r,←⊂'        whether a "git add -A" command should be issued first. -add tells the user command'
+              r,←⊂'        to do that in any case, without questioning the user.'
+              r,←⊂'-m=     If this is specified it is accepted as the message.'
+              r,←⊂'        If it is not specified then the command will open an edit window for the message,'
+              r,←⊂'        accept when -amend was specified'
+              r,←⊂'-amend  If this is specified you MUST NOT specifiy -m as well. This adds changes to the'
+              r,←⊂'        latest commit, in case you forgot something minor after having commited.'
+              r,←⊂'        Never to be used when the last commit was already pushed!'
               r,←⊂''
-              r,←⊂'-m=   If this is specified it is accepted as the message.'
-              r,←⊂'      If it is not specified then the command will open an edit window for the message.'
               r,←⊂''
               r,←⊂'Note that a message is epected for the "main" (or the now deprecated "master") branch but'
               r,←⊂'the user will be asked if there is none anyway. Empty messages will become "...".'
