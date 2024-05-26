@@ -1,7 +1,11 @@
- R←Test_UC_004(stopFlag batchFlag);⎕TRAP;rc;result;msg;stop
+ R←Test_UC_004(stopFlag batchFlag);⎕TRAP;rc;result;msg;stop;parms;log;log2
 ⍝ Runs ]Commit
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
+
+ parms←⎕NS''
+ parms.max←1
+ log←parms ##.APLGit2.Log ∆Folder1
 
  stop←0
  (rc msg result)←stop ∆UCMD'Commit Does-not-exist'
@@ -15,10 +19,18 @@
  →T.PassesIf 0∧.<≢¨result
 
  ∆ModifyCounter ∆Folder1
- (rc msg result)←stop ∆UCMD'Commit #.Proj_1  -m="It is another message" -add'
+ (rc msg result)←∆UCMD'Commit #.Proj_1 -m="some msg" -amend -add'
+ →T.PassesIf 0<rc
+ →T.PassesIf ∨/'You must not specify both -amend and -msg='⍷msg
+
+ (rc msg result)←stop ∆UCMD'Commit #.Proj_1 -amend -add'
  msg Assert rc=0
  →T.PassesIf 2≤≢result
  →T.PassesIf 0∧.<≢¨result
+
+ parms.max←10
+ log2←parms ##.APLGit2.Log ∆Folder1
+ →T.PassesIf 2=log2[;1]⍳log[1;1]
 
  R←T._OK
 ⍝Done

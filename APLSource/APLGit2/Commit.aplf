@@ -4,7 +4,7 @@
 ⍝   * Fully qualfied name of a namespace that is an opened Cider project
 ⍝   * Fully qualified path to a Git-managed project
 ⍝ The optional `x` can be one of:
-⍝ * A 1, resulting in a `commit --amend --no-edit`, effectively adding the latest changes to the previous commit\\
+⍝ * A 1, resulting in a `commit --amend --no-edit`, effectively adding the latest changes to the last commit\\
 ⍝   (Never to be used on an already pushed commit!)
 ⍝ * A character vector: a commit message (`msg`)\\
 ⍝   `msg` may be empty but will become three dots (`...`).\\
@@ -25,6 +25,10 @@
  :If ⍬≡msg
      cmd←'commit --amend --no-edit'
  :Else
+     :If (⊂cb)∊'master' 'main'
+     :AndIf 0=≢msg~'.'
+         'Cancelled by user'U.Assert CommTools.YesOrNo'NoMsgOnCommit@No meaningful message provided on "',cb,'"; continue anyway?'
+     :EndIf
      msg_←U.MassageMsg msg
      cmd←'commit -m "',msg_,'"'
  :EndIf

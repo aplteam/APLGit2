@@ -119,7 +119,7 @@
           c.Name←'Log'
           c.Desc←'Shows the commit logs'
           c.Group←'APLGit2'
-          c.Parse←'2s -verbose'
+          c.Parse←'2s -verbose -name='
           c._Project←1
           r,←c
      
@@ -295,6 +295,7 @@
       parms.verbose←args.verbose
       parms.max←¯1
       parms.since←''
+      parms.name←''args.Switch'name'
       parms(ProcessLogParms)←(1+0≡args._2)⊃args.(_2 _1)
       r←parms G.Log folder
     ∇
@@ -474,12 +475,13 @@
           :EndIf
       :EndIf
       :If ⎕SE.APLGit2.IsDirty folder
-          :If (,0)≢,args.amend
+          :If 0 args.Switch'merge'
+              'You must not specify both =merge and -m='Assert 0=≢''args.Switch'msg'
               r←⍪1 ⎕SE.APLGit2.Commit folder
               :Return
-          :ElseIf (,0)≢,args.m
-          :AndIf 0<≢args.m
-              msg←args.m
+          :ElseIf (,0)≢,args.msg
+          :AndIf 0<≢args.msg
+              msg←args.msg
           :Else
               flag←0
               :Repeat
@@ -545,7 +547,7 @@
           :Case ⎕C'ChangeLog <apl-name> -project='
               r,←⊂']APLGit2.ChangeLog <filter> -project='
           :Case ⎕C'Commit'
-              r,←⊂']APLGit2.Commit [space|folder] -m= -add'
+              r,←⊂']APLGit2.Commit [space|folder] -m= -add -amend'
           :Case ⎕C'CompareCommits'
               r,←⊂']APLGit2.CompareCommits [hash1] [hash2] -project= -use=[name|?] -view'
           :Case ⎕C'CurrentBranch'
@@ -567,7 +569,7 @@
           :Case ⎕C'ListBranches'
               r,←⊂']APLGit2.ListBranches [space|folder] -a -r'
           :Case ⎕C'Log'
-              r,←⊂']APLGit2.Log [space|folder] -since= -verbose -max='
+              r,←⊂']APLGit2.Log [space|folder] -since= -verbose -max= -name='
           :Case ⎕C'NoOfUntrackedFiles'
               r,←⊂']APLGit2.NoOfUntrackedFiles [space|folder]'
           :Case ⎕C'OpenGitShell'
@@ -622,8 +624,8 @@
               r,←⊂'-m=     If this is specified it is accepted as the message.'
               r,←⊂'        If it is not specified then the command will open an edit window for the message,'
               r,←⊂'        accept when -amend was specified'
-              r,←⊂'-amend  If this is specified you MUST NOT specifiy -m as well. This adds changes to the'
-              r,←⊂'        latest commit, in case you forgot something minor after having commited.'
+              r,←⊂'-amend  If this is specified -m= is ignored. This adds changes to the latest commit, in'
+              r,←⊂'        case you forgot something minor after having commited.'
               r,←⊂'        Never to be used when the last commit was already pushed!'
               r,←⊂''
               r,←⊂''
@@ -722,7 +724,9 @@
               r,←⊂' * An integer is interpreted as "max number of log entries"'
               r,←⊂' * Alternatively one can specify "YYYY-MM-DD" which is treated as "since.'
               r,←⊂''
-              r,←⊂'-verbose By default a short report is provided. Overwrite with -verbose for a detailed report'
+              r,←⊂'-verbose  By default a short report is provided. Overwrite with -verbose for a detailed report'
+              r,←⊂'-name=    Use this to specify the full name to an APL object. As a result only commits will be'
+              r,←⊂'          listed when the given APL object was changed.'
               r,←AddLevel3HelpInfo'Log'
           :Case ⎕C'NoOfUntrackedFiles'
               r,←⊂'Returns the number of untracked files.'

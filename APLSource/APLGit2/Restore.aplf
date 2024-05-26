@@ -1,0 +1,30 @@
+ r←{x}Restore obj;⎕TRAP;space;path;cmd;rc;msg;buff;filename;links;data;ref
+⍝ Restore `obj`. Useful to bring back the last commited version after an unstaged change in the working directory you are not happy with.\\
+⍝ `obj` should be the name of an APL object, either fully qualified or relative to the current namespace.
+ ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
+ x←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'x'
+ (space path)←EstablishProject x
+ :If ~(1⍴obj)∊'#⎕'
+     obj←(⊃⎕NSI),'.',obj
+ :EndIf
+ ('Not found: ',obj)U.Assert 0<⎕NC obj
+ filename←⎕SE.Link.GetFileName obj
+ ('No corresponding file found for ',obj)U.Assert 0<≢filename
+ cmd←'restore "',filename,'"'
+ (rc msg buff)←path U.RunGitCommand cmd
+ msg U.Assert 0=rc
+ links←1↓⎕SE.Link.Status''
+ :If ~'←'∊∊links[links[;1]⍳⊂space;2]
+ :AndIf 1 CommTools.YesOrNo'File successfully restored; get the restored code into the workspace?'
+     data←⊃⎕NGET filename 1
+     ref←⍎{⍵↓⍨-(⌽⍵)⍳'.'}obj
+     :Select ⎕C 3⊃⎕NPARTS filename
+     :CaseList '.aplf' '.aplo'
+         ref.⎕FX data
+     :Case '.aplc' '.apln' '.apli'
+         ∘∘∘
+     :Else
+         ∘∘∘   ⍝TODO⍝ Variables
+     :EndSelect
+ :EndIf
+⍝Done

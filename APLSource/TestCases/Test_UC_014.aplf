@@ -11,7 +11,7 @@
  →T.PassesIf' '=1↑0⍴∊∊result
 
  (rc msg result)←stop ∆UCMD'Log "',∆Folder1,'"'
- →T.PassesIf 6=≢result
+ →T.PassesIf 5=≢result
 
  (rc msg result)←stop ∆UCMD'Log "',∆Folder1,'" 2020-01-01'
  →T.PassesIf 0<≢result
