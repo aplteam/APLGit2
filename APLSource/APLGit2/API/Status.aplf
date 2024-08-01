@@ -1,1 +1,1 @@
- Status←{⍺←⊢ ⋄ ⍺ ##.Status ⍵}
+Status←{⍺←⊢ ⋄ ⍺ ##.Status ⍵}

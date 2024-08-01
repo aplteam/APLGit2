@@ -1,5 +1,8 @@
  R←Test_API_162(stopFlag batchFlag);⎕TRAP;result;qdmx;tempFolder;zipfile;rc;msg
 ⍝ Runs "Add" and "Commit" on "main" without a message and negative confirmation
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
  tempFolder←FilesAndDirs.GetTempSubDir⊃⎕SI
  zipfile←##.CiderConfig.HOME,'/TestData/GitProject.zip'
  zipfile ZipArchive.UnzipTo tempFolder

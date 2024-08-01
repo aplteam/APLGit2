@@ -1,1 +1,1 @@
- Squash←{⍺←⊢ ⋄ ⍺ ##.Squash ⍵}
+Squash←{⍺←⊢ ⋄ ⍺ ##.Squash ⍵}

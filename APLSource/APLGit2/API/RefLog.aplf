@@ -1,1 +1,1 @@
- RefLog←{⍺←⊢ ⋄ ⍺ ##.RefLog ⍵}
+RefLog←{⍺←⊢ ⋄ ⍺ ##.RefLog ⍵}

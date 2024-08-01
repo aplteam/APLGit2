@@ -1,1 +1,1 @@
- OpenGitShell←{1:shy←##.OpenGitShell ⍵}
+OpenGitShell←{##.OpenGitShell ⍵}

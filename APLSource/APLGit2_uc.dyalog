@@ -119,7 +119,7 @@
           c.Name←'Log'
           c.Desc←'Shows the commit logs'
           c.Group←'APLGit2'
-          c.Parse←'2s -verbose -name='
+          c.Parse←'2s -verbose -name= -commit='
           c._Project←1
           r,←c
      
@@ -296,6 +296,7 @@
       parms.max←¯1
       parms.since←''
       parms.name←''args.Switch'name'
+      parms.commit←''args.Switch'commit'
       parms(ProcessLogParms)←(1+0≡args._2)⊃args.(_2 _1)
       r←parms G.Log folder
     ∇
@@ -422,7 +423,7 @@
     ∇
 
     ∇ r←Init(space folder args)
-      'This folder is already managed by Git'Assert~⎕SE.APLGit2.IsGitProject folder
+      ('This folder is already managed by Git: ',folder)Assert~⎕SE.APLGit2.IsGitProject folder
       :If args.quiet
       :OrIf ⎕SE.CommTools.YesOrNo'Sure that you want to make ',folder,' a Git-managed folder?'
           r←args.quiet ⎕SE.APLGit2.Init folder
@@ -475,13 +476,13 @@
           :EndIf
       :EndIf
       :If ⎕SE.APLGit2.IsDirty folder
-          :If 0 args.Switch'merge'
-              'You must not specify both =merge and -m='Assert 0=≢''args.Switch'msg'
+          :If 0 args.Switch'amend'
+              'You must not specify both -amend and -m='Assert 0=≢''args.Switch'm'
               r←⍪1 ⎕SE.APLGit2.Commit folder
               :Return
-          :ElseIf (,0)≢,args.msg
-          :AndIf 0<≢args.msg
-              msg←args.msg
+          :ElseIf (,0)≢,args.m
+          :AndIf 0<≢args.m
+              msg←args.m
           :Else
               flag←0
               :Repeat
@@ -712,8 +713,7 @@
               r,←⊂' * -r stands for "remote": list just remote branches'
               r,←AddLevel3HelpInfo'ListBranches'
           :Case ⎕C'Log'
-              r,←⊂'Shows a list with all commits in an edit window, by default with --oneline, but watch out'
-              r,←⊂'for -verbose.'
+              r,←⊂'Shows list with all commits with ⎕ED, by default with --oneline, but check -verbose.'
               r,←⊂''
               r,←⊂'If you need to specify a folder (rather than on acting on open Cider projects) then you must'
               r,←⊂'specify the folder as the first argument.'
@@ -721,12 +721,13 @@
               r,←⊂'You may specify instead or in addition an integer or a date; see below for details.'
               r,←⊂''
               r,←⊂' * Without an argument or just a folder/alias the full log is printed'
-              r,←⊂' * An integer is interpreted as "max number of log entries"'
-              r,←⊂' * Alternatively one can specify "YYYY-MM-DD" which is treated as "since.'
+              r,←⊂' * An integer is interpreted as "max number of log entries" to be listed'
+              r,←⊂' * Alternatively one can specify "YYYY-MM-DD" which is treated as "since"'
               r,←⊂''
               r,←⊂'-verbose  By default a short report is provided. Overwrite with -verbose for a detailed report'
-              r,←⊂'-name=    Use this to specify the full name to an APL object. As a result only commits will be'
-              r,←⊂'          listed when the given APL object was changed.'
+              r,←⊂'-name=    Use this to specify the full name of an APL object. This reduces the list to commits'
+              r,←⊂'          changing the given APL object.'
+              r,←⊂'-commit=  Use this to list all commits up to (but not including) the given commit'
               r,←AddLevel3HelpInfo'Log'
           :Case ⎕C'NoOfUntrackedFiles'
               r,←⊂'Returns the number of untracked files.'
@@ -746,7 +747,7 @@
               r,←⊂'the old value of a reference.'
               r,←⊂''
               r,←⊂'-all   If you want all records then specifiy the -all flag.'
-              r,←⊂'-max   If you want a specific number then specify the max= modifier.'
+              r,←⊂'-max=  If you want a specific number then specify the max= modifier.'
           :Case ⎕C'SetDefaultProject'
               r,←⊂'Use this to specify a default project.'
               r,←⊂'Commands that require a project will act on the default project in case it was set.'
@@ -792,13 +793,14 @@
       r←''
       r,←⊂'The ]APLGit2.* user commands are particularly useful when used in conjunction with the project'
       r,←⊂'manager Cider, but they can be used without Cider as well, though you must then specify the'
-      r,←⊂'folder you wish the user command to act on. APLGit2 does not accept URLs pointing to GitHub,'
-      r,←⊂'it works only locally.'
+      r,←⊂'folder you wish the user command to act on.'
+      r,←⊂''
+      r,←⊂'Note that APLGit2 does not accept URLs pointing to GitHub, it works only locally.'
       r,←⊂''
       r,←⊂'By default a user command will act on the currently opened Cider project if there is just one.'
-      r,←⊂'If there are multiple open Cider projects the user will be asked which one to act on.'
+      r,←⊂'If there are multiple open Cider projects, the user will be asked which one to act on.'
       r,←⊂''
-      r,←⊂'Once a default project got established and there are several Cider projects opened the user will'
+      r,←⊂'Once a default project got established, and there are several Cider projects opened, the user will'
       r,←⊂'be asked if she wants to act on the default project. If she refuses, a list with all opened Cider'
       r,←⊂'projects will be presented to her.'
       :If flag

@@ -1,5 +1,9 @@
 :Namespace Foo
 
+
+
+
+
     ∇ r←Hello
       r←'World'
     ∇

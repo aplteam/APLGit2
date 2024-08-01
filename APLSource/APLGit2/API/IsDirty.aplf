@@ -1,1 +1,1 @@
- IsDirty←{##.IsDirty ⍵}
+IsDirty←{##.IsDirty ⍵}

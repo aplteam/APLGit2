@@ -1,1 +1,1 @@
- GetProjectFromPath←{##.GetProjectFromPath ⍵}
+GetProjectFromPath←{##.GetProjectFromPath ⍵}

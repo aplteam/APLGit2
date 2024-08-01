@@ -15,18 +15,22 @@
      qdmx←⎕DMX
      U.ErrNo ⎕SIGNAL⍨qdmx.EM
  :EndTrap
- r←ns.∆QuickView GH
- r←{(⍵[;1]≢¨⊂'state')⌿⍵}¨r                                  ⍝ "State" is not meaningful here
- r←BeautifyDateTime¨r
- :Select ⊃verbose
- :Case 0
-     r←{(~⍵[;1]∊'assignees' 'labels' 'updated_at')⌿⍵}¨r     ⍝ This is the default
- :Case 1
-     ⍝ No action required
- :Case 2
-     r{⍺⍪'body'⍵}←¨ns.body
+ :If 0=≢ns
+     r←''
  :Else
-     ∘∘∘                                                    ⍝ Huh?!
- :EndSelect
- r←↑r
+     r←ns.∆QuickView GH
+     r←{(⍵[;1]≢¨⊂'state')⌿⍵}¨r                                  ⍝ "State" is not meaningful here
+     r←BeautifyDateTime¨r
+     :Select ⊃verbose
+     :Case 0
+         r←{(~⍵[;1]∊'assignees' 'labels' 'updated_at')⌿⍵}¨r     ⍝ This is the default
+     :Case 1
+     ⍝ No action required
+     :Case 2
+         r{⍺⍪'body'⍵}←¨ns.body
+     :Else
+         ∘∘∘                                                    ⍝ Huh?!
+     :EndSelect
+     r←↑r
+ :EndIf
 ⍝Done

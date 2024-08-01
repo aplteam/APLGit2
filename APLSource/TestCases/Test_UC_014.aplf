@@ -1,4 +1,4 @@
- R←Test_UC_014(stopFlag batchFlag);⎕TRAP;rc;msg;stop;result
+ R←Test_UC_014(stopFlag batchFlag);⎕TRAP;rc;msg;stop;result;result2
 ⍝ Runs ]Log
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -12,6 +12,9 @@
 
  (rc msg result)←stop ∆UCMD'Log "',∆Folder1,'"'
  →T.PassesIf 5=≢result
+
+  (rc msg result2)←stop ∆UCMD'Log "',∆Folder1,'" -commit=',⊃result[4;1]
+ →T.PassesIf 3=≢result2
 
  (rc msg result)←stop ∆UCMD'Log "',∆Folder1,'" 2020-01-01'
  →T.PassesIf 0<≢result

@@ -21,7 +21,7 @@
  ∆ModifyCounter ∆Folder1
  (rc msg result)←∆UCMD'Commit #.Proj_1 -m="some msg" -amend -add'
  →T.PassesIf 0<rc
- →T.PassesIf ∨/'You must not specify both -amend and -msg='⍷msg
+ →T.PassesIf ∨/'You must not specify both -amend and -m='⍷msg
 
  (rc msg result)←stop ∆UCMD'Commit #.Proj_1 -amend -add'
  msg Assert rc=0

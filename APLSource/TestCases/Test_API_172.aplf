@@ -1,0 +1,10 @@
+ R←Test_API_172(stopFlag batchFlag);⎕TRAP;buff
+⍝ Runs "BeautifyDateTime"
+ buff←G.BeautifyDateTime↑('updated_at' '1999-10-20 09:08:07')('updated_at' '1999-10-20 09:08:07')
+ buff←buff[;2]
+ →T.PassesIf 2∧.={':'+.=⍵}¨buff
+ →T.PassesIf 2∧.={'-'+.=⍵}¨buff
+ →T.PassesIf∧/{∧/⎕D∊⍨⍵~'-: '}¨buff
+
+ R←T._OK
+⍝Done

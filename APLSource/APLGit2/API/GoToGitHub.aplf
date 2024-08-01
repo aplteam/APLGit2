@@ -1,1 +1,1 @@
- GoToGitHub←{1:shy←##.GoToGitHub ⍵}
+GoToGitHub←{##.GoToGitHub ⍵}

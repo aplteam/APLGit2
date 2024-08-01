@@ -1,4 +1,4 @@
- r←{parms_}Log y;buff;cmd;msg;rc;⎕TRAP;parms;folder;space;unwantedBranches;list
+ r←{parms_}Log y;buff;cmd;msg;rc;⎕TRAP;parms;folder;space;unwantedBranches;list;b
 ⍝ Returns the log of commits.\\
 ⍝ The result depends on `verbose`.
 ⍝ * If it's 0 (the default), then `r` is a nested matrix with four columns:\\
@@ -23,6 +23,7 @@
  parms.branch←''
  parms.max←¯1
  parms.name←''
+ parms.commit←''
  :If 9=⎕NC'parms_'
      'parms'⎕NS parms_
  :EndIf
@@ -30,7 +31,7 @@
  :AndIf 0=1↑0⍴parms.since
      parms.since←{(4↑⍵),'-',(2↑4↓⍵),'-',(2↑6↓⍵)}⍕⌊parms.since
  :EndIf
- :If ~∧/(parms.⎕NL-2)∊list←'since' 'verbose' 'branch' 'max' 'name'
+ :If ~∧/(parms.⎕NL-2)∊list←'since' 'verbose' 'branch' 'max' 'name' 'commit'
      811 ⎕SIGNAL⍨'Invalid parameters: ',⊃{⍺,',',⍵}/(parms.⎕NL-2)~list
  :EndIf
  cmd←'log '
@@ -52,6 +53,16 @@
  :EndIf
  (rc msg buff)←folder U.RunGitCommand cmd
  msg U.Assert 0=rc
+ :If 0<≢parms.commit
+     :If parms.verbose
+         b←buff{∧\(↑(≢⍵)↑¨⍺)∨.≠⍵}'commit ',parms.commit
+     :Else
+         b←∧\(↑(≢parms.commit)↑¨buff)∨.≠parms.commit
+     :EndIf
+     :If 0∊b
+         buff←b/buff
+     :EndIf
+ :EndIf
  :If parms.verbose
      r←⍕⍪buff
  :Else

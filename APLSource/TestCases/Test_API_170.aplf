@@ -1,5 +1,8 @@
  R←Test_API_170(stopFlag batchFlag);⎕TRAP;tempFolder;zipfile;rc;msg;noOf1;noOf2
 ⍝ Runs "NoOfUntrackedFiles"
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
  tempFolder←FilesAndDirs.GetTempSubDir⊃⎕SI
  zipfile←##.CiderConfig.HOME,'/TestData/GitProject.zip'
  zipfile ZipArchive.UnzipTo tempFolder

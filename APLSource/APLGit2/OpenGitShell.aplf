@@ -1,4 +1,4 @@
- {r}←OpenGitShell y;bool;cmd;home;path;pathToGitExe;paths;space
+{r}←OpenGitShell y;bool;cmd;home;path;pathToGitExe;paths;space
 ⍝ Opens a Terminal in `y`.\\
 ⍝ `y` must be one of:\\
 ⍝   * Fully qualified path to a Git-managed project
@@ -20,7 +20,11 @@
          home←(bool⍳1)⊃paths
          pathToGitExe←home,'\sh.exe'
      :Else
-         'GitBash not found!'⎕SIGNAL 6
+         home←(⊢2 ⎕NQ #'GetEnvironment' 'ProgramFiles'),'/Git/bin'
+         pathToGitExe←home,'/sh.exe'
+         :If ~⎕NEXISTS home
+             'GitBash not found!'⎕SIGNAL 6
+         :EndIf
      :EndIf
      cmd←('"',pathToGitExe,'" --cd="',path,'"')
      ⎕SH cmd''

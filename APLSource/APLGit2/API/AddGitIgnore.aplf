@@ -1,1 +1,1 @@
- AddGitIgnore←{⍺←⊢ ⋄ ⍺ ##.AddGitIgnore ⍵}
+AddGitIgnore←{⍺←⊢ ⋄ ⍺ ##.AddGitIgnore ⍵}

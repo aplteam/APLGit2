@@ -1,0 +1,12 @@
+ R←Test_API_171(stopFlag batchFlag);⎕TRAP;v
+⍝ Runs "Version"
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ v←G.API.Version
+ →T.PassesIf 2≤'.'+.=v
+ →T.PassesIf'+'∊v
+ →T.PassesIf∧/⎕D∊⍨(v↑⍨¯1+⌊/v⍳'+-')~'.'
+
+ R←T._OK
+⍝Done

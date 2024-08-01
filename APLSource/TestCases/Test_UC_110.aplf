@@ -40,5 +40,5 @@
 ∆TidyUp:
  Assert 0 ⎕SE.Cider.CloseProject'#.CommTools'
  #.⎕EX'CommTools'
- FilesAndDirs.RmDir tempFolder
+ {}FilesAndDirs.RmDir tempFolder
 ⍝Done

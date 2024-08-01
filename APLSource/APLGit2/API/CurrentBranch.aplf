@@ -1,1 +1,1 @@
- CurrentBranch←{##.CurrentBranch ⍵}
+CurrentBranch←{##.CurrentBranch ⍵}

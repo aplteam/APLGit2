@@ -1,1 +1,1 @@
- CompareCommits←{⍺←⊢ ⋄ ⍺ ##.CompareCommits ⍵}
+CompareCommits←{⍺←⊢ ⋄ ⍺ ##.CompareCommits ⍵}
