@@ -12,7 +12,6 @@
  r,←⊂'GetPathFromProject'
  r,←⊂'GetProjectFromPath'
  r,←⊂'GetTagOfLatestRelease'
- r,←⊂'GoToGitHub'
  r,←⊂'Init'
  r,←⊂'IsDirty'
  r,←⊂'IsGitProject'

@@ -1,4 +1,4 @@
-﻿:Class APLGit2_uc
+:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
 
@@ -80,14 +80,6 @@
           c.Desc←'Returns the tag of the latest release'
           c.Group←'APLGit2'
           c.Parse←'1s -verbose -username='
-          c._Project←1
-          r,←c
-     
-          c←⎕NS''
-          c.Name←'GoToGitHub'
-          c.Desc←'For a project "Foo/Goo" this opens https://github.com/Foo/Goo'
-          c.Group←'APLGit2'
-          c.Parse←'1s'
           c._Project←1
           r,←c
      
@@ -227,13 +219,6 @@
       :Case ⎕C'RefLog'
           →noProjectSelected/0
           r←RefLog space folder Args
-      :Case ⎕C'GoToGitHub'
-          :If 0=⎕NC'space'
-          :OrIf 0=≢space
-              r←GoToGitHub Args
-          :Else
-              r←space GoToGitHub Args
-          :EndIf
       :Case ⎕C'Init'
           →noProjectSelected/0
           r←Init space folder Args
@@ -378,7 +363,7 @@
               :Else
                   r←'No project provided/selected'
               :EndIf
-          :ElseIf ~(⊂Cmd)∊'GoToGitHub' 'OpenGitShell'
+          :ElseIf ~(⊂Cmd)∊,⊂'OpenGitShell'
               ('<',folder,'> not found on disk')Assert ⎕NEXISTS folder
           :EndIf
       :EndIf
@@ -400,15 +385,6 @@
       r←0 0⍴''
     ∇
 
-    ∇ r←{space}GoToGitHub args
-      'Not a URL on GitHub'Assert 0<≢args._1
-      :If 0=⎕NC'space'
-          r←⎕SE.APLGit2.GoToGitHub args._1
-      :Else
-          r←⎕SE.APLGit2.GoToGitHub space
-      :EndIf
-    ∇
-
     ∇ r←ChangeLog(space folder args);msg;name;⎕TRAP
       name←args._1
       :If ~(⊃name)∊'#⎕'
@@ -416,10 +392,6 @@
       :EndIf
       ('Not an APL object: ',name)Assert 0<⎕NC name
       r←folder ⎕SE.APLGit2.ChangeLog name
-    ∇
-
-    ∇ r←GoToGithub(space folder args);msg
-      r←⎕SE.APLGit2.GoToGithub folder msg
     ∇
 
     ∇ r←Init(space folder args)
@@ -559,8 +531,6 @@
               r,←⊂']GetDefaultProject'
           :Case ⎕C'GetTagOfLatestRelease'
               r,←⊂']APLGit2.GetTagOfLatestRelease [space|folder]'
-          :Case ⎕C'GoToGitHub'
-              r,←⊂']APLGit2.OpenGitHub [space|folder|<group>/<project-name>|[alias]]'
           :Case ⎕C'Init'
               r,←⊂']APLGit2.Init [folder] -quiet'
           :Case ⎕C'IsDirty'
@@ -667,21 +637,6 @@
           :Case ⎕C'GetDefaultProject'
               r,←⊂'Returns the namespace and the folder if there is a default project defined.'
               r,←⊂'See also ]APLGit2.SetDefaultProject'
-          :Case ⎕C'GoToGitHub'
-              r,←⊂'Opens project in your default browser as, say:'
-              r,←⊂'https://github.com/aplteam/APLGit2'
-              r,←⊂''
-              r,←⊂'If no argument is provided, the user command looks for any open Cider projects.'
-              r,←⊂' * If there is just one open, it acts on it'
-              r,←⊂' * If there are several Cider projects open, the user will be questioned'
-              r,←⊂''
-              r,←⊂'The required project can be specified in a number of ways:'
-              r,←⊂' * A URL like https://github.com/aplteam.APLGit2'
-              r,←⊂' * A group and a project name like aplteam-APLGit2'
-              r,←⊂' * A fully qualified namespace name of an opened Cider project like'
-              r,←⊂'   #.APLGit2'
-              r,←⊂' * A Cider alias of an opened Cider project like [git]'
-              r,←AddLevel3HelpInfo'GoToGitHub'
           :Case ⎕C'Init'
               r,←⊂'Useful to initialize a folder for being managed by Git.'
               r,←⊂''
@@ -774,7 +729,7 @@
           :Select ⎕C Cmd
           :CaseList ⎕C¨'Add' ''
               r,←AddProjectOptions 1
-          :CaseList ⎕C¨'Commit' 'CurrentBranch' 'Diff' 'GoToGitHub' 'IsDirty' 'IsGitProject' 'ListBranches' 'Log' 'OpenGitShell' 'Status'
+          :CaseList ⎕C¨'Commit' 'CurrentBranch' 'Diff' 'IsDirty' 'IsGitProject' 'ListBranches' 'Log' 'OpenGitShell' 'Status'
               r,←AddProjectOptions 0
           :Else
               r,←⊂'There is no additional help available'

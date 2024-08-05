@@ -1,4 +1,6 @@
 (
+ '* 0.17.0 ⋄ 2024-08-05'
+ '  * `GoToGitHub` removed, or rather: moved to the ]GitHub user command where it belongs.'
  '* 0.17.0 ⋄ 2024-08-01'
  '  * The API function `Commit` now accepts a 1 as left argument, resulting in `commit --amend --no-edit`, allowing'
  '    latest changes to be merged into the last commit.'

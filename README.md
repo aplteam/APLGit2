@@ -35,10 +35,7 @@ For example, the  `Commit` API function just does that: executing `git commit`. 
 * The Git bash must be installed and available on the environment variable `%PATH%`
 * The Git config parameters `user.name` and `user.email` must be set
 
-Two functions rely on you hosting your project(s) on GitHub: 
-
-* `GetTagOfLatestRelease`
-* `]APLGit2.GoToGitHub`
+One function relies on you hosting your project(s) on GitHub: `GetTagOfLatestRelease`
 
 All other commands are agnostic in this respect.
 
@@ -85,7 +82,6 @@ User commands start with an `]`, API function don't.
   GetProjectFromPath     Get the path in the workspace from the disk path of a project
  ]GetDefaultProject      Returns namespace and folder of the current default project, if any     
  ]GetTagOfLatestRelease  Returns the tag of the latest release
- ]GoToGitHub             For a project "Foo/Goo", this opens https://github.com/Foo/Goo
  ]Init                   Initialises project with Git, including .gitignore & .gitattributes
  ]IsDirty                Are there any uncommited changes?
  ]IsGitProject           Returns "yes" or "no" depending on whether there is a ./.git folder    
@@ -103,4 +99,5 @@ User commands start with an `]`, API function don't.
 ```
 
 Note that `CurrentBranch` is available as an API function but not as a user command. This is because internally it is often needed, but there is hardly any need for a user command, in particular because the command `]ListBranches` and `]Status` both report the current branch anyway.
+
 
