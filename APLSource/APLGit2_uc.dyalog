@@ -447,12 +447,11 @@
               :Return
           :EndIf
       :EndIf
-      :If ⎕SE.APLGit2.IsDirty folder
-          :If 0 args.Switch'amend'
-              'You must not specify both -amend and -m='Assert 0=≢''args.Switch'm'
-              r←⍪1 ⎕SE.APLGit2.Commit folder
-              :Return
-          :ElseIf (,0)≢,args.m
+      :If 0 args.Switch'amend'
+          r←⍪({0≡⍵:'' ⋄ ⍵}Args.m)⎕SE.APLGit2.Commit folder 1
+          :Return
+      :ElseIf ⎕SE.APLGit2.IsDirty folder
+          :If (,0)≢,args.m
           :AndIf 0<≢args.m
               msg←args.m
           :Else

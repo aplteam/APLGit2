@@ -1,1 +1,1 @@
-SetDefaultProject←{⍺←⊢ ⋄ ⍺ ##.SetDefaultProject ⍵}
+SetDefaultProject←{⍺←⊢ ⋄ 1:shy←⍺ ##.SetDefaultProject ⍵}
