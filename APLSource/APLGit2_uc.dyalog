@@ -443,19 +443,19 @@
               (rc msg data)←folder G.##.U.RunGitCommand'add -A'
               msg Assert 0=rc
           :Else
-              →0 ⋄ r←'Cancelled by user'
+              r←'Cancelled by user' ⋄ →0
           :EndIf
       :EndIf
       :If 0 args.Switch'amend'
           status←G.Status folder
           :If ∨/'nothing to commit, working tree clean'⍷∊status
           :AndIf 0=≢''args.Switch'm'
-              →0 ⋄ r←'There is nothing to commit and you have not specified a message either?!'
+              r←'There is nothing to commit and you have not specified a message either?!' ⋄ →0
           :EndIf
           currentBranch←G.CurrentBranch folder
           :If 'main'≡currentBranch
           :AndIf ~∨/'(use "git push" to publish your local commits)'⍷∊status
-              →0 ⋄ r←'You MUST NOT use the -amend flag when the latest commit has already been pushed'
+              r←'You MUST NOT use the -amend flag when the latest commit has already been pushed' ⋄ →0
           :EndIf
           r←⍪({0≡⍵:'' ⋄ ⍵}Args.m)G.Commit folder 1
       :Else

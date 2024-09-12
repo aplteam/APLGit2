@@ -7,7 +7,7 @@
      R←T._NoBatchTest ⋄ →0
  :EndIf
 
- CommTools.Pause'This test needs you: when a ⎕ED window pops up, plug in "All my changes"'
+ CommTools.Pause'This test needs you: when a ⎕ED window pops up, plug in "---" (three hyphens)'
 
  tempFolder←FilesAndDirs.GetTempSubDir⊃⎕SI
  zipfile←##.CiderConfig.HOME,'/TestData/TestProject.zip'
@@ -19,7 +19,7 @@
 
  →T.GoToTidyUp 0≠+/allCommits1[1 2;4]∊allCommits2[;4]
  →T.GoToTidyUp 2≠≢allCommits2
- →T.GoToTidyUp'All my changes'≢⊃allCommits2[;4]
+ →T.GoToTidyUp'---'≢⊃allCommits2[;4]
 
  R←T._OK
 
