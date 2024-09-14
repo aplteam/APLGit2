@@ -1,5 +1,6 @@
 (
- '* 0.19.1 ⋄ 2024-09-14'
+ '* 0.20.0 ⋄ 2024-09-14'
+ '  * User command script simplified and all code moved to the UC namespace'
  '  * Bug fixes'
  '    * `]Commits`''s help page corrected regarding the change of -amend (can now be used to change commit msg)'
  '* 0.19.0 ⋄ 2024-09-12'
