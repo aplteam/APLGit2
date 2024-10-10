@@ -12,7 +12,7 @@
 ⍝ Because this function established the hashes to be compared if they are not specified (empty), they are also returned.
  x←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'x'
  (space folder)←EstablishProject x
- filename1←filename2←''
+ filename1←filename2←hash1←hash2←''
  :If 0<≢space,folder
      branch←CurrentBranch folder
      y←{0=≢⍵:⍵ ⋄ ⊆⍵}y
