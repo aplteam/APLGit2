@@ -5,7 +5,7 @@
  :EndIf
  'Argument is invalid'Assert(,'.')≢hash2
  buff←folder ##.CompareCommits hash1 hash2
- (filename1 filename2 hash1 hash2)←4↑buff,'' ''    ⍝ Because old versions of CompareCommit did not return the hashes
+ (filename1 filename2 hash1 hash2)←4↑buff,'' ''    ⍝ Because old versions of CompareCommits did not return the hashes
  (hash1 hash2)←{⍵↑⍨¨8⌊≢¨⍵}hash1 hash2              ⍝ Short version suffices
  :If 0<+/⎕NEXISTS filename1 filename2
      :If args.files
