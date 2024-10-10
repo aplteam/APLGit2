@@ -20,5 +20,5 @@
      :EndIf
      (ind⊃r)←msg
  :EndIf
- r←(⊂space),⊆r
+ r←(⊂path{0<≢⍵:'Namespace: ',⍵ ⋄ 'Folder: ',⍺}space),⊆r
 ⍝Done
