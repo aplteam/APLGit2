@@ -1,4 +1,4 @@
- R←Test_UC_015(stopFlag batchFlag);⎕TRAP;tempDir;stop;rc;msg;res;noOf
+ R←Test_UC_015(stopFlag batchFlag);⎕TRAP;tempDir;stop;rc;msg;res;noOf;noOf2
 ⍝ Runs ]Squash
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -24,10 +24,11 @@
  Assert∨/'1 file changed, 1 insertion(+)'⍷∊res
 
  stop←0
- (rc msg buff)←stop ∆UCMD'Squash "',tempDir,'" 3 -m="This is my message"'
+ (rc msg noOf2)←stop ∆UCMD'Squash "',tempDir,'" 3 -m="This is my message"'
  msg Assert rc=0
  →T.GoToTidyUp(noOf+1)≠≢G.Log tempDir
  →T.GoToTidyUp~>/≢¨tempDir∘G.RefLog¨0 1
+ →T.GoToTidyUp ⊃≠/∊¨noOf2 noOf
 
  R←T._OK
 
