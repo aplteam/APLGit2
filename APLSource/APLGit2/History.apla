@@ -1,4 +1,6 @@
 (
+ '* 0.21.0 ⋄ 2024-10-??'
+ '  * `Log` now shows the timezone as well'
  '* 0.20.0 ⋄ 2024-10-13'
  '  * User command script simplified and all code moved to the UC namespace'
  '  * All commands now allow `.` for "current directory"'
