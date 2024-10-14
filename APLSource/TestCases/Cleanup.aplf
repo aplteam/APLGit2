@@ -1,6 +1,8 @@
  Cleanup;openProjects;rc;msg;buff
  G.∆TestFlag←0
- ⎕SE.Link.NOTIFY←∆LINK_NOTIFY_WAS
+ :If 0<⎕NC'∆LINK_NOTIFY_WAS'
+     ⎕SE.Link.NOTIFY←∆LINK_NOTIFY_WAS
+ :EndIf
  openProjects←⎕SE.Cider.ListOpenProjects 0
  openProjects←('#.Proj_'∘{⍺≡(≢⍺)↑⍵}¨openProjects[;1])⌿openProjects
  {}0 ⎕SE.Cider.CloseProject¨openProjects[;1]

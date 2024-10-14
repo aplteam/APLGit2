@@ -14,11 +14,11 @@
      ind←⍸∨/¨'On branch'∘⍷¨r
      branch←⊃¯1↑' '(≠⊆⊢)ind⊃r
      :If (⊂branch)∊'main' 'master'
-         msg←U.Box{⍵{(⍵⍴'⌹')⍺(⍵⍴'⌹')}≢⍵}'⌹ On branch ',branch,' ⌹'
+         msg←1↓∊(⎕UCS 13),U.Box{⍵{(⍵⍴'⌹')⍺(⍵⍴'⌹')}≢⍵}'⌹ On branch ',branch,' ⌹'
      :Else
          msg←'On branch ',branch
      :EndIf
      (ind⊃r)←msg
+     r←(⊂path{0<≢⍵:'Namespace: ',⍵ ⋄ 'Folder: ',⍺}space),⊆r
  :EndIf
- r←(⊂space),⊆r
 ⍝Done

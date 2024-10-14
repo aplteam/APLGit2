@@ -2,7 +2,7 @@
 ⍝ Makes `path` a Git Repository and commits what's there as "Initial commit".\\
 ⍝ Always returns ⍬.
  (rc more buff)←path G.U.RunGitCommand'init --initial-branch=main'
- G.U.Assert 0=rc
+ more G.U.Assert 0=rc
  (⊂G.U.GetGitAttributes)⎕NPUT path,'/.gitattributes'
  (rc more buff)←path G.U.RunGitCommand'add .'
  :If 0≠rc

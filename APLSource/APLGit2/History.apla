@@ -1,4 +1,13 @@
 (
+ '* 0.20.0 ⋄ 2024-10-13'
+ '  * User command script simplified and all code moved to the UC namespace'
+ '  * All commands now allow `.` for "current directory"'
+ '  * Bug fixes'
+ '    * `]Commits`''s help page corrected regarding the change of -amend (can now be used to change commit msg)'
+ '    * `]Status` now reports the folder in case no namespace was specified'
+ '    * `]Status` provided sometimes a mutilated message when on main/master.'
+ '    * `]CompareCommits` crashed when no files were found'
+ '    * `-??` did not work '
  '* 0.19.0 ⋄ 2024-09-12'
  '  * Beware, the syntax of `Commit` has changed! Due to that you can now use it to change a commit message'
  '    with the -amend flag'

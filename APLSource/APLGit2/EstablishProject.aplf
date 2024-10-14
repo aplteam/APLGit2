@@ -13,6 +13,10 @@
  noSelect←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'noSelect'
  y←⍕y
  (namespace folder)←'' ''
+ :If (,'.')≡,y
+     folder←⊃1 ⎕NPARTS''
+     :Return
+ :EndIf
  list←⎕SE.Cider.ListOpenProjects 0
  DEFAULT_PROJECT←{0<⎕NC ⍵:DEFAULT_PROJECT ⋄ ''}'DEFAULT_PROJECT'    ⍝ Initalise the default project as undefined
  :If 0=≢y
