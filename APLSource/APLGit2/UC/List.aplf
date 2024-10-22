@@ -146,6 +146,22 @@
      r,←c
 
      c←⎕NS''
+     c.Name←'StashList'
+     c.Desc←'List all stashes, if any'
+     c.Group←'APLGit2'
+     c.Parse←'1s'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'StashShow'
+     c.Desc←'Shows all files in the given stash (default is the last one)'
+     c.Group←'APLGit2'
+     c.Parse←'1s -n='
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
      c.Name←'Status'
      c.Desc←'Reports all untracked files and/or all uncommitted changes'
      c.Group←'APLGit2'

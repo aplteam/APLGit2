@@ -1,0 +1,3 @@
+ r←StashShow(space folder Args);n
+ n←0 Args.Switch'n'
+ r←↑n ##.StashShow folder

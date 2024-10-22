@@ -1,0 +1,13 @@
+ r←{n}StashShow y;rc;more;path;⎕TRAP;space
+⍝ Shows the Diff between the stash and the commit that was active the moment the stash was created.\\
+⍝ `n` is the number of the stash. Default is the last one (0).\\
+⍝ `y` must be one of:
+⍝   * Fully qualfied name of a namespace that is an opened Cider project
+⍝   * Fully qualified path to a Git-managed project
+ ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
+ n←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'n'
+ (space path)←EstablishProject y
+ (rc more r)←path U.RunGitCommand'stash show ',⍕n
+ more U.Assert 0=rc
+ ((≢'fatal:')↓more)U.Assert'fatal:'{⍺≢(≢⍺)↑⍵}more
+⍝Done

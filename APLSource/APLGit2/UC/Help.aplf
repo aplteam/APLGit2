@@ -41,6 +41,10 @@
          r,←⊂']APLGit2.SetDefaultProject [space|folder]'
      :Case ⎕C'Status'
          r,←⊂']APLGit2.Status -short -path='
+     :Case ⎕C'StashList'
+         r,←⊂']APLGit2.StashList [space|folder]'
+     :Case ⎕C'StashShow'
+         r,←⊂']APLGit2.StashShow [space|folder] [n]'
      :Case ⎕C'Squash'
          r,←⊂']APLGit2.Squash [space|folder] [noOf] -m=<message>'
      :Else
