@@ -1,4 +1,4 @@
-:Class APLGit2_uc
+﻿:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
 
@@ -27,7 +27,13 @@
               (r space folder)←G.##.UC.GetSpaceAndFolder Cmd ns
           :EndIf
       :Else
-          (r space folder)←G.##.UC.GetSpaceAndFolder Cmd Args
+          :If (⊂⎕c Cmd)∊⎕c 'AddGitIgnore' 'Add'
+          :AndIf ∨/'/\'∊Args._1
+              folder←Args._1
+              space←''
+          :Else
+              (r space folder)←G.##.UC.GetSpaceAndFolder Cmd Args
+          :EndIf
       :EndIf
       noProjectSelected←∧/space folder∊''⍬
       func←G.##.UC⍎Cmd

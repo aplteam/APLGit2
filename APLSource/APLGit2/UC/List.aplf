@@ -51,7 +51,7 @@
 
      c←⎕NS''
      c.Name←'Diff'
-     c.Desc←'Compares the working directory with HEAD'
+     c.Desc←'Produces a list with changed/deleted/added files by comparing the working directory with HEAD'
      c.Group←'APLGit2'
      c.Parse←'1s -verbose'
      c._Project←1
@@ -155,9 +155,49 @@
 
      c←⎕NS''
      c.Name←'StashShow'
-     c.Desc←'Shows all files in the given stash (default is the last one)'
+     c.Desc←'Shows all files of a stash (default is the last one)'
      c.Group←'APLGit2'
-     c.Parse←'1s -n='
+     c.Parse←'1s -stash='
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'StashPush'
+     c.Desc←'Save your local modifications to a new stash entry and roll them back to HEAD (in the working tree and in the index)'
+     c.Group←'APLGit2'
+     c.Parse←'1s -m= -u'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'StashPop'
+     c.Desc←'Apply a stash to the working area & remove from stash stack, by default the last one'
+     c.Group←'APLGit2'
+     c.Parse←'1s'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'StashApply'
+     c.Desc←'(Re)-apply stash (by default the last one) to the working area & DO NOT remove from stash stack'
+     c.Group←'APLGit2'
+     c.Parse←'1s -stash='
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'StashClear'
+     c.Desc←'Delete all stashes'
+     c.Group←'APLGit2'
+     c.Parse←'1s'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'StashDrop'
+     c.Desc←'Drop a specific stash'
+     c.Group←'APLGit2'
+     c.Parse←'1s -stash='
      c._Project←1
      r,←c
 

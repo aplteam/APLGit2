@@ -1,0 +1,18 @@
+ r←StashPush y;folder;msg;rc;more;buff;cmd;untracked
+⍝ Stash changes.
+⍝ Requires at least a folder.
+⍝ * In addition you may add a message as second positional parameter
+⍝ * In addition you may add a Boolean as third positional parameter
+⍝   Use this to includes untracked files
+ (folder msg untracked)←3↑(⊆y),'' 0 0
+ cmd←'stash push ',((0<≢msg)/'-m="',(msg~'"'),'" '),(untracked/'-u ')
+ (rc more buff)←folder U.RunGitCommand cmd
+ more U.Assert 0=rc
+ :If 'No local changes to save'≡∊buff
+     r←⊃buff
+ :Else
+     buff←StashList folder
+     r←{⊃⊃(//)⎕VFI{⍵↑⍨¯1+⍵⍳'}'}'stash@{'{(≢⍺)↓⍵↓⍨¯1+1⍳⍨⍺⍷⍵}⍵}¨buff
+     r←⊃¯1↑r
+ :EndIf
+⍝Done

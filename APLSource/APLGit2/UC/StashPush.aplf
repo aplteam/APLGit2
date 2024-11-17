@@ -1,0 +1,6 @@
+ r←StashPush(space folder Args);message;untracked
+⍝ Stashes all files in the working area
+ message←''Args.Switch 'm'
+ untracked←Args.Switch 'u'
+ r←↑ ##.StashPush folder message untracked
+⍝Done

@@ -8,6 +8,9 @@
  n←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'n'
  (space path)←EstablishProject y
  (rc more r)←path U.RunGitCommand'stash show ',⍕n
- more U.Assert 0=rc
- ((≢'fatal:')↓more)U.Assert'fatal:'{⍺≢(≢⍺)↑⍵}more
-⍝Done
+ :If ∨/'No stash entries found'⍷∊more
+     r←''
+ :Else
+     more U.Assert 0=rc
+     ((≢'fatal:')↓more)U.Assert'fatal:'{⍺≢(≢⍺)↑⍵}more
+ :EndIf

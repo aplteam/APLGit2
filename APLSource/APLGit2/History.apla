@@ -1,6 +1,9 @@
 (
- '* 0.21.0 ⋄ 2024-10-??'
+ '* 0.21.0 ⋄ 2024-11-??'
  '  * `Log` now shows the timezone as well'
+ '  * A range of user commands regarding stashing added. Names are ]APLGit2.Stash*'
+ '  * Bug fixes'
+ '    * `]AddGitIgnore` did not work as expected when a folder was specified as an argument but no such project was open'
  '* 0.20.0 ⋄ 2024-10-13'
  '  * User command script simplified and all code moved to the UC namespace'
  '  * All commands now allow `.` for "current directory"'

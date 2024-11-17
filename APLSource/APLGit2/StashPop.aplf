@@ -1,0 +1,8 @@
+ r←StashPop(folder stashNo);msg;rc;more;cmd
+⍝ Bring back stashed stuff and remove it from the stash stack
+ 'Missing: stash number'⎕SIGNAL 11/⍨1≠≡,stashNo
+ 'Missing: stash number'⎕SIGNAL 11/⍨0≠1↑0⍴stashNo
+ cmd←'stash pop stash@{',(⍕stashNo),'}'
+ (rc more r)←folder U.RunGitCommand cmd
+ more U.Assert 0=rc
+⍝Done

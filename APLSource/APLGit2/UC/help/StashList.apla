@@ -1,4 +1,5 @@
 (
  '# StashList'
  ''
+ 'Prints a list with all stashes'
 )

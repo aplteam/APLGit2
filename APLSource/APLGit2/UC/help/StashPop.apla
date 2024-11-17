@@ -1,0 +1,10 @@
+(
+ '# StashPop'
+ ''
+ 'Brings the given stash back into the working area.'
+ ''
+ 'If no stash was specified by assigning a number to -n= then the last one is brought back.'
+ ''
+ 'The stash is then removed from the stash stack. See ]APLGit2.StashApply if you don''t want this.'
+ ''
+)
