@@ -1,0 +1,8 @@
+ Initial_Stash;dir2;msg
+⍝ Creates a project for the sole purpose of testing the stash API functions
+ ∆StashDir←FilesAndDirs.GetTempSubDir''
+ {}1 ##.APLGit2.Init ∆StashDir
+ ##.APLGit2.Add ∆StashDir
+ msg←'Initial commit'##.APLGit2.Commit ∆StashDir
+ 'Something went wrong'Assert∧/∨/¨'Initial commit' ' 2 files changed'⍷¨⊂∊msg
+⍝Done

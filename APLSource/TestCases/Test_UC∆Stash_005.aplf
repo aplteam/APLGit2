@@ -1,0 +1,36 @@
+ R←Test_UC∆Stash_005(stopFlag batchFlag);⎕TRAP;dir;rc;msg;list;more;res;buff
+⍝ Executes ]StashPop once with the -n= option
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ dir←∆StashDir,'/SourceCode'
+ 'Create!'FilesAndDirs.CheckPath dir
+
+ (⊂'Hello')⎕NPUT dir,'/file_1.txt'
+
+ ##.APLGit2.Add ∆StashDir
+ list←##.APLGit2.StashList ∆StashDir
+ →T.GoToTidyUp 0<≢list
+ buff←##.APLGit2.StashPush ∆StashDir
+ →T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊buff
+ ⎕MKDIR dir
+ (⊂'Hello2')⎕NPUT dir,'/file_2.txt'
+ ##.APLGit2.Add ∆StashDir
+ buff←##.APLGit2.StashPush ∆StashDir
+ →T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊buff
+ list←##.APLGit2.StashList ∆StashDir
+ →T.GoToTidyUp 2≠≢list
+ →T.GoToTidyUp 0 1≢'stash@'∘{{⊃⊃(//)⎕VFI ⍵↑⍨¯1+⍵⍳'}'}⍵↓⍨(≢⍺)+1⍳⍨⍺⍷⍵}¨A.DLB∘A.DTB¨list
+ (rc more res)←∆UCMD'StashPop ',∆StashDir,' -n=1'
+ more Assert 0=rc
+ →T.GoToTidyUp 1≠∨/'Dropped stash@{1}'⍷∊res
+ →T.GoToTidyUp~∨/'file_1.txt'⍷∊res
+ list←##.APLGit2.StashList ∆StashDir
+ →T.GoToTidyUp 1≠≢list
+ ##.APLGit2.StashClear ∆StashDir
+
+∆TidyUp:
+ ##.APLGit2.StashClear ∆StashDir
+ (rc msg)←FilesAndDirs.RmDirByForce dir
+ msg Assert 0=rc
+⍝Done

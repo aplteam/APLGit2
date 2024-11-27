@@ -1,18 +1,25 @@
- r←StashPush y;folder;msg;rc;more;buff;cmd;untracked
-⍝ Stash changes.
-⍝ Requires at least a folder.
-⍝ * In addition you may add a message as second positional parameter
-⍝ * In addition you may add a Boolean as third positional parameter
-⍝   Use this to includes untracked files
- (folder msg untracked)←3↑(⊆y),'' 0 0
- cmd←'stash push ',((0<≢msg)/'-m="',(msg~'"'),'" '),(untracked/'-u ')
- (rc more buff)←folder U.RunGitCommand cmd
- more U.Assert 0=rc
- :If 'No local changes to save'≡∊buff
-     r←⊃buff
+ r←StashPush y;parms;folder;msg;rc;more;cmd
+⍝ Stashes away all local modifications or only the given files.\\
+⍝ The right argument must be one of these:\\
+⍝ * A folder holding a Git-managed project
+⍝ * A parameter space, usually create by calling `CreateStashPushParms`, with a variable `folder` set.\\
+⍝ By default untracked files are not stashed. You can change that by setting `addUntracked` to 1.\\
+⍝ Returns an empty text vector in case of success and a message otherwise.
+ r←''
+ :If 326=⎕DR y
+     parms←y
  :Else
-     buff←StashList folder
-     r←{⊃⊃(//)⎕VFI{⍵↑⍨¯1+⍵⍳'}'}'stash@{'{(≢⍺)↓⍵↓⍨¯1+1⍳⍨⍺⍷⍵}⍵}¨buff
-     r←⊃¯1↑r
+     'Invalid right argument: neither a parameter space nor a path to a folder'Assert' '=1↑0⍴∊y
+     parms←CreateStashPushParms
+     parms.folder←y
  :EndIf
+ 'Right argument does not specify a folder'Assert FilesAndDirs.IsDir parms.folder
+ cmd←'stash push '
+ :If 0<≢parms.files
+     parms.files←⊆parms.files
+     cmd,←⊃{⍺,' ',⍵}/{'"',(⍵~'"'),'"'}¨FilesAndDirs.EnforceSlash¨parms.files
+ :EndIf
+ cmd,←' ',((0<≢parms.msg)/'-m="',(parms.msg~'"'),'" '),(parms.addUntracked/'-u ')
+ (rc more r)←parms.folder U.RunGitCommand cmd
+ more U.Assert 0=rc
 ⍝Done

@@ -1,1 +1,1 @@
-StashPop←{##.StashPop ⍵}
+StashPop←{⍺←⊢ ⋄ ⍺ ##.StashPop ⍵}

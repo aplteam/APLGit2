@@ -1,13 +1,16 @@
- r←{n}StashShow y;rc;more;path;⎕TRAP;space
-⍝ Shows the Diff between the stash and the commit that was active the moment the stash was created.\\
+ r←{p}StashShow y;rc;more;path;⎕TRAP;space;projectID;n
+⍝ Shows the Diff between the stash and its original parent.\\
+⍝ `projectID` must be one of:\\
+⍝   * Fully qualified name of a namespace that is managed by Git
+⍝   * Path to a Git-managed project\\
 ⍝ `n` is the number of the stash. Default is the last one (0).\\
-⍝ `y` must be one of:
-⍝   * Fully qualfied name of a namespace that is an opened Cider project
-⍝   * Fully qualified path to a Git-managed project
+⍝ The optional left agument can be used to change the format (-p tag)
  ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
- n←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'n'
- (space path)←EstablishProject y
- (rc more r)←path U.RunGitCommand'stash show ',⍕n
+ p←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'p'
+ 'Left argument was specified but is not a Boolean'U.Assert(⊂p)∊0 1
+ (projectID n)←2↑(⊆y),0
+ (space path)←EstablishProject projectID
+ (rc more r)←path U.RunGitCommand'stash show ',(⍕n),p/' -p'
  :If ∨/'No stash entries found'⍷∊more
      r←''
  :Else

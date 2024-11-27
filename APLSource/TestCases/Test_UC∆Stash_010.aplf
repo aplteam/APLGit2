@@ -1,0 +1,24 @@
+ R←Test_UC∆Stash_010(stopFlag batchFlag);⎕TRAP;dir;rc;msg;more;res
+⍝ Executes ]StashShow without a stash number (defaults to 0)
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ dir←∆StashDir,'/SourceCode'
+ 'Create!'FilesAndDirs.CheckPath dir
+
+ (⊂'Hello')⎕NPUT dir,'/file_1.txt'
+ ##.APLGit2.Add ∆StashDir
+
+ (rc more res)←∆UCMD'StashPush ',∆StashDir
+ →T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊res
+ (rc more res)←∆UCMD'StashShow ',∆StashDir
+ more Assert 0=rc
+ →T.GoToTidyUp~∨/'SourceCode/file_1.txt'⍷∊res
+ (rc more res)←∆UCMD'StashClear ',∆StashDir
+ more Assert 0=rc
+
+∆TidyUp:
+ ##.APLGit2.StashClear ∆StashDir
+ (rc msg)←FilesAndDirs.RmDirByForce dir
+ msg Assert 0=rc
+⍝Done

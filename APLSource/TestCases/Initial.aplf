@@ -10,7 +10,7 @@
  G←APLGit2←##.APLGit2
  C←CommTools
 
- G.∆TestFlag←1
+ G.∆TestFlag←1 CommTools.YesOrNo'Run code in ⎕SE when a user command (rather than #.APLGit2) ?'
 
  ∆TempDir←F.GetTempSubDir'Git_Tests'
  3 ⎕MKDIR ∆Folder1←G.F.EnforceSlash ∆TempDir,'/NoBlanks'

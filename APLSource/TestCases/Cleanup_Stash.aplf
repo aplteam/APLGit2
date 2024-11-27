@@ -1,0 +1,6 @@
+ Cleanup_Stash
+ :If 0<⎕NC'∆StashDir'
+ :AndIf FilesAndDirs.IsDir ∆StashDir
+     {}FilesAndDirs.RmDirByForce ∆StashDir
+     ⎕EX'∆StashDir'
+ :EndIf

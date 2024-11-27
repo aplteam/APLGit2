@@ -1,0 +1,21 @@
+ R←Test_Stash_012(stopFlag batchFlag);⎕TRAP;dir;rc;msg;buff
+⍝ Executes StashShow with a different format on the default
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ dir←∆StashDir,'/SourceCode'
+ 'Create!'FilesAndDirs.CheckPath dir
+
+ (⊂'Hello')⎕NPUT dir,'/file_1.txt'
+ ##.APLGit2.Add ∆StashDir
+ buff←##.APLGit2.StashPush ∆StashDir
+ →T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊buff
+
+ buff←1 ##.APLGit2.StashShow ∆StashDir
+ →T.GoToTidyUp~∨/'/file_1.txt'⍷∊buff
+
+∆TidyUp:
+ ##.APLGit2.StashClear ∆StashDir
+ (rc msg)←FilesAndDirs.RmDirByForce dir
+ msg Assert 0=rc
+⍝Done

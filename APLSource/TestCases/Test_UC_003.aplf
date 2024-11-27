@@ -21,7 +21,7 @@
 
  (rc msg result)←stop ∆UCMD'Status #.Proj_2 -short'
  msg Assert rc=0
- →T.PassesIf 3=≢result
+ →T.PassesIf 2=≢result
 
  R←T._OK
 ⍝Done

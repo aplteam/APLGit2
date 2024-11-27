@@ -1,1 +1,1 @@
-StashApply←{##.StashApply ⍵}
+StashApply←{⍺←⊢ ⋄ ⍺ ##.StashApply ⍵}

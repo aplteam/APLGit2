@@ -41,12 +41,24 @@
          r,←⊂']APLGit2.SetDefaultProject [space|folder]'
      :Case ⎕C'Status'
          r,←⊂']APLGit2.Status -short -path='
+     :Case ⎕C'StashApply'
+         r,←⊂']APLGit2.StashApply [space|folder] -n=<number of stash>'
+     :Case ⎕C'StashClear'
+         r,←⊂']APLGit2.StashClear [space|folder]'
+     :Case ⎕C'StashDrop'
+         r,←⊂']APLGit2.StashDrop [space|folder] -n='
      :Case ⎕C'StashList'
          r,←⊂']APLGit2.StashList [space|folder]'
+     :Case ⎕C'StashPop'
+         r,←⊂']APLGit2.StashPop [space|folder] -n='
+     :Case ⎕C'StashPush'
+         r,←⊂']APLGit2.StashPush [space|folder]'
      :Case ⎕C'StashShow'
          r,←⊂']APLGit2.StashShow [space|folder] [n]'
      :Case ⎕C'Squash'
          r,←⊂']APLGit2.Squash [space|folder] [noOf] -m=<message>'
+     :Case ⎕C'Version'
+         r,←⊂']APLGit2.Version'
      :Else
          r,←⊂'There is no help available'
      :EndSelect
@@ -55,8 +67,10 @@
      :EndIf
 
  :Case 1
+     ('No second-level help found for ',Cmd)Assert 0<help.⎕NC Cmd
      r←help⍎Cmd
  :Case 2
+     ('No third-level help found for ',Cmd)Assert 0<help.⎕NC Cmd
      :Select ⎕C Cmd
      :CaseList ⎕C¨'Add' ''
          r,←AddProjectOptions 1

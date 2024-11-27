@@ -1,7 +1,8 @@
 (
- '* 0.21.0 ⋄ 2024-11-??'
- '  * `Log` now shows the timezone as well'
- '  * A range of user commands regarding stashing added. Names are ]APLGit2.Stash*'
+ '* 0.21.0 ⋄ 2024-11-26'
+ '  * Several API-functions and user commands added in order to manage stashes'
+ '  * `Log` now shows the timezone'
+ '  * When no argument was provided the user is now asked whether she wants to act on the current directory'
  '  * Bug fixes'
  '    * `]AddGitIgnore` did not work as expected when a folder was specified as an argument but no such project was open'
  '* 0.20.0 ⋄ 2024-10-13'

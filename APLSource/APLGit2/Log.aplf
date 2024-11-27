@@ -17,6 +17,7 @@
  ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
  r←''
  (space folder)←EstablishProject y
+ 'Cancelled by user: no project specified/selected'Assert 0<≢folder
  parms←⎕NS''
  parms.since←''
  parms.verbose←0

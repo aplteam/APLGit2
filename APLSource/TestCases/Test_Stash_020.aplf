@@ -1,0 +1,52 @@
+ R←Test_Stash_020(stopFlag batchFlag);⎕TRAP;dir;rc;msg;list;res;parms;buff
+⍝ Executes StashPush thrice, StashList and StashDrop twice and StashClear
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ dir←∆StashDir,'/SourceCode'
+ 'Create!'FilesAndDirs.CheckPath dir
+
+ (⊂'Hello')⎕NPUT dir,'/file_1.txt'
+ ##.APLGit2.Add ∆StashDir
+ parms←##.APLGit2.CreateStashPushParms
+ parms.folder←∆StashDir
+ parms.msg←'First stash'
+ buff←##.APLGit2.StashPush parms
+ →T.GoToTidyUp~∨/'Saved working directory and index state On main:'⍷∊buff
+ ⎕MKDIR dir
+ (⊂'Hello2')⎕NPUT dir,'/file_2.txt'
+ ##.APLGit2.Add ∆StashDir
+ parms←##.APLGit2.CreateStashPushParms
+ parms.folder←∆StashDir
+ parms.msg←'Second stash'
+ buff←##.APLGit2.StashPush parms
+ →T.GoToTidyUp~∨/'Saved working directory and index state On main:'⍷∊buff
+ ⎕MKDIR dir
+ (⊂'Hello3')⎕NPUT dir,'/file_3.txt'
+ ##.APLGit2.Add ∆StashDir
+ parms←##.APLGit2.CreateStashPushParms
+ parms.folder←∆StashDir
+ parms.msg←'Third stash'
+ rc←##.APLGit2.StashPush parms
+ →T.GoToTidyUp~∨/'Saved working directory and index state On main:'⍷∊buff
+
+ list←##.APLGit2.StashList ∆StashDir
+ →T.GoToTidyUp 3≠≢list
+
+ res←2 ##.APLGit2.StashDrop ∆StashDir
+ →T.GoToTidyUp~∨/'Dropped stash@{2}'⍷∊res
+ list←##.APLGit2.StashList ∆StashDir
+ →T.GoToTidyUp 2≠≢list
+ res←##.APLGit2.StashDrop ∆StashDir
+ →T.GoToTidyUp~∨/'Dropped stash@{0}'⍷∊res
+ list←##.APLGit2.StashList ∆StashDir
+ →T.GoToTidyUp 1<≢list
+
+ res←##.APLGit2.StashClear ∆StashDir
+ →T.GoToTidyUp~∨/'stash clear =>'⍷∊res
+
+∆TidyUp:
+ ##.APLGit2.StashClear ∆StashDir
+ (rc msg)←FilesAndDirs.RmDirByForce dir
+ msg Assert 0=rc
+⍝Done

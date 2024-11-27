@@ -19,6 +19,11 @@
  :EndIf
  list←⎕SE.Cider.ListOpenProjects 0
  DEFAULT_PROJECT←{0<⎕NC ⍵:DEFAULT_PROJECT ⋄ ''}'DEFAULT_PROJECT'    ⍝ Initalise the default project as undefined
+ :If 2≠≡DEFAULT_PROJECT                     ⍝ Make sure ...
+ :OrIf ∧/{⊃' '≠1↑0⍴⍵}¨⍕¨DEFAULT_PROJECT     ⍝ ... the variable DEFAULT_PROJECT ...
+ :OrIf ~⎕NEXISTS 2⊃DEFAULT_PROJECT          ⍝ ... is okay, otherwise it is better ...
+     DEFAULT_PROJECT←''                     ⍝ ... to ignore it!
+ :EndIf
  :If 0=≢y
      :If 0=≢list
          :Return

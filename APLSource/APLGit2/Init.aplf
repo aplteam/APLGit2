@@ -1,10 +1,10 @@
  path←{quiet}Init y;space;msg;rc;path;buff
 ⍝ Initialize a folder as being managed by Git.\\
-⍝ If the user wants to she can also add a .gitignore and/or a .gitattributes file that makes sense for APLers.\\
+⍝ If the user wants to, she can also add a .gitignore and/or a .gitattributes file that makes sense for APLers.\\
 ⍝ `y` must be one of:
 ⍝  * Empty: then `Git` tries to find an open Cider project and uses that
-⍝  * Fully qualfied name of a namespace of an opened Cider project
-⍝  * Fully qualified path to a Git-managed project\\
+⍝  * Fully qualified name of a namespace of an opened Cider project
+⍝  * Path to a Git-managed project\\
 ⍝ Explicit result:\\
 ⍝ `path` is the path to a folder that was (re-) initialized as a Git project and otherwise an empty text vector.\\
 ⍝ The optional left argument defaults to 0. If 1 then Init does not ask any question but carries out its job,

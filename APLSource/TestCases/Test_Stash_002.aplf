@@ -1,0 +1,40 @@
+ R←Test_Stash_002(stopFlag batchFlag);⎕TRAP;dir;rc;msg;list;parms;buff
+⍝ Executes StashList, StashPush (with a particular message) and StashClear
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ dir←∆StashDir,'/SourceCode'
+ 'Create!'FilesAndDirs.CheckPath dir
+
+ (⊂'Hello')⎕NPUT dir,'/file_1.txt'
+ ##.APLGit2.Add ∆StashDir
+ list←##.APLGit2.StashList ∆StashDir
+ →T.GoToTidyUp 0<≢list
+ parms←##.APLGit2.CreateStashPushParms
+ parms.folder←∆StashDir
+ parms.msg←'First stash'
+ buff←##.APLGit2.StashPush parms
+ →T.GoToTidyUp~∨/'Saved working directory and index state On main:'⍷∊buff
+ ⎕MKDIR dir
+ (⊂'Hello2')⎕NPUT dir,'/file_2.txt'
+ ##.APLGit2.Add ∆StashDir
+ list←##.APLGit2.StashList ∆StashDir
+ →T.GoToTidyUp 1≠≢list
+ parms←##.APLGit2.CreateStashPushParms
+ parms.folder←∆StashDir
+ parms.msg←'Second stash'
+ buff←##.APLGit2.StashPush parms
+ →T.GoToTidyUp~∨/'Saved working directory and index state On main:'⍷∊buff
+ list←##.APLGit2.StashList ∆StashDir
+ →T.GoToTidyUp 2≠≢list
+ →T.GoToTidyUp 0 1≢'stash@'∘{{⊃⊃(//)⎕VFI ⍵↑⍨¯1+⍵⍳'}'}⍵↓⍨(≢⍺)+1⍳⍨⍺⍷⍵}¨list
+ →T.GoToTidyUp 1 1≢∨/¨'First stash' 'Second stash'⍷¨⊂∊list
+ ##.APLGit2.StashClear ∆StashDir
+ list←##.APLGit2.StashList ∆StashDir
+ →T.GoToTidyUp 0<≢list
+
+∆TidyUp:
+ ##.APLGit2.StashClear ∆StashDir
+ (rc msg)←FilesAndDirs.RmDirByForce dir
+ msg Assert 0=rc
+⍝Done

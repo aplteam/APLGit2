@@ -1,4 +1,4 @@
- R←Test_UC_011(stopFlag batchFlag);⎕TRAP;rc;msg;result;stop
+ R←Test_UC_011(stopFlag batchFlag);⎕TRAP;rc;msg;result;stop;ref
 ⍝ Runs ]ChangeLog
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -8,7 +8,8 @@
  msg Assert rc=0
  →T.GoToTidyUp~0<≢result
 
- ⎕SE.APLGit2.##.CommTools.Select_Choices←1 2⍴∆SelectCaption'#.APLGit2'
+ ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
+ ref.##.CommTools.Select_Choices←1 2⍴'SelectPrjForAPLGIT2@' '#.APLGit2'
  (rc msg result)←stop ∆UCMD'ChangeLog #.APLGit2.APLGit2.Add'
  msg Assert rc=0
  →T.GoToTidyUp~0<≢result
@@ -19,5 +20,5 @@
  R←T._OK
 
 ∆TidyUp:
- ⎕SE.APLGit2.##.CommTools.Cleanup
+ ref.##.CommTools.Cleanup
 ⍝Done

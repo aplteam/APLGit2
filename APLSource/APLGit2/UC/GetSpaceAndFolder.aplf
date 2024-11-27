@@ -14,10 +14,10 @@
          (space folder)←##.EstablishProject''
      :EndIf
      :If 0=≢space,folder
-         :If (⊂Cmd)∊'OpenGitShell' ''
-             folder←'.'
+         :If 1 ##.CommTools.YesOrNo'Act on the current directory (',(⊃1 ⎕NPARTS''),') ?'
+             folder←⊃1 ⎕NPARTS''
          :Else
-             r←'No project provided/selected'
+             r←'No argument provided',(9=⎕SE.⎕NC'Cider')/' and no open Cider project(s) found.'
          :EndIf
      :ElseIf ~(⊂Cmd)∊,⊂'OpenGitShell'
          ('<',folder,'> not found on disk')Assert ⎕NEXISTS folder

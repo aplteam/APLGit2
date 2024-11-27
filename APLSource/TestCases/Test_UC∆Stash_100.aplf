@@ -1,0 +1,52 @@
+ R←Test_UC∆Stash_100(stopFlag batchFlag);⎕TRAP;rc;msg;list;more;res;dir;ref
+⍝ Executes ]StashList, ]StashPush, ]StashPop, ]StashApply and ]StashClear without an argument
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ dir←FilesAndDirs.AddTrailingSep #.Proj_1.CiderConfig.HOME
+ (⊂'Hello')⎕NPUT dir,'file_1.txt'
+
+ ##.APLGit2.Add dir
+ ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
+ ref.##.CommTools.Select_Choices←1 2⍴'SelectPrjForAPLGIT2@' '#.Proj_1'
+ (rc more list)←∆UCMD'StashList'
+ more Assert 0=rc
+ →T.GoToTidyUp 0<≢list
+ (rc more res)←∆UCMD'StashPush'
+ more Assert 0=rc
+ (⊂'Hello2')⎕NPUT dir,'file_2.txt'
+ ##.APLGit2.Add dir
+ (rc more list)←∆UCMD'StashList'
+ more Assert 0=rc
+ →T.GoToTidyUp 1≠≢list
+ (rc more res)←∆UCMD'StashPush'
+ more Assert 0=rc
+→T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊res
+ (rc more list)←∆UCMD'StashList'
+ more Assert 0=rc
+ →T.GoToTidyUp 2≠≢list
+ →T.GoToTidyUp 0 1≢'stash@'∘{{⊃⊃(//)⎕VFI ⍵↑⍨¯1+⍵⍳'}'}⍵↓⍨(≢⍺)+1⍳⍨⍺⍷⍵}¨A.DLB∘A.DTB¨↓list
+ (rc more res)←∆UCMD'StashPop'
+ more Assert 0=rc
+ →T.GoToTidyUp 1≠∨/'stash pop stash@{0}'⍷∊res
+ (rc more list)←∆UCMD'StashList'
+ more Assert 0=rc
+ →T.GoToTidyUp 1≠≢list
+ (rc more res)←∆UCMD'StashApply'
+ more Assert 0=rc
+ →T.GoToTidyUp 1≠∨/'apply stash@{0}'⍷∊res
+ (rc more list)←∆UCMD'StashList'
+ more Assert 0=rc
+ →T.GoToTidyUp 1≠≢list
+ (rc more res)←∆UCMD'StashClear'
+ more Assert 0=rc
+ (rc more list)←∆UCMD'StashList'
+ more Assert 0=rc
+ →T.GoToTidyUp 0<≢list
+
+∆TidyUp:
+ ##.APLGit2.StashClear ∆StashDir
+ ref.##.CommTools.Cleanup
+ FilesAndDirs.DeleteFile dir∘,¨'file_1.txt' 'file_2.txt '
+ ##.APLGit2.Add dir
+⍝Done

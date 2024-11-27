@@ -1,4 +1,4 @@
- R←Test_UC_007(stopFlag batchFlag);⎕TRAP;rc;msg;stop;buff
+ R←Test_UC_007(stopFlag batchFlag);⎕TRAP;rc;msg;stop;buff;ref
 ⍝ Runs ]OpenGitShell
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -19,12 +19,16 @@
  msg Assert rc=0
  →T.PassesIf 1 C.YesOrNo'Was the shell opened in ',#.APLGit2.CiderConfig.HOME,'?'
 
- ⎕SE.APLGit2.##.CommTools.Select_Choices←1 2⍴∆SelectCaption'#.Proj_1'
+ ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
+ ref.##.CommTools.Select_Choices←1 2⍴'SelectPrjForAPLGIT2@' '#.Proj_1'
  (rc msg buff)←∆UCMD'OpenGitShell'
- ⎕SE.APLGit2.##.CommTools.Cleanup
+ ref.##.CommTools.Cleanup
  msg Assert rc=0
 
- →T.PassesIf 1 C.YesOrNo'Was the shell opened in ',#.Proj_1.CiderConfig.HOME,'?'
+ →T.GoToTidyUp~1 C.YesOrNo'Was the shell opened in ',#.Proj_1.CiderConfig.HOME,'?'
 
  R←T._OK
+
+∆TidyUp:
+ ref.##.CommTools.Cleanup
 ⍝Done

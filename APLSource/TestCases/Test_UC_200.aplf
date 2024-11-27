@@ -1,0 +1,24 @@
+ R←Test_UC_200(stopFlag batchFlag);⎕TRAP;list;cmd;rc;more;res
+⍝ Run all "Help" commands on all levels: 0, 1 and 2
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ list←##.APLGit2.Public
+
+ :For cmd :In list
+
+     (rc more res)←∆UCMD cmd,' -?'
+     more Assert rc=0
+     →T.PassesIf∨/(']APLGIT2.',1 ⎕C cmd)⍷∊1 ⎕C res
+
+     (rc more res)←∆UCMD cmd,' -??'
+     more Assert rc=0
+     →T.PassesIf∨/(']APLGIT2.',1 ⎕C,cmd)⍷∊1 ⎕C res
+
+     (rc more res)←∆UCMD cmd,' -???'
+     more Assert rc=0
+     →T.PassesIf∨/(']APLGIT2.',1 ⎕C,cmd)⍷∊1 ⎕C res
+ :EndFor
+
+ R←T._OK
+⍝Done

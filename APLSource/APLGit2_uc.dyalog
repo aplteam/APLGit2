@@ -1,10 +1,10 @@
-﻿:Class APLGit2_uc
+:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
 
     ⎕IO←1 ⋄ ⎕ML←1
 
-    ∇ r←List;c;G ⍝ this function usually returns 1 or more namespaces (here only 1)
+    ∇ r←List;c;G ⍝ this function usually returns 1 or more namespaces (here only 1);⎕TRAP
       :Access Shared Public
       r←⍬
       G←GetRefToAPLGit2 ⍬
@@ -27,7 +27,7 @@
               (r space folder)←G.##.UC.GetSpaceAndFolder Cmd ns
           :EndIf
       :Else
-          :If (⊂⎕c Cmd)∊⎕c 'AddGitIgnore' 'Add'
+          :If (⊂⎕C Cmd)∊⎕C'AddGitIgnore' 'Add'
           :AndIf ∨/'/\'∊Args._1
               folder←Args._1
               space←''
@@ -35,9 +35,11 @@
               (r space folder)←G.##.UC.GetSpaceAndFolder Cmd Args
           :EndIf
       :EndIf
-      noProjectSelected←∧/space folder∊''⍬
-      func←G.##.UC⍎Cmd
-      r←func space folder Args
+      :If (⊂⎕C Cmd)∊'setdefaultproject' 'getdefaultproject'
+      :OrIf ~noProjectSelected←∧/space folder∊''⍬
+          func←G.##.UC⍎Cmd
+          r←func space folder Args
+      :EndIf
     ⍝Done
     ∇
 
