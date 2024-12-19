@@ -1,7 +1,7 @@
 (
  '# StashPush'
  ''
- 'Saves some/all local modifications to a new stash entry and roll them back to HEAD in the working tree and in the index.'
+ 'Saves some/all local modifications to a new stash entry & rolls them back to HEAD in the working tree & in the index.'
  'This stash will be the (new) number 0 in the stash cache.'
  ''
  'If specified, the optional argument must be one or both of:'

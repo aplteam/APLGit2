@@ -1,4 +1,4 @@
- R←Test_API_144 (stopFlag batchFlag);⎕TRAP;tempFolder;rc;msg;zipfile;qdmx
+ R←Test_API_144(stopFlag batchFlag);⎕TRAP;tempFolder;rc;msg;zipfile;qdmx
 ⍝ Runs "Squash" on "main" with negative confirmation
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -12,7 +12,7 @@
  Assert'main'≡G.CurrentBranch tempFolder
 
  :Trap 0
-     G.CommTools.YesOrNo_Answers←1 2⍴'SquashOnMain@' 'n'  ⍝ Without confirmation an error must be thrown
+     G.CommTools.AddAutomation'YesOrNo' 'SquashOnMain@' 'n'  ⍝ Without confirmation an error must be thrown
      {}tempFolder G.Squash'Squash first two commit' 2
      →T.GoToTidyUp 1
  :Else
@@ -23,6 +23,7 @@
  R←T._OK
 
 ∆TidyUp:
+ G.CommTools.Cleanup
  (rc msg)←FilesAndDirs.RmDirByForce tempFolder
  msg Assert rc=0
 ⍝Done

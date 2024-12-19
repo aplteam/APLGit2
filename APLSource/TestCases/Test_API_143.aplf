@@ -11,7 +11,7 @@
  {}'README polished'G.Commit tempFolder
  Assert'main'≡G.CurrentBranch tempFolder
  log←G.Log tempFolder
- G.CommTools.YesOrNo_Answers←1 2⍴'SquashOnMain@' 'y'  ⍝ On "main", APL2Git must ask for confirmation
+ G.CommTools.AddAutomation'YesOrNo' 'SquashOnMain@' 'y'  ⍝ On "main", APL2Git must ask for confirmation
  noOf←tempFolder G.Squash'Squash first two commit' 2
  →T.GoToTidyUp noOf≠2
  log2←G.Log tempFolder
@@ -21,6 +21,7 @@
  R←T._OK
 
 ∆TidyUp:
+ G.CommTools.Cleanup
  (rc msg)←FilesAndDirs.RmDirByForce tempFolder
  msg Assert rc=0
 ⍝Done

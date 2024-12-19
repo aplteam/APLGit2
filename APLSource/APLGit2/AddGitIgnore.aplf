@@ -1,4 +1,4 @@
- r←{quiet}AddGitIgnore y;buff;space;path;ref;cfg;installFolders;q;ind
+ r←{quiet}AddGitIgnore y;buff;space;path;ref;cfg;installFolders;q;ind;plural
 ⍝ Add a .gitignore file to a project, or merge default values into an existing one.\\
 ⍝ The user is questioned several times, and she may edit the result before it is written to file.\\
 ⍝ All interrogations as well as the ability to edit the file can be supressed by passing a 0 as `⍺` ("quiet").\\
@@ -7,7 +7,7 @@
  (space path)←EstablishProject y
  →(0=≢space,path)/0
  :If quiet
- :OrIf CommTools.YesOrNo'Add .gitignore for APLers to ',path,' ?'
+ :OrIf 1 CommTools.YesOrNo'AddGitignore@Add .gitignore for APLers to ',path,' ?'
      buff←'aplcore' 'CONTINUE' 'CONTINUE.dws' 'conga.crash'
      cfg←⍬
      :If 0<≢space
@@ -16,10 +16,11 @@
      :AndIf 0<≢(⊂'')~⍨cfg.CIDER.(dependencies dependencies_dev).tatin
          installFolders←{1⊃'='(≠⊆⊢)⍵}¨(⊂'')~⍨cfg.CIDER.(dependencies dependencies_dev).tatin
          installFolders←F.AddTrailingSep¨installFolders
-         q←'Install folders: ',⊃{⍺,' and ',⍵}/installFolders
-         q,←(⎕UCS 13),'  Add special statements for them?'
+         plural←1<≢installFolders
+         q←'SpecialStatement@Install folder',(plural/'s'),': ',⊃{⍺,' and ',⍵}/installFolders
+         q,←(⎕UCS 13),'  Add special statements to ',((1+plural)⊃'it' 'them'),' for dependency file and build list?'
          :If quiet
-         :OrIf CommTools.YesOrNo q
+         :OrIf 1 CommTools.YesOrNo q
              buff,←⊃,/{r←''
                  r,←⊂'/',⍵,'*'
                  r,←⊂'!/',⍵,'apl-dependencies.txt'
@@ -30,10 +31,10 @@
      :EndIf
      :If cfg≢⍬
      :AndIf 0<≢cfg.CIDER.distributionFolder
-         q←⊂'Would you like to add the destination folder:'
+         q←⊂'AddDestinationFolder@Would you like to add the destination folder:'
          q,←⊂cfg.CIDER.distributionFolder
          q,←⊂'to .gitignore?'
-     :AndIf CommTools.YesOrNo q
+     :AndIf 1 CommTools.YesOrNo q
          buff,←⊂{((~(⊃⍵)∊'/\')/'/'),FilesAndDirs.AddTrailingSep ⍵}cfg.CIDER.distributionFolder
      :EndIf
      ind←1
@@ -41,7 +42,7 @@
          :If quiet
              ind←2          ⍝ Merge
          :Else
-             ind←('Select desired action on ',path,'/.gitignore')0 1 CommTools.Select'Replace' 'Merge' 'Quit'
+             ind←('SelectActionOnGitIgnore@Select desired action on ',path,'/.gitignore')0 1 CommTools.Select'Replace' 'Merge' 'Quit'
          :EndIf
          →(ind=3)/0
          :If ind=2

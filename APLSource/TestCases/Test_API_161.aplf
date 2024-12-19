@@ -10,7 +10,7 @@
  G.Add tempFolder
  log←G.Log tempFolder
 
- G.CommTools.YesOrNo_Answers←1 2⍴'NoMsgOnCommit@' 'y'  ⍝ Without confirmation an error must be thrown
+ G.CommTools.AddAutomation'YesOrNo' 'NoMsgOnCommit@' 'y'  ⍝ Without confirmation an error must be thrown
  {}''G.Commit tempFolder
  log2←G.Log tempFolder
  →T.GoToTidyUp 1≠-/≢¨log2 log               ⍝ One less than before
@@ -19,5 +19,6 @@
  R←T._OK
 
 ∆TidyUp:
+ G.CommTools.Cleanup
  (rc msg)←FilesAndDirs.RmDirByForce tempFolder
  msg Assert rc=0

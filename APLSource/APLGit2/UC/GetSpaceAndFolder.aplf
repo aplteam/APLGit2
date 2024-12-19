@@ -1,7 +1,12 @@
  (r space folder)←GetSpaceAndFolder(Cmd args)
  r←0 0⍴''
  space←folder←''
- :If ~(⊂Cmd)∊'GetDefaultProject' 'SetDefaultProject' 'Version'
+ :If 'stashpush'≡⎕C Cmd
+ :AndIf (,'?')≡,args._1
+     (space folder)←##.EstablishProject''
+     args._2←args._1
+     args._1←folder
+ :ElseIf ~(⊂Cmd)∊'GetDefaultProject' 'SetDefaultProject' 'Version'
      :If ({⍵⊃⍨⍸⍵.Name≡¨⊂Cmd}List ⍬)._Project
      :AndIf 0≢args._1
          (space folder)←GetSpaceAndFolder_ args._1

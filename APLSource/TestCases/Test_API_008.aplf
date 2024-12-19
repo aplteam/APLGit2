@@ -17,9 +17,9 @@
  parms.watch←'ns'
  {}⎕SE.Cider.OpenProject parms
 
- G.CommTools.YesOrNo_Answers←1 2⍴'Add .gitignore for APLers to ' 'Y'
- G.CommTools.YesOrNo_Answers⍪←'Add special statements for them?' 'N'
- G.CommTools.YesOrNo_Answers⍪←'Would you like to add the destination folder' 'N'
+ G.CommTools.AddAutomation'YesOrNo' 'AddGitignore@' ''
+ G.CommTools.AddAutomation'YesOrNo' 'SpecialStatement@' 'N'
+ G.CommTools.AddAutomation'YesOrNo' 'AddDestinationFolder@' 'N'
  res←G.AddGitIgnore tempFolder
  →T.GoToTidyUp~∨/'.gitignore created in'⍷res
  →T.GoToTidyUp~⎕NEXISTS tempFolder,'/.gitignore'
@@ -27,12 +27,13 @@
  expected←'aplcore' 'CONTINUE' 'CONTINUE.dws' 'conga.crash'
  →T.GoToTidyUp expected≢data
 
- G.CommTools.YesOrNo_Answers[2;]←'Add special statements for them?' 'Y'
- G.CommTools.Select_Choices←1 2⍴'Select desired action on' 2
+ 1 G.CommTools.AddAutomation'YesOrNo' 'SpecialStatement@' ''
+ 1 G.CommTools.AddAutomation'YesOrNo' 'AddDestinationFolder@' ''
+ G.CommTools.AddAutomation'Select' 'SelectActionOnGitIgnore@' 2
  res←G.AddGitIgnore tempFolder
- expected←'aplcore' 'CONTINUE' 'CONTINUE.dws' 'conga.crash' '/packages_dev/*' '!/packages_dev/apl-dependencies.txt' '!/packages_dev/apl-buildlist.json'
+ expected←'aplcore' 'CONTINUE' 'CONTINUE.dws' 'conga.crash' '/packages_dev/*' '!/packages_dev/apl-dependencies.txt' '!/packages_dev/apl-buildlist.json' 'Dist/'
  data←⊃FilesAndDirs.NGET(tempFolder,'/.gitignore')1
- →T.GoToTidyUp≢/FilesAndDirs.EnforceSlash¨¨expected data
+ →T.GoToTidyUp  A.LazyMatch /FilesAndDirs.EnforceSlash¨¨expected data
 
  R←T._OK
 

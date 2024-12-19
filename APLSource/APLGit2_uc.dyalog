@@ -1,4 +1,4 @@
-:Class APLGit2_uc
+﻿:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
 
@@ -11,7 +11,7 @@
       r←G.##.UC.List ⍬
     ∇
 
-    ∇ r←Run(Cmd Args);folder;G;space;ns;noProjectSelected;func
+    ∇ r←Run(Cmd Args);folder;G;space;ns;noProjectSelected;func;list;ind
       :Access Shared Public
       :If 0=⎕SE.⎕NC'APLGit2'
           {}⎕SE.Tatin.LoadDependencies(⊃⎕NPARTS ##.SourceFile)'⎕SE'
@@ -33,6 +33,19 @@
               space←''
           :Else
               (r space folder)←G.##.UC.GetSpaceAndFolder Cmd Args
+              :If 'stashpush'≡⎕C Cmd
+              :AndIf (,'?')≡,Args._2
+                  :If 0<≢list←1 G.##.Status folder
+                      ind←'SelectForStash@Select what to stash:' 1 G.##.CommTools.Select list
+                      :If 0=≢ind
+                          r←'Cancelled by user' ⋄ →0
+                      :Else
+                          Args._2←list←3↓¨list[ind]
+                      :EndIf
+                  :Else
+                      r←'No changes found you could stash' ⋄ →0
+                  :EndIf
+              :EndIf
           :EndIf
       :EndIf
       :If (⊂⎕C Cmd)∊'setdefaultproject' 'getdefaultproject'
