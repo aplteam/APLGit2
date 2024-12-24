@@ -8,7 +8,7 @@
 
  ##.APLGit2.Add dir
  ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
- ref.##.CommTools.Select_Choices←1 2⍴'SelectPrjForAPLGIT2@' '#.Proj_1'
+ ref.##.CommTools.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_1'
  (rc more list)←∆UCMD'StashList'
  more Assert 0=rc
  →T.GoToTidyUp 0<≢list
@@ -21,7 +21,7 @@
  →T.GoToTidyUp 1≠≢list
  (rc more res)←∆UCMD'StashPush'
  more Assert 0=rc
-→T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊res
+ →T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊res
  (rc more list)←∆UCMD'StashList'
  more Assert 0=rc
  →T.GoToTidyUp 2≠≢list

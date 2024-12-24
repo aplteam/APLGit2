@@ -1,24 +1,28 @@
- Make flag;M;C;path;zipFilename;res;version;cfg;parms
+ Make flag;M;C;path;zipFilename;res;cfg;parms;pkgCfgFilename
 ⍝ "Make" a new version of this project
  :If flag
      M←⎕SE.MakeHelpers
      C←##.CiderConfig
      path←C.HOME,'/',C.CIDER.distributionFolder
-     cfg←⎕JSON⍠('Dialect' 'JSON5')⊢⊃⎕NGET C.HOME,'/apl-package.json'
+     pkgCfgFilename←C.HOME,'/apl-package.json'
+     cfg←⎕JSON⍠('Dialect' 'JSON5')⊢⊃⎕NGET pkgCfgFilename
      M.FetchLaterUserCommand cfg C'[MyUCMDs]'
-     version←M.CompileVersionNumberPattern cfg
-     M.RecreateFolder path
-     {}⎕SE.Tatin.CreateAPIfromCFG ##.APLGit2 cfg
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
      parms.targetPath←path
-     parms.version←version
-     zipFilename←⎕SE.Tatin.BuildPackage parms
-     ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
-     :If 0<≢cfg.userCommandScript
-     :AndIf 1 M.YesOrNo'Install new version in MyUCMDs?'
-         {}M.##.FilesAndDirs.RmDirByForce M.GetMyUCMDsFolder cfg.name
-         res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]'
-         ⎕←'  New version installed as user command in MyUCMDs/: ',res
+     :If ⎕NULL≡cfg←pkgCfgFilename M.EditVersion cfg
+         ⍞←'Cancelled by user' ⋄ →0
+     :Else
+         parms.version←cfg.version
+         M.RecreateFolder path
+         {}⎕SE.Tatin.CreateAPIfromCFG ##.APLGit2 cfg
+         zipFilename←⎕SE.Tatin.BuildPackage parms
+         ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
+         :If 0<≢cfg.userCommandScript
+         :AndIf 1 M.YesOrNo'Install new version in MyUCMDs?'
+             {}M.##.FilesAndDirs.RmDirByForce M.GetMyUCMDsFolder cfg.name
+             res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]'
+             ⎕←'  New version installed as user command in MyUCMDs/: ',res
+         :EndIf
      :EndIf
  :EndIf
  ⍝Done

@@ -5,7 +5,7 @@
 
  stop←0
  ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
- ref.##.CommTools.Select_Choices←1 2⍴'SelectPrjForAPLGIT2@' 1
+ ref.##.CommTools.AddAutomation'Select' 'SelectPrjForAPLGIT2@' 1
  (rc msg result)←stop ∆UCMD'ListBranches'
  ⎕SE.APLGit2.##.CommTools.Cleanup
  msg Assert rc=0

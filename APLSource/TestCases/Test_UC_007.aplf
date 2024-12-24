@@ -20,7 +20,7 @@
  →T.PassesIf 1 C.YesOrNo'Was the shell opened in ',#.APLGit2.CiderConfig.HOME,'?'
 
  ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
- ref.##.CommTools.Select_Choices←1 2⍴'SelectPrjForAPLGIT2@' '#.Proj_1'
+ ref.##.CommTools.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_1'
  (rc msg buff)←∆UCMD'OpenGitShell'
  ref.##.CommTools.Cleanup
  msg Assert rc=0

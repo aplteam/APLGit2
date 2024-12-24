@@ -5,7 +5,7 @@
 
  stop←0
  ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
- ref.##.CommTools.Select_Choices←1 2⍴'SelectPrjForAPLGIT2@' '#.Proj_2'
+ ref.##.CommTools.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_2'
  (rc msg result)←stop ∆UCMD'IsGitProject'
  msg Assert rc=0
  ref.##.CommTools.Cleanup

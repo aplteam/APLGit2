@@ -1,3 +1,10 @@
  r←Version
+⍝ Returns the version number from TatinVars
 ⍝ See also `History`
- r←'0.21.0-beta-9+216'
+ r←''
+ :If 0<⎕NC'TatinVars.CONFIG'
+     r←(⎕JSON⍠('Dialect' 'JSON5')⊢TatinVars.CONFIG).version
+ :ElseIf 0<##.⎕NC'TatinVars.CONFIG'
+     r←(⎕JSON⍠('Dialect' 'JSON5')⊢##.TatinVars.CONFIG).version
+ :EndIf
+ ⍝Done

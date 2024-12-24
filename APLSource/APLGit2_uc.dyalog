@@ -1,4 +1,4 @@
-﻿:Class APLGit2_uc
+:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
 
@@ -48,7 +48,7 @@
               :EndIf
           :EndIf
       :EndIf
-      :If (⊂⎕C Cmd)∊'setdefaultproject' 'getdefaultproject'
+      :If (⊂⎕C Cmd)∊'setdefaultproject' 'getdefaultproject' 'version'
       :OrIf ~noProjectSelected←∧/space folder∊''⍬
           func←G.##.UC⍎Cmd
           r←func space folder Args

@@ -9,7 +9,7 @@
 
  allCommits1←##.APLGit2.Log tempFolder
  ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
- ref.##.CommTools.AskForNumber_Answers←1 2⍴'NoOfSquashs@' 2
+ ref.##.CommTools.AddAutomation'AskForNumber' 'NoOfSquashs@' 2
  stop←0
  (rc msg buff)←stop ∆UCMD'Squash "',tempFolder,'" -m="My changes"'
  Assert 0=rc
@@ -21,7 +21,7 @@
  R←T._OK
 
 ∆TidyUp:
-  ref.##.CommTools.Cleanup
+ ref.##.CommTools.Cleanup
  (rc msg)←FilesAndDirs.RmDirByForce tempFolder
  msg Assert rc=0
 ⍝Done

@@ -1,4 +1,4 @@
- r←{x}Squash y;msg;noOf;folder;currentBranch;buff;rc;more;commits;historyPath;space;noOf;parms;allCommits;noOf_;caption;alias
+ r←{x}Squash y;msg;noOf;folder;currentBranch;buff;rc;more;commits;historyPath;space;noOf;parms;allCommits;noOf_;caption;ind
 ⍝ Squashes some commits of the current branch into a single one.\\
 ⍝ You can provide as a right argument:\\
 ⍝  * A char vector; treated as commit message
@@ -49,11 +49,10 @@
  :EndIf
  :If 0<noOf_
      :If 0=≢msg
-         :If 0<CommTools.⎕NC'AskForNumber_Answers'
-         :AndIf 0<≢CommTools.AskForNumber_Answers
-             alias←'NoOfSquashsComment@'
-         :AndIf (⊂alias)∊CommTools.AskForNumber_Answers[;1]
-             msg←alias{⊃⍵[⍵[;1]⍳⊂⍺;2]}CommTools.AskForNumber_Answers
+         :If ⍬≢ind←CommTools.FindAutomationIndex'AskForNumber' 'NoOfSquashs@'
+             noOf_←3⊃CommTools.∆Automation[⊃ind;]
+         :AndIf ⍬≢ind←CommTools.FindAutomationIndex'AskForText' 'NoOfSquashsComment@'
+             msg←3⊃CommTools.∆Automation[⊃ind;]
          :Else
              ⍞←'Provide a meaningful commit message in the editor:'
              ⎕SE.⎕SHADOW'TEMP'

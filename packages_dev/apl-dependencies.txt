@@ -4,4 +4,4 @@ aplteam-Tester2-3.10.0
 aplteam-ZipArchive-1.2.1
 aplteam-CodeCoverage-0.10.7
 aplteam-GitHubAPIv3-1.5.0
-aplteam-CommTools-2.0.0-beta-2
+aplteam-CommTools-2.0.0

@@ -1,5 +1,5 @@
 (
- '* 0.21.0 ⋄ 2024-12-19'
+ '* 0.21.0 ⋄ 2024-12-20'
  '  * Several API-functions and user commands added in order to manage stashes'
  '  * `Log` now shows the timezone'
  '  * When no argument was provided, the user is now asked whether she wants to act on the current directory'

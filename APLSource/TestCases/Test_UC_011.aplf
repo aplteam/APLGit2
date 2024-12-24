@@ -9,7 +9,7 @@
  →T.GoToTidyUp~0<≢result
 
  ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
- ref.##.CommTools.Select_Choices←1 2⍴'SelectPrjForAPLGIT2@' '#.APLGit2'
+ ref.##.CommTools.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.APLGit2'
  (rc msg result)←stop ∆UCMD'ChangeLog #.APLGit2.APLGit2.Add'
  msg Assert rc=0
  →T.GoToTidyUp~0<≢result

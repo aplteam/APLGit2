@@ -9,8 +9,8 @@
 
  allCommits1←##.APLGit2.Log tempFolder
  ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
- ref.##.CommTools.AskForNumber_Answers←1 2⍴'NoOfSquashs@' 2
- ref.##.CommTools.AskForNumber_Answers⍪←'NoOfSquashsComment@' 'Foo'
+ ref.##.CommTools.AddAutomation'AskForNumber' 'NoOfSquashs@' 2
+ ref.##.CommTools.AddAutomation'AskForText' 'NoOfSquashsComment@' 'Foo'
  stop←0
  (rc msg buff)←stop ∆UCMD'Squash "',tempFolder,'"'
  msg Assert 0=rc

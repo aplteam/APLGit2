@@ -26,20 +26,17 @@
  →T.PassesIf 0<≢result
 
  ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
- ref.##.CommTools.Select_Choices←1 2⍴'SelectPrjForAPLGIT2@' '#.Proj_1'
+ ref.##.CommTools.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_1'
  (rc msg result)←stop ∆UCMD'Log'
  →T.GoToTidyUp 0=≢result
- ref.##.CommTools.Cleanup
 
- ref.##.CommTools.Select_Choices←1 2⍴'SelectPrjForAPLGIT2@' '#.Proj_1'
+ 1 ref.##.CommTools.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_1'
  (rc msg result)←stop ∆UCMD'Log 2'
  →T.GoToTidyUp 0=≢result
- ref.##.CommTools.Cleanup
 
- ref.##.CommTools.Select_Choices←1 2⍴'SelectPrjForAPLGIT2@' '#.Proj_1'
+ 1 ref.##.CommTools.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_1'
  (rc msg result)←stop ∆UCMD'Log 2022-12-31'
  →T.GoToTidyUp 0=≢result
- ref.##.CommTools.Cleanup
 
  R←T._OK
 
