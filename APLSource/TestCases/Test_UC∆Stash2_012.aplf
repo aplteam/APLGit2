@@ -1,0 +1,22 @@
+ R←Test_UC∆Stash2_012(stopFlag batchFlag);⎕TRAP;dir;rc;msg;more;res
+⍝ Executes ]StashShow with an alternative (-p tag) with no argument
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ dir←{⊃⍵[1;2]}⎕SE.Cider.ListOpenProjects 0
+
+ (⊂'Hello')⎕NPUT dir,'/file_1.txt'
+ ##.APLGit2.Add dir
+
+ (rc more res)←∆UCMD'StashPush '
+ more Assert 0=rc
+ →T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊res
+
+ (rc more res)←∆UCMD'StashShow -p'
+ more Assert 0=rc
+ →T.GoToTidyUp~∨/'/file_1.txt'⍷∊res
+
+∆TidyUp:
+ ##.APLGit2.StashClear dir
+ FilesAndDirs.DeleteFile(⊂dir,'/'),¨'file_1.txt' 'file_2.txt'
+⍝Done

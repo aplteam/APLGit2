@@ -1,54 +1,50 @@
- R←Test_UC∆Stash_020(stopFlag batchFlag);⎕TRAP;dir;rc;msg;list;res;more;parms
-⍝ Executes ]StashDrop
+ R←Test_UC∆Stash2_020(stopFlag batchFlag);⎕TRAP;dir;rc;msg;list;res;more;parms
+⍝ Executes ]StashDrop with no argument
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- dir←∆StashDir,'/SourceCode'
- 'Create!'FilesAndDirs.CheckPath dir
+ dir←{⊃⍵[1;2]}⎕SE.Cider.ListOpenProjects 0
 
  (⊂'Hello')⎕NPUT dir,'/file_1.txt'
- ##.APLGit2.Add ∆StashDir
+ ##.APLGit2.Add dir
  parms←##.APLGit2.CreateStashPushParms
- parms.folder←∆StashDir
+ parms.folder←dir
  parms.msg←'First stash'
  res←##.APLGit2.StashPush parms
  →T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊res
- ⎕MKDIR dir
  (⊂'Hello2')⎕NPUT dir,'/file_2.txt'
- ##.APLGit2.Add ∆StashDir
+ ##.APLGit2.Add dir
  parms←##.APLGit2.CreateStashPushParms
- parms.folder←∆StashDir
+ parms.folder←dir
  parms.msg←'Second stash'
  res←##.APLGit2.StashPush parms
  →T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊res
- ⎕MKDIR dir
  (⊂'Hello3')⎕NPUT dir,'/file_3.txt'
- ##.APLGit2.Add ∆StashDir
+ ##.APLGit2.Add dir
  parms←##.APLGit2.CreateStashPushParms
- parms.folder←∆StashDir
+ parms.folder←dir
  parms.msg←'Third stash'
  res←##.APLGit2.StashPush parms
  →T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊res
 
- list←##.APLGit2.StashList ∆StashDir
+ list←##.APLGit2.StashList dir
  →T.GoToTidyUp 3≠≢list
 
- (rc more res)←∆UCMD'StashDrop ',∆StashDir,' -n=2'
+ (rc more res)←∆UCMD'StashDrop -n=2'
  more Assert rc=0
  →T.GoToTidyUp~∨/'Dropped stash@{2}'⍷∊res
- list←##.APLGit2.StashList ∆StashDir
+ list←##.APLGit2.StashList dir
  →T.GoToTidyUp 2≠≢list
- (rc more res)←∆UCMD'StashDrop ',∆StashDir
+ (rc more res)←∆UCMD'StashDrop '
  more Assert rc=0
  →T.GoToTidyUp~∨/'Dropped stash@{0}'⍷∊res
- list←##.APLGit2.StashList ∆StashDir
+ list←##.APLGit2.StashList dir
  →T.GoToTidyUp 1<≢list
 
- res←##.APLGit2.StashClear ∆StashDir
+ res←##.APLGit2.StashClear dir
  →T.GoToTidyUp~∨/'stash clear =>'⍷∊res
 
 ∆TidyUp:
- ##.APLGit2.StashClear ∆StashDir
- (rc msg)←FilesAndDirs.RmDirByForce dir
- msg Assert 0=rc
+ ##.APLGit2.StashClear dir
+ FilesAndDirs.DeleteFile(⊂dir,'/'),¨'file_1.txt' 'file_2.txt'
 ⍝Done

@@ -1,5 +1,5 @@
- R←Test_UC∆Stash_100(stopFlag batchFlag);⎕TRAP;rc;msg;list;more;res;dir;ref
-⍝ Executes ]StashList, ]StashPush, ]StashPop, ]StashApply and ]StashClear without an argument
+ R←Test_UC∆Stash1_030(stopFlag batchFlag);⎕TRAP;rc;msg;list;more;res;dir;ref
+⍝ Executes ]StashList, ]StashPush, ]StashPop, ]StashApply and ]StashClear without argument  (user selects project)
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

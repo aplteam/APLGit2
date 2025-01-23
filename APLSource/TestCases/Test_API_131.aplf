@@ -5,7 +5,7 @@
 
  buff←##.APLGit2.Status'#.APLGit2'
  :If flag←∨/'nothing to commit, working tree clean'⍷∊##.APLGit2.Status'#.APLGit2'   ⍝ Only possible if there are files in the working area
- :OrIf 0=+/'APLSource'{⍺∘≡¨(≢⍺)↑¨⍵}{⍵[;2]}↑' 'APLTreeUtils2.Split¨APLTreeUtils2.DLB 1↓1 ##.APLGit2.Status'#.APLGit2'
+ :OrIf 0=+/'APLSource'{⍺∘≡¨(≢⍺)↑¨⍵}{⍵[;2]}1 ##.APLGit2.Status'#.APLGit2'
      name←{⍵[?80⍴≢⍵]}⎕A,'_',⎕C ⎕A
      Assert' '=1↑0⍴⊃##.APLGit2.⎕FX('r←',name)'r←42'
      {}⎕SE.Link.Add'##.APLGit2.',name

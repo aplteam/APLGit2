@@ -1,5 +1,5 @@
- R←Test_UC∆Stash_011(stopFlag batchFlag);⎕TRAP;dir;rc;msg;more;res
-⍝ Executes ]StashShow with an explicit stash number
+ R←Test_UC∆Stash1_011(stopFlag batchFlag);⎕TRAP;dir;rc;msg;more;res
+⍝ Executes ]StashShow with an explicit stash number on a directory
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

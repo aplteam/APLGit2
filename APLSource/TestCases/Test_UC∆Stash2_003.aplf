@@ -1,0 +1,24 @@
+ R←Test_UC∆Stash2_003(stopFlag batchFlag);⎕TRAP;dir;rc;msg;list;more;res
+⍝ Executes ]StashPush on a tracked and an untracked file and restore them with no argument
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ dir←{⊃⍵[1;2]}⎕SE.Cider.ListOpenProjects 0
+
+ (⊂'Hello')⎕NPUT dir,'/file_1.txt'
+ ##.APLGit2.Add dir
+ (rc more list)←∆UCMD'StashList '
+ more Assert 0=rc
+ →T.GoToTidyUp 0<≢list
+ (⊂'Hello2')⎕NPUT dir,'/file_2.txt'
+ (rc more res)←∆UCMD'StashPush -u'
+ more Assert 0=rc
+ →T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊res
+ (rc more res)←∆UCMD'StashPop '
+ more Assert 0=rc
+ →T.GoToTidyUp 1≠∨/'stash pop stash@{0}'⍷,res  ⍝ Untracked files are NOT listed. Not recognized as a bug by the Git team.
+ →T.GoToTidyUp'file_1.txt' 'file_2.txt'≢(dir{(1+≢⍺)↓¨FilesAndDirs.ListFiles ⍵}dir,'/')~'.gitattributes' '.gitignore'
+
+∆TidyUp:
+ FilesAndDirs.DeleteFile(⊂dir,'/'),¨'file_1.txt' 'file_2.txt'
+⍝Done

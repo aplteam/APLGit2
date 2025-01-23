@@ -24,14 +24,7 @@
  msg Assert rc=0
  →T.PassesIf 0=≢result
 
- ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
- 1 ref.SetDefaultProject #.Proj_2
- (rc msg result)←stop ∆UCMD'ListBranches '
- msg Assert rc=0
- →T.GoToTidyUp(⍪⊂'* main')≢result
-
  R←T._OK
 
 ∆TidyUp:
- {}1 ref.SetDefaultProject''
 ⍝Done

@@ -1,0 +1,33 @@
+ R←Test_UC∆Stash2_004(stopFlag batchFlag);⎕TRAP;dir;rc;msg;list;more;res;buff
+⍝ Executes ]StashApply once with the -n= option with no argument
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ dir←{⊃⍵[1;2]}⎕SE.Cider.ListOpenProjects 0
+
+ (⊂'Hello')⎕NPUT dir,'/file_1.txt'
+
+ ##.APLGit2.Add dir
+ list←##.APLGit2.StashList dir
+ →T.GoToTidyUp 0<≢list
+ buff←##.APLGit2.StashPush dir
+ →T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊buff
+ (⊂'Hello2')⎕NPUT dir,'/file_2.txt'
+ ##.APLGit2.Add dir
+ buff←##.APLGit2.StashPush dir
+ →T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊buff
+ list←##.APLGit2.StashList dir
+ →T.GoToTidyUp 2≠≢list
+ →T.GoToTidyUp 0 1≢'stash@'∘{{⊃⊃(//)⎕VFI ⍵↑⍨¯1+⍵⍳'}'}⍵↓⍨(≢⍺)+1⍳⍨⍺⍷⍵}¨A.DLB∘A.DTB¨list
+ (rc more res)←∆UCMD'StashApply -n=1'
+ more Assert 0=rc
+ →T.GoToTidyUp 1≠∨/'apply stash@{1}'⍷∊res
+ →T.GoToTidyUp~∨/'file_1.txt'⍷∊res
+ list←##.APLGit2.StashList dir
+ →T.GoToTidyUp 2≠≢list
+ ##.APLGit2.StashClear dir
+
+∆TidyUp:
+ ##.APLGit2.StashClear dir
+ FilesAndDirs.DeleteFile(⊂dir,'/'),¨'file_1.txt' 'file_2.txt'
+⍝Done

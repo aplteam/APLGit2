@@ -1,4 +1,4 @@
- R←Test_UC∆Stash_003(stopFlag batchFlag);⎕TRAP;dir;rc;msg;list;more;res
+ R←Test_UC∆Stash1_003(stopFlag batchFlag);⎕TRAP;dir;rc;msg;list;more;res
 ⍝ Executes ]StashPush on a tracked and an untracked file and restore them with StashPop
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed

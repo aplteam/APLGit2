@@ -1,4 +1,4 @@
-:Class APLGit2_uc
+﻿:Class APLGit2_uc
 ⍝ User Command class for "APLGit2"
 ⍝ Kai Jaeger
 
@@ -34,13 +34,24 @@
           :Else
               (r space folder)←G.##.UC.GetSpaceAndFolder Cmd Args
               :If 'stashpush'≡⎕C Cmd
-              :AndIf (,'?')≡,Args._2
                   :If 0<≢list←1 G.##.Status folder
-                      ind←'SelectForStash@Select what to stash:' 1 G.##.CommTools.Select list
-                      :If 0=≢ind
-                          r←'Cancelled by user' ⋄ →0
+                      list←('D'≠2⊃¨list[;1])⌿list       ⍝ We cannot stash anything deleted from the work tree
+                      :If 0=≢''Args.Switch'u'
+                          list←('?'≠⊃¨list[;1])⌿list    ⍝ Remove untracked
+                      :EndIf
+                      :If 0=≢list
+                          r←'No changes found you could stash' ⋄ →0
                       :Else
-                          Args._2←list←3↓¨list[ind]
+                          :If (,'?')≡,Args._2
+                              ind←'SelectForStash@Select what to stash:' 1 G.##.CommTools.Select list[;2]
+                              :If 0=≢ind
+                                  r←'Cancelled by user' ⋄ →0
+                              :Else
+                                  Args._2←list←list[ind;2]
+                              :EndIf
+                          :Else
+                              Args._2←list←list[;2]
+                          :EndIf
                       :EndIf
                   :Else
                       r←'No changes found you could stash' ⋄ →0

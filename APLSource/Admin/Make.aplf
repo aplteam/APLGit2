@@ -21,6 +21,7 @@
          :AndIf 1 M.YesOrNo'Install new version in MyUCMDs?'
              {}M.##.FilesAndDirs.RmDirByForce M.GetMyUCMDsFolder cfg.name
              res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]'
+             ⎕NDELETE⎕SE.SALTUtils.(USERDIR,UCMDCACHEFILE)
              ⎕←'  New version installed as user command in MyUCMDs/: ',res
          :EndIf
      :EndIf

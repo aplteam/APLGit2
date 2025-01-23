@@ -58,14 +58,6 @@
      r,←c
 
      c←⎕NS''
-     c.Name←'GetDefaultProject'
-     c.Desc←'Returns namespace and folder of the current default project, if any'
-     c.Group←'APLGit2'
-     c.Parse←'0'
-     c._Project←0
-     r,←c
-
-     c←⎕NS''
      c.Name←'GetTagOfLatestRelease'
      c.Desc←'Returns the tag of the latest release'
      c.Group←'APLGit2'
@@ -126,14 +118,6 @@
      c.Desc←'List reference log entries (RefLogs)'
      c.Group←'APLGit2'
      c.Parse←'1s -max= -all -branch= -project='
-     c._Project←1
-     r,←c
-
-     c←⎕NS''
-     c.Name←'SetDefaultProject'
-     c.Desc←'Specifies the project to be used in case no project is specified'
-     c.Group←'APLGit2'
-     c.Parse←'1s'
      c._Project←1
      r,←c
 
@@ -206,6 +190,14 @@
      c.Desc←'Reports all untracked files and/or all uncommitted changes'
      c.Group←'APLGit2'
      c.Parse←'1s -short'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'ShowLastVersionInIndex'
+     c.Desc←'Returns the last version of an APL object or a file in the index'
+     c.Group←'APLGit2'
+     c.Parse←'1 -project='
      c._Project←1
      r,←c
 

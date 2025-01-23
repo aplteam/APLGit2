@@ -1,5 +1,5 @@
- R←Test_UC∆Stash_002(stopFlag batchFlag);⎕TRAP;dir;rc;msg;list;more;res
-⍝ Executes ]StashList, ]StashPush (with a particular message) and ]StashClear
+ R←Test_UC∆Stash1_002(stopFlag batchFlag);⎕TRAP;dir;rc;msg;list;more;res
+⍝ Executes ]StashList, ]StashPush (with a particular message) and ]StashClear with a direcotry as argument
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

@@ -1,4 +1,4 @@
- r←{msg}Commit y;project;buff;rc;⎕TRAP;cb;path;cmd;msg_;space;msg;amendFlag
+  r←{msg}Commit y;project;buff;rc;⎕TRAP;cb;path;cmd;msg_;space;msg;amendFlag
 ⍝ Commit changes.\\
 ⍝ `y` must be one of:
 ⍝   * Fully qualified name of a namespace that is an opened Cider project
@@ -35,7 +35,7 @@
  :If ∨/'nothing to commit, working tree clean'⍷∊buff
      r←buff
  :Else
-     msg U.Assert 0=rc
+     (cmd,(⎕UCS 13),¨buff)U.Assert 0=rc
      r←buff
  :EndIf
 ⍝Done

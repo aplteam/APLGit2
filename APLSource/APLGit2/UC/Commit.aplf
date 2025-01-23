@@ -39,7 +39,7 @@
                      :Return
                  :EndIf
              :ElseIf 0<≢(∊msg)~'.'
-             :OrIf ##.CommTools.YesOrNo'Sure you don''t want to provide a message? ("No" cancells the whole operation)'
+             :OrIf ##.CommTools.YesOrNo'Sure you don''t want to provide a message? ("No" cancels the whole operation)'
                  flag←1
              :Else
                  r←'Operation cancelled by user'

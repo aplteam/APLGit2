@@ -31,4 +31,5 @@
  r,←⊂'StashDrop'
  r,←⊂'Squash'
  r,←⊂'Status'
+ r,←⊂'ShowLastVersionInIndex'
  r,←⊂'Version'
