@@ -6,7 +6,7 @@
      (space folder)←##.EstablishProject''
      args._2←args._1
      args._1←folder
- :ElseIf ~(⊂Cmd)∊'GetDefaultProject' 'SetDefaultProject' 'Version'
+ :ElseIf ~(⊂Cmd)∊,⊂'Version'
      :If ({⍵⊃⍨⍸⍵.Name≡¨⊂Cmd}List ⍬)._Project
      :AndIf 0≢args._1
          (space folder)←GetSpaceAndFolder_ args._1

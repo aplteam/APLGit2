@@ -7,6 +7,7 @@
      pkgCfgFilename←C.HOME,'/apl-package.json'
      cfg←⎕JSON⍠('Dialect' 'JSON5')⊢⊃⎕NGET pkgCfgFilename
      M.FetchLaterUserCommand cfg C'[MyUCMDs]'
+     InjectListOfObjectsIntoUserCommandScript C cfg
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
      parms.targetPath←path
      :If ⎕NULL≡cfg←pkgCfgFilename M.EditVersion cfg
@@ -21,7 +22,8 @@
          :AndIf 1 M.YesOrNo'Install new version in MyUCMDs?'
              {}M.##.FilesAndDirs.RmDirByForce M.GetMyUCMDsFolder cfg.name
              res←⎕SE.Tatin.InstallPackages zipFilename'[MyUCMDs]'
-             ⎕NDELETE⎕SE.SALTUtils.(USERDIR,UCMDCACHEFILE)
+             1 ⎕NDELETE ⎕SE.SALTUtils.UCMDCACHEFILE,⍨⊃⎕NPARTS ¯1↓⎕SE.Dyalog.StartupSession.VerSpec
+             ⎕SE.SALTUtils.ResetUCMDcache ¯1
              ⎕←'  New version installed as user command in MyUCMDs/: ',res
          :EndIf
      :EndIf

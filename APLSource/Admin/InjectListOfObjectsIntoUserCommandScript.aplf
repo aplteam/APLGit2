@@ -1,0 +1,13 @@
+ {r}←InjectListOfObjectsIntoUserCommandScript(prjCfg pkgCfg);userCommandFilename;data;start;end;top;bottom;inject;body
+ r←⍬
+ userCommandFilename←prjCfg.HOME,'/',pkgCfg.userCommandScript
+ data←⊃⎕NGET userCommandFilename 1
+ start←⍸∨/¨'⍝ >>>>> StartListInject'∘⍷¨data
+ end←⍸∨/¨'⍝ >>>>> EndListInject'∘⍷¨data
+ top←start↑data
+ bottom←(end-1)↓data
+ inject←1↓##.APLGit2.UC.⎕NR'List'
+ inject←(⊂'MinimumVersionOfDyalog←''',pkgCfg.minimumAplVersion,''''),inject
+ body←top,inject,bottom
+ (⊂body)⎕NPUT userCommandFilename 1
+⍝Done

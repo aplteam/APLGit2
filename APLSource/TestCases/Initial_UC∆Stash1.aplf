@@ -1,5 +1,5 @@
- Initial_Stash1;dir2;msg
-⍝ Creates a project for the sole purpose of testing the stash API functions
+ Initial_UC∆Stash1;dir2;msg
+⍝ Creates a project for the sole purpose of testing the stash user commands
  ∆StashDir←FilesAndDirs.GetTempSubDir''
  {}1 ##.APLGit2.Init ∆StashDir
  ##.APLGit2.Add ∆StashDir
