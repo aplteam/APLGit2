@@ -2,7 +2,7 @@
   packageID: [
     "aplteam-ZipArchive-1.2.1",
     "aplteam-Tester2-3.11.1",
-    "aplteam-GitHubAPIv3-1.5.0",
+    "aplteam-GitHubAPIv3-1.6.0",
     "aplteam-FilesAndDirs-5.8.1",
     "aplteam-CommTools-2.0.1",
     "aplteam-CodeCoverage-0.10.7",
@@ -11,7 +11,6 @@
     "aplteam-OS-3.1.1",
     "aplteam-IniFiles-5.1.0",
     "aplteam-DotNetZip-2.2.0",
-    "aplteam-CommTools-1.8.2",
   ],
   principal: [
     1,
@@ -25,10 +24,8 @@
     0,
     0,
     0,
-    0,
   ],
   url: [
-    "https://tatin.dev/",
     "https://tatin.dev/",
     "https://tatin.dev/",
     "https://tatin.dev/",

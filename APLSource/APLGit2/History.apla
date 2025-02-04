@@ -1,4 +1,6 @@
 (
+ '* 0.22.1 ⋄ 2025-02-04'
+ '  * `StashList` was not made public by accident'
  '* 0.22.0 ⋄ 2025-01-21                                                                   '
  '  * BREAKING CHANGE: `Status` has changed the result when 1 is provided as ⍺: returns a matrix with 2 columns'
  '  * BREAKING CHANGE: Some of the stash-related new fns introduced with 0.21.0 were removed'

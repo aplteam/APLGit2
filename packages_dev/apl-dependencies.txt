@@ -3,5 +3,5 @@ aplteam-FilesAndDirs-5.8.1
 aplteam-Tester2-3.11.1
 aplteam-ZipArchive-1.2.1
 aplteam-CodeCoverage-0.10.7
-aplteam-GitHubAPIv3-1.5.0
+aplteam-GitHubAPIv3-1.6.0
 aplteam-CommTools-2.0.1
