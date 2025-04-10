@@ -1,4 +1,6 @@
 (
+ '* 0.23.0 ⋄ 2025-04-10'
+ '  * Packages updated'
  '* 0.22.1 ⋄ 2025-02-04'
  '  * `StashList` was not made public by accident'
  '* 0.22.0 ⋄ 2025-01-21                                                                   '
