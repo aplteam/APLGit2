@@ -18,7 +18,7 @@
  :If 0=≢ns
      r←''
  :Else
-     r←ns.∆QuickView GH
+     r←ns.∆QuickView
      r←{(⍵[;1]≢¨⊂'state')⌿⍵}¨r                                  ⍝ "State" is not meaningful here
      r←BeautifyDateTime¨r
      :Select ⊃verbose
