@@ -70,10 +70,8 @@
      :Select ⎕C Cmd
      :CaseList ⎕C¨'Add' ''
          r,←AddProjectOptions 1
-     :CaseList ⎕C¨'Commit' 'CurrentBranch' 'Diff' 'IsDirty' 'IsGitProject' 'ListBranches' 'Log' 'OpenGitShell' 'Status'
-         r,←AddProjectOptions 0
      :Else
-         r,←⊂'There is no additional help available'
+         r,←AddProjectOptions 0
      :EndSelect
 
  :EndSelect

@@ -1,5 +1,5 @@
  R←Test_UC_002(stopFlag batchFlag);⎕TRAP;result;msg;rc;stop;ref
-⍝ Runs ]ListBranches
+⍝ Runs ]ListBranches without an argument
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

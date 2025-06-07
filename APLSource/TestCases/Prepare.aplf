@@ -18,10 +18,10 @@
              1 CodeCoverage.DeleteFiles testFilename
          :EndIf
      :Else
-         flag←0 CommTools.YesOrNo'Code coverage?'
+         flag←1 CommTools.YesOrNo'Code coverage?'
      :EndIf
  :Else
-     flag←0 CommTools.YesOrNo'Code coverage?'
+     flag←1 CommTools.YesOrNo'Code coverage?'
  :EndIf
  :If flag
      3 ⎕MKDIR testPath  ⍝

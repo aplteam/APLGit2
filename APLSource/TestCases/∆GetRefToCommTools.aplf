@@ -1,0 +1,3 @@
+ r←∆GetRefToCommTools;ref
+ ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
+ r←ref.##.CommTools

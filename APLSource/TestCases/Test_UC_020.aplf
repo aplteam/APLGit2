@@ -1,0 +1,18 @@
+ R←Test_UC_020(stopFlag batchFlag);⎕TRAP;stop;rc;msg;hash;ref
+⍝ Runs ]GetLastCommitHash on the current branch
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ ref←∆GetRefToCommTools
+ ref.AddAutomation'Select' 'SelectPrjForAPLGIT2@' 1
+
+ stop←0
+ (rc msg hash)←stop ∆UCMD'GetLastCommit'
+ msg Assert rc=0
+ →T.GoToTidyUp 7≠≢hash
+
+ R←T._OK
+
+∆TidyUp:
+ ref.Cleanup
+⍝Done

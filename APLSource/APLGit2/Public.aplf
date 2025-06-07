@@ -8,6 +8,7 @@
  r,←⊂'CurrentBranch'
  r,←⊂'Diff'
  r,←⊂'EstablishProject'
+ r,←⊂'GetLastCommit'
  r,←⊂'GetPathFromProject'
  r,←⊂'GetProjectFromPath'
  r,←⊂'GetTagOfLatestRelease'

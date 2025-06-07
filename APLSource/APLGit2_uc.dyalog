@@ -6,15 +6,11 @@
 
     ∇ r←List;c;⎕TRAP;MinimumVersionOfDyalog;AtLeastVersion
       :Access Shared Public
+      AtLeastVersion←{⊃⍵≤{⊃⊃(//)⎕VFI ⍵/⍨2>+\⍵='.'}2⊃'.'⎕WG'aplversion'}
+
    ⍝ Everything between "⍝ >>>>> Start*" and "⍝ >>>>> End*" is injected as part of
-   ⍝ the build process of the package - don't edit this!
-     AtLeastVersion←{⊃⍵≤{⊃⊃(//)⎕VFI ⍵/⍨2>+\⍵='.'}2⊃'.'⎕WG'aplversion'}      
-	 
-	 ⍝⎕←'----------------------------------------'
-	 ⍝⎕←⍪⎕xsi {⍺,'[',(⍕⍵),']'}¨ ⎕lc
-	 ⍝⎕trap←0'S'
-	 ⍝(1+⊃⎕lc)⎕stop ⊃⎕si
-     ⍝ >>>>> StartListInject	  
+   ⍝ the build process of the package - don't edit this!     
+      ⍝ >>>>> StartListInject	
 MinimumVersionOfDyalog←'18.0'
  r←⍬
  :If AtLeastVersion⊃(//)⎕VFI MinimumVersionOfDyalog
@@ -71,6 +67,14 @@ MinimumVersionOfDyalog←'18.0'
      c.Desc←'Produces a list with changed/deleted/added files by comparing the working directory with HEAD'
      c.Group←'APLGit2'
      c.Parse←'1s -verbose'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'GetLastCommit'
+     c.Desc←'Returns the latest hash for the current (or the given) branch'
+     c.Group←'APLGit2'
+     c.Parse←'1s -full -branch='
      c._Project←1
      r,←c
 
@@ -319,4 +323,4 @@ MinimumVersionOfDyalog←'18.0'
       ⎕←msg
     ∇
 	
-    :EndClass
+:EndClass

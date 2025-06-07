@@ -58,6 +58,14 @@
      r,←c
 
      c←⎕NS''
+     c.Name←'GetLastCommit'
+     c.Desc←'Returns the latest hash for the current (or the given) branch'
+     c.Group←'APLGit2'
+     c.Parse←'1s -full -branch='
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
      c.Name←'GetTagOfLatestRelease'
      c.Desc←'Returns the tag of the latest release'
      c.Group←'APLGit2'

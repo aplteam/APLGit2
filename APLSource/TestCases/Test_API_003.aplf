@@ -1,0 +1,21 @@
+ R←Test_API_003(stopFlag batchFlag);⎕TRAP;hash;dmx
+⍝ Runs "GetLastCommit"
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ hash←G.GetLastCommit''
+ →T.PassesIf 40=≢hash
+
+ hash←G.GetLastCommit ∆Folder1
+ →T.PassesIf 40=≢hash
+
+ :Trap 0
+     {}G.GetLastCommit'/does/no/exist'
+     →T.FailsIf 1
+ :Else
+     dmx←⎕DMX
+     →T.PassesIf∨/'fatal: cannot change to ''/does/no/exist'': No such file or directory'⍷∊dmx.DM
+ :EndTrap
+
+ R←T._OK
+⍝Done

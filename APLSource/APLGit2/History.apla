@@ -1,4 +1,8 @@
 (
+ '* 0.26.0 ⋄ 2025-06-09'
+ '  * New function `GetLastCommit` added'
+ '* 0.25.0 ⋄ 2025-05-05'
+ '  * Package `FilesAndDirs` updated'
  '* 0.24.1 ⋄ 2025-04-26'
  '  * Bug fix: 0.24.0 introduced a bug into `ListIssues`'
  '* 0.24.0 ⋄ 2025-04-26'
