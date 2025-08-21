@@ -143,6 +143,14 @@ MinimumVersionOfDyalog←'18.0'
      r,←c
 
      c←⎕NS''
+     c.Name←'Repack'
+     c.Desc←'Cleans up and optimise Git''s internal storage by consolidating loose objects into packfiles'
+     c.Group←'APLGit2'
+     c.Parse←'1s -window= -depth='
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
      c.Name←'Squash'
      c.Desc←'Squashes some commits in the current branch into a single one'
      c.Group←'APLGit2'

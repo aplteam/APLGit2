@@ -7,7 +7,7 @@
  :Case 127
      'It appears that Git is not installed'⎕SIGNAL 127
  :Case 128
-     :If ∨/'Who are you'⍷msg
+     :If ∨/'Author identity unknown'⍷∊msg
          'Who are you? (set user.email and user.name)'⎕SIGNAL 128
      :EndIf
  :Else

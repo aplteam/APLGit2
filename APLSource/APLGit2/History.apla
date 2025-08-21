@@ -1,6 +1,8 @@
 (
- '* 0.26.0 ⋄ 2025-06-09'
+ '* 0.26.0 ⋄ 2025-08-21'
  '  * New function `GetLastCommit` added'
+ '  * Bug fixes'
+ '    * `RunGitCommand` did not recognize authentication problems as intended'
  '* 0.25.0 ⋄ 2025-05-05'
  '  * Package `FilesAndDirs` updated'
  '* 0.24.1 ⋄ 2025-04-26'
