@@ -1,8 +1,3 @@
- r←Repack(space folder args);full;branch
- full←0 args.Switch'full'
- branch←''args.Switch'branch'
- r←branch ##.GetLastCommit folder
- :If ~full
-     r←7↑r
- :EndIf
+ r←Repack(space folder args);project
+ r←##.Repack folder args
 ⍝Done
