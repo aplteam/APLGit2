@@ -23,6 +23,7 @@
  r,←⊂'OpenGitShell'
  r,←⊂'RefLog'
  r,←⊂'Repack'
+ r,←⊂'ShowLastVersionInIndex'
  r,←⊂'StashApply'
  r,←⊂'StashClear'
  r,←⊂'StashDrop'
@@ -32,5 +33,4 @@
  r,←⊂'StashShow'
  r,←⊂'Squash'
  r,←⊂'Status'
- r,←⊂'ShowLastVersionInIndex'
  r,←⊂'Version'

@@ -1,4 +1,6 @@
 (
+ '* 0.27.0 ⋄ 2025-08-27'
+ '  * ]APLGit2 can now deal not only deal with Cider projects but also with acre projects'
  '* 0.26.0 ⋄ 2025-08-21'
  '  * New function `GetLastCommit` added'
  '  * New function `Repack` added'

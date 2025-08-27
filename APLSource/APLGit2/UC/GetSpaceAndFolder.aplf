@@ -1,7 +1,7 @@
  (r space folder)←GetSpaceAndFolder(Cmd args)
  r←0 0⍴''
  space←folder←''
- :If 'stashpush'≡⎕C Cmd
+ :If (⊂⎕C Cmd)∊,⊆'stashpush'
  :AndIf (,'?')≡,args._1
      (space folder)←##.EstablishProject''
      args._2←args._1

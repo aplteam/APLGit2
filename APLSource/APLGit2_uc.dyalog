@@ -10,13 +10,15 @@
 
    ⍝ Everything between "⍝ >>>>> Start*" and "⍝ >>>>> End*" is injected as part of
    ⍝ the build process of the package - don't edit this!     
-      ⍝ >>>>> StartListInject	
+      ⍝ >>>>> StartListInject    
 MinimumVersionOfDyalog←'18.0'
  r←⍬
+     ⍝ _Project is 1 for commands that allow specifying the project as argument
+     ⍝ (APLGit2 commands that do not allow this often allow -projects=)
  :If AtLeastVersion⊃(//)⎕VFI MinimumVersionOfDyalog
      c←⎕NS''
      c.Name←'Add'
-     c.Desc←'Executes the git "Add" commands'
+     c.Desc←'Executes the git "Add" command'
      c.Group←'APLGit2'
      c.Parse←'1 -project='
      c._Project←0
@@ -24,7 +26,7 @@ MinimumVersionOfDyalog←'18.0'
 
      c←⎕NS''
      c.Name←'AddGitIgnore'
-     c.Desc←'Create a file .gitignore, or merge default values with existing one'
+     c.Desc←'Create a file .gitignore, or merge default values with an existing one'
      c.Group←'APLGit2'
      c.Parse←'1s'
      c._Project←0
@@ -330,5 +332,5 @@ MinimumVersionOfDyalog←'18.0'
       :EndIf
       ⎕←msg
     ∇
-	
+    
 :EndClass

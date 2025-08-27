@@ -11,11 +11,11 @@
      :EndIf
  :Else
      project←EstablishProject x
-     'Not a Cider project'⎕SIGNAL 11/⍨0=≢project
+     'Not a Cider/acre project'⎕SIGNAL 11/⍨0=≢project
      (space path)←2↑project
      :If ~(⊃name)∊'#⎕'
          name←space,'.',name
      :EndIf
-     filename←(1+≢path)↓⎕SE.Link.GetFileName name
+     filename←(1+≢{⍵↓⍨-'/\'∊⍨¯1↑⍵}path)↓⎕SE.Link.GetFileName name
      ('APL  object not found: ',name)Assert 0<≢filename
  :EndIf

@@ -1,8 +1,8 @@
 (
  'Shows a list of all commits with ⎕ED, by default with --oneline, but check -verbose.'
  ''
- 'If you need to specify a folder (rather than acting on an open Cider project), then the folder'
- 'must be the first argument.'
+ 'If you need to specify a folder (rather than acting on an open Cider or acre project), '
+ 'then the folder must be the first argument.'
  ''
  'Instead or in addition, you may specify an integer or a date; see below for details.'
  ''
