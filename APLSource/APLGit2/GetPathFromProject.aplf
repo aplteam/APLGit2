@@ -17,9 +17,7 @@
          acreFlag←1
      :EndIf
      :If acreFlag
-         list←⎕SE.acre.Projects 0
-     :Else
-         list←0 2⍴⍬
+         list⍪←⎕SE.acre.Projects 0
      :EndIf
      row←(list[;1])⍳⊂⍕space
      :If row≤≢list
