@@ -53,7 +53,7 @@
          'There are no open Cider projects'U.Assert 0<≢list
          bool←list[;1]≡¨⊂y
          'Is not an opened Cider project'U.Assert 1=+/bool
-         (namespace folder)←list[bool⍳1;]
+         (namespace folder)←2↑list[bool⍳1;]
      :EndIf
      'Folder does not exist'U.Assert ⎕NEXISTS folder
  :EndIf

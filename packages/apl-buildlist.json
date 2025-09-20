@@ -1,7 +1,7 @@
 {
   packageID: [
     "dyalog-HttpCommand-5.9.3",
-    "aplteam-OS-4.0.0",
+    "aplteam-OS-4.1.0",
     "aplteam-GitHubAPIv3-2.1.0",
     "aplteam-FilesAndDirs-7.1.1",
     "aplteam-CommTools-2.0.1",
