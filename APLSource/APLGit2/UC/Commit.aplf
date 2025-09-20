@@ -49,5 +49,6 @@
              msg←1↓⊃,/(⎕UCS 10),¨⊆msg
          :Until flag
      :EndIf
-     r←⍪msg ##.Commit folder
+     r←msg ##.Commit folder
+     r←⍪r
  :EndIf
