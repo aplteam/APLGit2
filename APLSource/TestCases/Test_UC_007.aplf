@@ -11,9 +11,9 @@
  C.Pause'This test needs you: it will open a Terminal in APLGit2''s project directory.'
 
  stop←0
- (rc msg buff)←stop ∆UCMD'OpenGitShell "',∆Folder2,'"'
+ (rc msg buff)←stop ∆UCMD'OpenGitShell "',#.APLGit2.CiderConfig.HOME,'"'
  msg Assert rc=0
- →T.PassesIf 1 C.YesOrNo'Was the shell opened in ',∆Folder2,'?'
+ →T.PassesIf 1 C.YesOrNo'Was the shell opened in ',#.APLGit2.CiderConfig.HOME,'?'
 
  (rc msg buff)←stop ∆UCMD'OpenGitShell #.APLGit2'
  msg Assert rc=0
