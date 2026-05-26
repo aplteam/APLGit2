@@ -1,10 +1,12 @@
-  {noofBytes}←CompareCommits_(list branch1 branch2 folder currentBranch hash1 hash2 filename1 filename2);thisFile;extension;wsName;header;nc;buff1;rc;more;buff2;name
+ {noofBytes}←CompareCommits_(list branch1 branch2 folder currentBranch hash1 hash2 filename1 filename2);thisFile;extension;wsName;header;nc;buff1;rc;more;buff2;name;header2;header1;row;op
  noofBytes←0
- :For thisFile :In list[;2]
+ list←((⊃¨(' '~⍨¨list[;1]))∊'ADM?')⌿list ⍝ Suppress copies and renames
+ :For row :In ⍳≢list
+     (op thisFile)←list[row;]
+     op←⊃op
      extension←⎕C 3⊃⎕NPARTS thisFile
      :If (⊂extension)∊'.aplf' '.aplo' '.apln' '.aplc' '.apli' '.dyalog' '.apla'
          wsName←⎕SE.Link.GetItemName folder,'/',thisFile
-         header←↓U.Box(('⌹',[1]'⌹',,[0.5]wsName),[1]'⌹'),'⌹'
          :If branch1≡currentBranch
          :AndIf 0<nc←⎕NC wsName
              :If 9=nc
@@ -25,13 +27,11 @@
                  :EndIf
              :Else
                  (rc more buff1)←folder U.RunGitCommand('show  --raw ',hash1,':',thisFile)
-                 :If 0≠rc
-                     :If ∨/∨/¨'does not exist' 'exists on disk, but not' 'unknown revision or path not in the working tree'⍷¨⊂∊more
-                     :OrIf rc=128   ⍝ From experience we know that this often means that the file does not exist, though it might have other reasons...
-                         buff1←''
-                     :Else
-                         ∘∘∘ ⍝ It appears that the file does not exist but we fail to analyze the error message correctly in this respect
-                     :EndIf
+                 :If rc=128
+                 :AndIf op∊'AD?'
+                     buff1←,⊂'>>> Not available <<<'
+                 :ElseIf 0≠rc
+                     ∘∘∘ ⍝ It appears that the file does not exist/is unknown to Git when it should
                  :EndIf
              :EndIf
          :EndIf
@@ -48,17 +48,20 @@
              :EndIf
          :Else
              (rc more buff2)←folder U.RunGitCommand('show  --raw ',hash2,':',thisFile)
-             :If 0≠rc
-                 :If ∨/∨/¨'does not exist' 'exists on disk, but not' 'unknown revision or path not in the working tree'⍷¨⊂∊more
-                 :OrIf rc=128   ⍝ From experience we know that this often means that the file does not exist, though it might have other reasons...
-                     buff2←''
-                 :Else
-                     ∘∘∘ ⍝ It appears that the file does not exist but we fail to analyze the error message correctly in this respect
-                 :EndIf
+             :If rc=128
+             :AndIf op∊'AD?'
+                 buff2←,⊂'>>> Not available <<<'
+             :ElseIf 0≠rc
+                 ∘∘∘ ⍝ It appears that the file does not exist/is unknown to Git when it should
              :EndIf
          :EndIf
-         buff1←header{⍺{⍺,⍵}⍣(0<≢⍵)⊣⍵}buff1
-         buff2←header{⍺{⍺,⍵}⍣(0<≢⍵)⊣⍵}buff2
+         :If 0=≢wsName
+             wsName←extension FetchHeader buff2  ⍝ I am afraid but we don't have a workspace path here!
+         :EndIf
+         header1←↓U.Box(('⌹',[1]'⌹',,[0.5]wsName),[1]'⌹'),'⌹'
+         header2←↓U.Box(('⌹',[1]'⌹',,[0.5]wsName),[1]'⌹'),'⌹'
+         buff1←header1{⍺{⍺,⍵}⍣(0<≢⍵)⊣⍵}buff1
+         buff2←header2{⍺{⍺,⍵}⍣(0<≢⍵)⊣⍵}buff2
      :Else
          name←thisFile
          header←↓U.Box(('⌹',[1]'⌹',,[0.5]name),[1]'⌹'),'⌹'

@@ -1,6 +1,7 @@
 {
   api: "API",
   assets: "",
+  checkLICENSEfile: 1,
   description: "Git interface from Dyalog APL via Git Bash",
   documentation: "",
   files: "",
@@ -19,5 +20,5 @@
   source: "APLSource/APLGit2",
   tags: "apl-git-interface",
   userCommandScript: "APLSource/APLGit2_UC.dyalog",
-  version: "0.27.0+443",
+  version: "0.28.0+445",
 }

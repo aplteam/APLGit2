@@ -1,0 +1,63 @@
+ R←Test_Misc_100(stopFlag batchFlag);⎕TRAP;qdmx
+⍝ Runs "FetchHeader"
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ →T.PassesIf'foo'≡'f'##.APLGit2.FetchHeader'⍝ ' '⍝ ' '  foo'
+ →T.PassesIf'foo'≡'o'##.APLGit2.FetchHeader'⍝ ' '⍝ ' 'r← ( f  foo )  y '
+ →T.PassesIf'foo'≡'n'##.APLGit2.FetchHeader'⍝ ' '⍝ ' '  :Namespace foo'
+ →T.PassesIf'foo'≡'c'##.APLGit2.FetchHeader'⍝ ' '⍝ ' '  :Class foo'
+
+ →T.PassesIf'foo'≡'f'##.APLGit2.FetchHeader,⊂'foo  x;abc'
+ →T.PassesIf'foo'≡'f'##.APLGit2.FetchHeader,⊂'foo  x  ⍝ comment'
+ →T.PassesIf'foo'≡'f'##.APLGit2.FetchHeader,⊂'x   foo  y;abc'
+ →T.PassesIf'foo'≡'f'##.APLGit2.FetchHeader,⊂'{x}  foo  y;abc'
+ →T.PassesIf'foo'≡'f'##.APLGit2.FetchHeader,⊂'{r} ← {x}  foo  y;abc'
+ →T.PassesIf'foo'≡'f'##.APLGit2.FetchHeader,⊂'{r} ← {x}  foo  y;abc'
+ →T.PassesIf'foo'≡'f'##.APLGit2.FetchHeader,⊂'r ← { x }  foo  (a  b  c);abc'
+
+ →T.PassesIf'foo'≡'f'##.APLGit2.FetchHeader,⊂' foo  ←  {+/⍵}'
+ →T.PassesIf'foo'≡'f'##.APLGit2.FetchHeader' foo  ←  { ⍝' '  +/⍵' '}'
+
+ →T.PassesIf'foo'≡'o'##.APLGit2.FetchHeader,⊂'r← ( f  foo )  y '
+ →T.PassesIf'foo'≡'o'##.APLGit2.FetchHeader,⊂' { r } ← { x } ( f  foo )  (a b c)'
+ →T.PassesIf'foo'≡'o'##.APLGit2.FetchHeader,⊂' { r } ←( f  foo )  (a b c)'
+ →T.PassesIf'foo'≡'o'##.APLGit2.FetchHeader,⊂'  r ← ( f  foo )  (a b c)'
+
+ →T.PassesIf'foo'≡3 ##.APLGit2.FetchHeader'⍝ ' '⍝ ' '  foo'
+ →T.PassesIf'foo'≡4 ##.APLGit2.FetchHeader'⍝ ' '⍝ ' 'r← ( f  foo )  y '
+ →T.PassesIf'foo'≡9 ##.APLGit2.FetchHeader'⍝ ' '⍝ ' '  :Namespace foo'
+ →T.PassesIf'foo'≡9 ##.APLGit2.FetchHeader'⍝ ' '⍝ ' '  :Class foo'
+
+ →T.PassesIf'foo'≡3 ##.APLGit2.FetchHeader,⊂'foo  x;abc'
+ →T.PassesIf'foo'≡3 ##.APLGit2.FetchHeader,⊂'foo  x  ⍝ comment'
+ →T.PassesIf'foo'≡3 ##.APLGit2.FetchHeader,⊂'x   foo  y;abc'
+ →T.PassesIf'foo'≡3 ##.APLGit2.FetchHeader,⊂'{x}  foo  y;abc'
+ →T.PassesIf'foo'≡3 ##.APLGit2.FetchHeader,⊂'{r} ← {x}  foo  y;abc'
+ →T.PassesIf'foo'≡3 ##.APLGit2.FetchHeader,⊂'{r} ← {x}  foo  y;abc'
+ →T.PassesIf'foo'≡3 ##.APLGit2.FetchHeader,⊂'r ← { x }  foo  (a  b  c);abc'
+
+ →T.PassesIf'foo'≡3 ##.APLGit2.FetchHeader,⊂' foo  ←  {+/⍵}'
+ →T.PassesIf'foo'≡3 ##.APLGit2.FetchHeader' foo  ←  { ⍝' '  +/⍵' '}'
+
+ →T.PassesIf'foo'≡4 ##.APLGit2.FetchHeader,⊂'r← ( f  foo )  y '
+ →T.PassesIf'foo'≡4 ##.APLGit2.FetchHeader,⊂' { r } ← { x } ( f  foo )  (a b c)'
+ →T.PassesIf'foo'≡4 ##.APLGit2.FetchHeader,⊂' { r } ←( f  foo )  (a b c)'
+ →T.PassesIf'foo'≡4 ##.APLGit2.FetchHeader,⊂'  r ← ( f  foo )  (a b c)'
+
+ :Trap 11
+     'Something is wrong'Assert'Z'##.APLGit2.FetchHeader'⍝ ' '⍝ ' '  foo'
+ :Else
+     qdmx←⎕DMX
+     →T.FailsIf qdmx.EM≢'Invalid left argument; must be one of: 3 4 9'
+ :EndTrap
+
+ :Trap 11
+     'Something is wrong'Assert 5 ##.APLGit2.FetchHeader'⍝ ' '⍝ ' '  foo'
+ :Else
+     qdmx←⎕DMX
+     →T.FailsIf qdmx.EM≢'Invalid left argument; must be one of: 3 4 9'
+ :EndTrap
+
+ R←T._OK
+⍝Done
