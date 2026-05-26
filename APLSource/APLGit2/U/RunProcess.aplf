@@ -1,15 +1,16 @@
- {r}←RunProcess(EXE command);cmd;folder;i;msg;op;p;pfn;re;ro;rtc;t;⎕IO;⎕USING;tfn;buff;dmx;success;rc;dotnet
+ {r}←RunProcess(EXE command);cmd;folder;i;msg;op;p;pfn;re;ro;rtc;t;⎕IO;⎕USING;tfn;buff;dmx;success;rc;dotnet;exception
 ⍝ Runs EXE and returns a namespace with all sorts of variables, among them StdOut and StdErr.
 ⍝ Cannot run in elevated mode because for that we would need to set i.Verb to 'runas' which
 ⍝ we can't because "UseShellEexecute" must be set to 1 for this which we can't because we must
 ⍝ redirect StdOut and StdErr, something we can only do with "UseShellExecute←0"
 ⍝ ⍵[0] ←→ Executable
 ⍝ ⍵[1] ←→ Argument
- r←⎕NS''
- ⎕IO←0
+⎕IO←0
+r←⎕NS''
+r.⎕io←1
  dotnet←2250⌶0
  :If 1=1⊃dotnet                  ⍝ Bridge successfully loaded?
-     :Select 0⊃dotnet
+    :Select 0⊃dotnet
      :Case 1            ⍝ .NET
          ⎕USING←'System' 'System.IO' 'System.Diagnostics,System.Diagnostics.Process'
      :Case 2            ⍝ .NET Framework
@@ -24,7 +25,22 @@
      i.RedirectStandardError←1
      i.UseShellExecute←0
      i.CreateNoWindow←1
-     {}p.Start ⍬
+     :Trap 90
+         {}p.Start ⍬
+     :Else
+         dmx←⎕DMX
+         :If ∨/'Check ⎕EXCEPTION for details'⍷dmx.Message
+             exception←{(⎕UCS 13)@(⍸⍵=⎕UCS 10)⊢⍵}⍕⎕EXCEPTION
+             :If ∨/': The system cannot find the file specified'⍷exception
+                r.ExitCode←127    ⋄ r.StdOut←'' ⋄ r.StdErr←'It appears that Git is not installed'
+     :return
+             :Else
+                 ('.NET error: ',(⎕UCS 13),exception)⎕SIGNAL 11
+             :EndIf
+         :Else
+dmx.Message ⎕signal dmx.EN
+         :EndIf
+     :EndTrap
      re←⎕NEW StreamReader p.StandardError.BaseStream
      ro←⎕NEW StreamReader p.StandardOutput.BaseStream
      t←r{⍺.StdErr←⍵.ReadToEnd}&re
@@ -56,7 +72,6 @@
  :Else
      '.NET is not available but required on Windows'Assert'Win'≢A.GetOperatingSystem ⍬
      ⎕IO←1
-     r←⎕NS''
      r.ExitCode←0
      r.StdErr←r.StdOut←''
      folder←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'folder'
@@ -70,6 +85,7 @@
          r.StdErr←dmx.Message
          :If ∨/'code 127 '⍷dmx.Message,' '
              r.ExitCode←127
+            r.StdErr←'It appears that Git is not installed'
          :ElseIf ∨/'code 128 '⍷dmx.Message,' '
              r.ExitCode←128
          :EndIf
