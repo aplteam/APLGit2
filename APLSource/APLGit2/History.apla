@@ -1,6 +1,7 @@
 (
  '* 0.28.0 ⋄ 2026-05-25'
- '  * In casae Git is not installed a proper error message is now provided.'
+ '  * In case Git is not installed a proper error message is now provided.'
+ '  * `DiffBetween` does ignore renames now'
  '* 0.27.0 ⋄ 2025-09-20'
  '  * ]APLGit2 can now not only deal with Cider projects but also with acre projects'
  '* 0.26.0 ⋄ 2025-08-21'
