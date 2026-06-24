@@ -1,12 +1,22 @@
- r←Commit(space folder args);msg;ref;branch;rc;data;flag;status;currentBranch
+ r←Commit(space folder args);msg;ref;branch;rc;data;flag;currentBranch;status;ind;noOf;buff
  branch←##.CurrentBranch folder
- :If 0<##.NoOfUntrackedFiles folder
-     :If 1=args.add
-     :OrIf 1 ⎕SE.CommTools.YesOrNo'Branch "',branch,'" has unstaged changes etc - shall Git''s "Add -A" command be executed?'
+ :If 0<noOf←##.NoOfUntrackedFiles folder
+     buff←branch,'" has ',(⍕noOf),' unstaged change',((1<noOf)/'s'),' - shall Git''s "Add -A" command be executed?'
+     :If ##.CommTools.YesOrNo'StageAll@Branch "',buff
          (rc msg data)←folder ##.U.RunGitCommand'add -A'
          msg Assert 0=rc
      :Else
-         r←'Cancelled by user' ⋄ →0
+         status←1 ##.Status folder
+         :If ∨/status[;1]∊'UU' 'AA' 'DD' '!!'
+             r←'There is a merge conflict - you cannot continue' ⋄ →0
+         :Else
+             status←(({⍵[;2]}↑status[;1])≠' ')⌿status
+             status←(({⍵[;2]}↑status[;1])∊'MD?')⌿status
+             :If 0=≢ind←'SelectFiles2Stage@Select file(s) to stage' 1 ##.CommTools.Select↓⍕status
+                 r←'Cancelled by user' ⋄ →0
+             :EndIf
+             folder ##.Add status[ind;2]
+         :EndIf
      :EndIf
  :EndIf
  :If 0 args.Switch'amend'
@@ -16,10 +26,6 @@
          r←'There is nothing to commit and you have not specified a message either?!' ⋄ →0
      :EndIf
      currentBranch←##.CurrentBranch folder
-     :If 'main'≡currentBranch
-     :AndIf ~∨/'(use "git push" to publish your local commits)'⍷∊status
-         r←'You MUST NOT use the -amend flag when the latest commit has already been pushed' ⋄ →0
-     :EndIf
      r←⍪({0≡⍵:'' ⋄ ⍵}args.m)##.Commit folder 1
  :Else
      :If (,0)≢,args.m

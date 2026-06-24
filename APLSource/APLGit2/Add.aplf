@@ -1,14 +1,30 @@
- {r}←{filter}Add y;path;rc;msg;buff;space
-⍝ Stage all files according to `filter` which defaults to ".".\\
-⍝ Alternatively you may specify a specific file, or a RegEx as filter that catches a number of files etc.\\
+ {r}←{x}Add fileList;path;rc;msg;buff;space
+⍝ Stage files defined by `fileList` which defaults to "." (all unstaged files).\\
+⍝ Alternatively you may specify a specific file (string) or a list of files (vector of strings).
+⍝ It can slo be a wildcard expression that catches a number of files like *.txt or invoice_??.txt.\\
 ⍝ `y` must be one of:
 ⍝   * Fully qualfied name of a namespace that is an opened Cider project
-⍝   * Fully qualified path to a Git-managed project
-⍝ Returns a 0
- filter←{0<⎕NC ⍵:⍎⍵ ⋄ '.'}' filter'
+⍝   * Fully qualified path to a Git-managed project\\
+⍝ Returns a 0.\\
+⍝ Examples:
+⍝ Add #.MyProject
+⍝ '.' Add /path/2/project
+⍝ Add ''  ⍝ With Cider
+⍝ 'APLSource/Hello.aplf' Add #.MyProject
+⍝ 'APLSource/*.aplf' Add #.MyProject
  r←0
- (space path)←EstablishProject y
- 'No filter specified?!'⎕SIGNAL 11/⍨0=≢filter
- (rc msg buff)←path U.RunGitCommand 'add ',filter
+ x←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'x'
+ (space path)←EstablishProject x
+ :If 0=≢fileList
+     fileList←'.'
+ :Else
+     fileList←⊆fileList
+ :EndIf
+ :If (,'.')≡,fileList
+     (rc msg buff)←path U.RunGitCommand'add ',fileList
+ :Else
+     fileList←⊃,/' ',¨{' '∊⍵:'"',⍵,'"' ⋄ ⍵}¨fileList
+     (rc msg buff)←path U.RunGitCommand'add ',fileList
+ :EndIf
  msg U.Assert 0=rc
 ⍝Done
