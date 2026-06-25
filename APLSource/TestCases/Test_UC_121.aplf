@@ -1,4 +1,4 @@
- R←Test_UC_121(stopFlag batchFlag);⎕TRAP;stop;rc;buff;was;tempFolder;allCommits2;allCommits1;zipfile;msg;ref
+ R←Test_UC_121(stopFlag batchFlag);⎕TRAP;stop;rc;buff;was;tempFolder;allCommits2;allCommits1;zipfile;msg;C
 ⍝ Attempts a Squash operation without a message
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -8,9 +8,9 @@
  zipfile ZipArchive.UnzipTo tempFolder
 
  allCommits1←##.APLGit2.Log tempFolder
- ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
- ref.##.CommTools.AddAutomation'AskForNumber' 'NoOfSquashs@' 2
- ref.##.CommTools.AddAutomation'AskForText' 'NoOfSquashsComment@' 'Foo'
+ C←∆GetRefToCommTools
+ C.AddAutomation'AskForNumber' 'NoOfSquashs@' 2
+ C.AddAutomation'AskForText' 'NoOfSquashsComment@' 'Foo'
  stop←0
  (rc msg buff)←stop ∆UCMD'Squash "',tempFolder,'"'
  msg Assert 0=rc
@@ -22,7 +22,7 @@
  R←T._OK
 
 ∆TidyUp:
- ref.##.CommTools.Cleanup
+ C.Cleanup
  (rc msg)←FilesAndDirs.RmDirByForce tempFolder
  msg Assert rc=0
 ⍝Done

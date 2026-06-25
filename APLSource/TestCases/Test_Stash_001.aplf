@@ -7,14 +7,14 @@
  'Create!'FilesAndDirs.CheckPath dir
 
  (⊂'Hello')⎕NPUT dir,'/file_1.txt'
- ##.APLGit2.Add ∆StashDir
+ ∆StashDir ##.APLGit2.Add''
  list←##.APLGit2.StashList ∆StashDir
  →T.GoToTidyUp 0<≢list
  buff←##.APLGit2.StashPush ∆StashDir
  →T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊buff
  ⎕MKDIR dir
  (⊂'Hello2')⎕NPUT dir,'/file_2.txt'
- ##.APLGit2.Add ∆StashDir
+ ∆StashDir ##.APLGit2.Add ''
  list←##.APLGit2.StashList ∆StashDir
  →T.GoToTidyUp 1≠≢list
  buff←##.APLGit2.StashPush ∆StashDir

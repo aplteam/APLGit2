@@ -1,5 +1,5 @@
- R←Test_UC_004(stopFlag batchFlag);⎕TRAP;rc;result;msg;stop;parms;log;log2
-⍝ Runs ]Commit
+ R←Test_UC_004(stopFlag batchFlag);⎕TRAP;rc;result;msg;stop;parms;log;log2;C
+⍝ Runs ]Commit in several scenarios
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
@@ -13,20 +13,35 @@
 
  result←stop ∆UCMD'Add . -project="',∆Folder1,'"'
 
- (rc msg result)←stop ∆UCMD'Commit "',∆Folder1,'" -m="It''s a message" -add'
+ C←∆GetRefToCommTools
+ C.AddAutomation'YesOrNo' 'StageAll@' 'n'
+ C.AddAutomation'Select' 'SelectFiles2Stage@' 'a'
+ (rc msg result)←stop ∆UCMD'Commit "',∆Folder1,'" -m="It''s a message"'
  msg Assert rc=0
  →T.PassesIf 2≤≢result
  →T.PassesIf 0∧.<≢¨result
 
  ∆ModifyCounter ∆Folder1
- (rc msg result)←stop ∆UCMD'Commit #.Proj_1 -amend -add'
+ 1 C.AddAutomation'YesOrNo' 'StageAll@' 'y'
+ (rc msg result)←stop ∆UCMD'Commit #.Proj_1 -amend'
  msg Assert rc=0
- →T.PassesIf 2≤≢result
- →T.PassesIf 0∧.<≢¨result
+ →T.GoToTidyUp 2>≢result
+ →T.GoToTidyUp 0≠≢msg
+ →T.GoToTidyUp~0∧.<≢¨result
 
  parms.max←10
  log2←parms ##.APLGit2.Log ∆Folder1
- →T.PassesIf 2=log2[;1]⍳log[1;1]
+ →T.GoToTidyUp 2≠log2[;1]⍳log[1;1]
+
+ 1 C.AddAutomation'Select' 'SelectFiles2Stage@' 2
+ 1 C.AddAutomation'YesOrNo' 'StageAll@' 'n'
+ (rc msg result)←stop ∆UCMD'Commit "',∆Folder3,'" -m="It''s a message"'
+ msg Assert rc=0
+ →T.GoToTidyUp 0≠≢msg
+ →T.GoToTidyUp~∨/'3 files changed'⍷∊result
 
  R←T._OK
+
+∆TidyUp:
+ C.Cleanup
 ⍝Done

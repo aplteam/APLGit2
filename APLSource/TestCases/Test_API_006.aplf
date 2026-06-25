@@ -8,7 +8,7 @@
      :Return
  :EndIf
 
- C.Pause'This test needs you: it opens a Terminal in Git''s project directory.'
+ CommTools.Pause'This test needs you: it opens a Terminal in Git''s project directory.'
 
  :Trap 6
      {}G.OpenGitShell #.APLGit2
@@ -19,7 +19,7 @@
      R←T._NotApplicable
      :Return
  :EndTrap
- →T.PassesIf 1 C.YesOrNo'Was the shell opened in ',##.CiderConfig.HOME,'?'
+ →T.PassesIf 1 CommTools.YesOrNo'Was the shell opened in ',##.CiderConfig.HOME,'?'
 
  R←T._OK
 ⍝Done

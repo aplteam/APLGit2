@@ -1,18 +1,17 @@
- R←Test_UC_002(stopFlag batchFlag);⎕TRAP;result;msg;rc;stop;ref
+ R←Test_UC_002(stopFlag batchFlag);⎕TRAP;result;msg;rc;stop;C
 ⍝ Runs ]ListBranches without an argument
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
  stop←0
- ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
- ref.##.CommTools.AddAutomation'Select' 'SelectPrjForAPLGIT2@' 1
+ C←∆GetRefToCommTools
+ C.AddAutomation'Select' 'SelectPrjForAPLGIT2@' 1
  (rc msg result)←stop ∆UCMD'ListBranches'
- ⎕SE.APLGit2.##.CommTools.Cleanup
  msg Assert rc=0
  →T.GoToTidyUp~0<≢result
 
  R←T._OK
 
 ∆TidyUp:
- ref.##.CommTools.Cleanup
+ C.Cleanup
 ⍝Done

@@ -24,7 +24,6 @@
  R←T._OK
 
 ∆TidyUp:
- ##.APLGit2.CommTools.Cleanup
  (rc msg)←FilesAndDirs.RmDirByForce tempFolder
  msg Assert rc=0
 ⍝Done

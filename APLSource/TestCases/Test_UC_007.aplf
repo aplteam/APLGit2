@@ -1,4 +1,4 @@
- R←Test_UC_007(stopFlag batchFlag);⎕TRAP;rc;msg;stop;buff;ref
+ R←Test_UC_007(stopFlag batchFlag);⎕TRAP;rc;msg;stop;buff;C
 ⍝ Runs ]OpenGitShell
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -8,6 +8,7 @@
      :Return
  :EndIf
 
+ C←∆GetRefToCommTools
  C.Pause'This test needs you: it will open a Terminal in APLGit2''s project directory.'
 
  stop←0
@@ -19,10 +20,9 @@
  msg Assert rc=0
  →T.PassesIf 1 C.YesOrNo'Was the shell opened in ',#.APLGit2.CiderConfig.HOME,'?'
 
- ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
- ref.##.CommTools.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_1'
+ C.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_1'
  (rc msg buff)←∆UCMD'OpenGitShell'
- ref.##.CommTools.Cleanup
+ C.Cleanup
  msg Assert rc=0
 
  →T.GoToTidyUp~1 C.YesOrNo'Was the shell opened in ',#.Proj_1.CiderConfig.HOME,'?'
@@ -30,5 +30,5 @@
  R←T._OK
 
 ∆TidyUp:
- ref.##.CommTools.Cleanup
+ C.Cleanup
 ⍝Done

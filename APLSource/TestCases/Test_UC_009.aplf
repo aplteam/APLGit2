@@ -1,18 +1,17 @@
- R←Test_UC_009(stopFlag batchFlag);⎕TRAP;rc;msg;stop;result;ref
+ R←Test_UC_009(stopFlag batchFlag);⎕TRAP;rc;msg;stop;result;C
 ⍝ Runs ]IsGitProject
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
  stop←0
- ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
- ref.##.CommTools.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_2'
+ C←∆GetRefToCommTools
+ C.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_2'
  (rc msg result)←stop ∆UCMD'IsGitProject'
  msg Assert rc=0
- ref.##.CommTools.Cleanup
  →T.GoToTidyUp'yes'≢result
 
  R←T._OK
 
 ∆TidyUp:
- ref.##.CommTools.Cleanup
+ C.Cleanup
 ⍝Done

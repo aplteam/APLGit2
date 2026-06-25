@@ -1,4 +1,4 @@
- R←Test_API_162(stopFlag batchFlag);⎕TRAP;result;qdmx;tempFolder;zipfile;rc;msg
+ R←Test_API_162(stopFlag batchFlag);⎕TRAP;result;qdmx;tempFolder;zipfile;rc;msg;C
 ⍝ Runs "Add" and "Commit" on "main" without a message and negative confirmation
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -7,10 +7,11 @@
  zipfile←##.CiderConfig.HOME,'/TestData/GitProject.zip'
  zipfile ZipArchive.UnzipTo tempFolder
  Assert'main'≡G.CurrentBranch tempFolder
- G.Add tempFolder
+ tempFolder G.Add''
+ C←∆GetRefToCommTools
 
  :Trap 0
-     G.CommTools.AddAutomation'YesOrNo' 'NoMsgOnCommit@' 'n'  ⍝ Without confirmation an error must be thrown
+     C.AddAutomation'YesOrNo' 'NoMsgOnCommit@' 'n'  ⍝ Without confirmation an error must be thrown
      {}''G.Commit tempFolder
      →T.GoToTidyUp 1
  :Else
@@ -21,7 +22,7 @@
  R←T._OK
 
 ∆TidyUp:
- G.CommTools.Cleanup
+ C.Cleanup
  (rc msg)←FilesAndDirs.RmDirByForce tempFolder
  msg Assert rc=0
 ⍝Done

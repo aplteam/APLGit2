@@ -7,7 +7,7 @@
  'Create!'FilesAndDirs.CheckPath dir
 
  (⊂'Hello')⎕NPUT dir,'/file_1.txt'
- ##.APLGit2.Add ∆StashDir
+ ∆StashDir ##.APLGit2.Add''
 
  (rc more res)←∆UCMD'StashPush ',∆StashDir
  more Assert 0=rc

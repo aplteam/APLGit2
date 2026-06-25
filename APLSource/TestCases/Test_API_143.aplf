@@ -1,17 +1,18 @@
- R←Test_API_143(stopFlag batchFlag);⎕TRAP;tempFolder;rc;msg;zipfile;log;noOf;log2;qdmx
+ R←Test_API_143(stopFlag batchFlag);⎕TRAP;tempFolder;rc;msg;zipfile;log;noOf;log2;qdmx;C
 ⍝ Runs "Squash" on "main" with positiv confirmation
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
+ C←∆GetRefToCommTools
  tempFolder←FilesAndDirs.GetTempSubDir⊃⎕SI
  zipfile←##.CiderConfig.HOME,'/TestData/GitProject.zip'
  zipfile ZipArchive.UnzipTo tempFolder
 
- G.Add tempFolder
+ tempFolder G.Add''
  {}'README polished'G.Commit tempFolder
  Assert'main'≡G.CurrentBranch tempFolder
  log←G.Log tempFolder
- G.CommTools.AddAutomation'YesOrNo' 'SquashOnMain@' 'y'  ⍝ On "main", APL2Git must ask for confirmation
+ C.AddAutomation'YesOrNo' 'SquashOnMain@' 'y'  ⍝ On "main", APL2Git must ask for confirmation
  noOf←tempFolder G.Squash'Squash first two commit' 2
  →T.GoToTidyUp noOf≠2
  log2←G.Log tempFolder
@@ -21,7 +22,7 @@
  R←T._OK
 
 ∆TidyUp:
- G.CommTools.Cleanup
+ C.Cleanup
  (rc msg)←FilesAndDirs.RmDirByForce tempFolder
  msg Assert rc=0
 ⍝Done

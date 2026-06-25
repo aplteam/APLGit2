@@ -1,4 +1,4 @@
- R←Test_UC_110(stopFlag batchFlag);⎕TRAP;stop;rc;msg;buff;tempFolder;folder;q;parms;log;success;sourcePath
+ R←Test_UC_110(stopFlag batchFlag);⎕TRAP;stop;rc;msg;buff;tempFolder;folder;q;parms;log;success;sourcePath;C
 ⍝ Attempts to run "]CompareCommits" (uses ]CompareFiles for putting diffs on display)
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -14,6 +14,7 @@
  q,←⊂' This test needs you: it will run the command ]CompareCommits which will use an external'
  q,←⊂' comparison utility via the ]CompareFiles user command'
  q,←⊂' Would you like to run this test?'
+ C←∆GetRefToCommTools
  :If 0=1 C.YesOrNo q
      →0,R←T._NoBatchTest
  :EndIf

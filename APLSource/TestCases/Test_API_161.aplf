@@ -1,16 +1,17 @@
- R←Test_API_161(stopFlag batchFlag);⎕TRAP;tempFolder;zipfile;rc;msg;log;log2
+ R←Test_API_161(stopFlag batchFlag);⎕TRAP;tempFolder;zipfile;rc;msg;log;log2;C
 ⍝ Runs "Add" and "Commit" on "main" without a message but positive confirmation
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
+ C←∆GetRefToCommTools
  tempFolder←FilesAndDirs.GetTempSubDir⊃⎕SI
  zipfile←##.CiderConfig.HOME,'/TestData/GitProject.zip'
  zipfile ZipArchive.UnzipTo tempFolder
  Assert'main'≡G.CurrentBranch tempFolder
- G.Add tempFolder
+ tempFolder G.Add'.'
  log←G.Log tempFolder
 
- G.CommTools.AddAutomation'YesOrNo' 'NoMsgOnCommit@' 'y'  ⍝ Without confirmation an error must be thrown
+ C.AddAutomation'YesOrNo' 'NoMsgOnCommit@' 'y'  ⍝ Without confirmation an error must be thrown
  {}''G.Commit tempFolder
  log2←G.Log tempFolder
  →T.GoToTidyUp 1≠-/≢¨log2 log               ⍝ One less than before
@@ -19,6 +20,6 @@
  R←T._OK
 
 ∆TidyUp:
- G.CommTools.Cleanup
+ C.Cleanup
  (rc msg)←FilesAndDirs.RmDirByForce tempFolder
  msg Assert rc=0

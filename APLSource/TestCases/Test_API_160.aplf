@@ -11,7 +11,7 @@
      →T.PassesIf'Is not a namespace'≡qdmx.EM
  :EndTrap
 
- result←G.Add ∆Folder1
+ result←∆Folder1 G.Add '.'
 
  result←'It''s a message'G.Commit ∆Folder1
  →T.PassesIf 2≤≢result
@@ -19,7 +19,7 @@
 
  ∆ModifyCounter ∆Folder1
 
- (∆Folder1,'/APLSource/Counter.aplf')G.Add ∆Folder1
+ ∆Folder1 G.Add ∆Folder1,'/APLSource/Counter.aplf'
  result←'It''s another message'G.Commit #.Proj_1
  →T.PassesIf 2≤≢result
  →T.PassesIf 0∧.<≢¨result

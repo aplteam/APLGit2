@@ -8,17 +8,17 @@
  noOf←≢G.Log tempDir
 
  (⊂'First')⎕NPUT tempDir,'/myFile.txt'
- res←G.Add tempDir
+ res←tempDir G.Add ''
  Assert res=0
  res←'First test commit'G.Commit tempDir
  Assert∨/'2 files changed'⍷∊res
  (⊂'second')⎕NPUT(tempDir,'/myFile.txt')1
- res←G.Add tempDir
+ res←tempDir G.Add ''
  Assert res=0
  res←'First test commit'G.Commit tempDir
  Assert∨/'1 file changed, 1 insertion(+)'⍷∊res
  (⊂'Third')⎕NPUT(tempDir,'/myFile.txt')1
- res←G.Add tempDir
+ res←tempDir G.Add ''
  Assert res=0
  res←'First test commit'G.Commit tempDir
  Assert∨/'1 file changed, 1 insertion(+)'⍷∊res

@@ -3,7 +3,7 @@
  r←1
  openProjects←⎕SE.Cider.ListOpenProjects 0
  :If 0<noOf←≢openProjects
-     q←'In order to execute the test group "UC∆Stash2" there must be no open projects - durrently there are ',(⍕noOf),' open project(s)',(⎕UCS 13),'Close all open projects?'
+     q←'In order to execute the test group "UC∆Stash2" there must be no open projects - currently there are ',(⍕noOf),' open project(s)',(⎕UCS 13),'Close all open projects?'
  :AndIf 1 CommTools.YesOrNo'InitialUC∆Stash2@',q
      ⎕SE.Cider.CloseProject openProjects[;1]
  :Else
@@ -11,7 +11,7 @@
  :EndIf
  stashDir←FilesAndDirs.GetTempSubDir''
  {}1 ##.APLGit2.Init stashDir
- ##.APLGit2.Add stashDir
+ stashDir ##.APLGit2.Add''
  msg←'Initial commit'##.APLGit2.Commit stashDir
  'Something went wrong'Assert∧/∨/¨'Initial commit' ' 2 files changed'⍷¨⊂∊msg
  parms←⎕SE.Cider.CreateCreateProjectParms stashDir

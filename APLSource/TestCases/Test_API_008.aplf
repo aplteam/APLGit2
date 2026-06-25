@@ -1,4 +1,4 @@
- R←Test_API_008(stopFlag batchFlag);⎕TRAP;tempFolder;buff;res;parms;data;expected
+ R←Test_API_008(stopFlag batchFlag);⎕TRAP;tempFolder;buff;res;parms;data;expected;C
 ⍝ Runs "AddGitIgnore"
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -7,6 +7,7 @@
      →0 ⋄ R←T._NoBatchTest
  :EndIf
 
+ C←∆GetRefToCommTools
  C.Pause'This test needs you: when a ⎕ED pops up (twice!) just close it without a change.'
 
  tempFolder←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
@@ -17,9 +18,9 @@
  parms.watch←'ns'
  {}⎕SE.Cider.OpenProject parms
 
- G.CommTools.AddAutomation'YesOrNo' 'AddGitignore@' ''
- G.CommTools.AddAutomation'YesOrNo' 'SpecialStatement@' 'N'
- G.CommTools.AddAutomation'YesOrNo' 'AddDestinationFolder@' 'N'
+ C.AddAutomation'YesOrNo' 'AddGitignore@' ''
+ C.AddAutomation'YesOrNo' 'SpecialStatement@' 'N'
+ C.AddAutomation'YesOrNo' 'AddDestinationFolder@' 'N'
  res←G.AddGitIgnore tempFolder
  →T.GoToTidyUp~∨/'.gitignore created in'⍷res
  →T.GoToTidyUp~⎕NEXISTS tempFolder,'/.gitignore'
@@ -27,18 +28,18 @@
  expected←'aplcore' 'CONTINUE' 'CONTINUE.dws' 'conga.crash'
  →T.GoToTidyUp expected≢data
 
- 1 G.CommTools.AddAutomation'YesOrNo' 'SpecialStatement@' ''
- 1 G.CommTools.AddAutomation'YesOrNo' 'AddDestinationFolder@' ''
- G.CommTools.AddAutomation'Select' 'SelectActionOnGitIgnore@' 2
+ 1 C.AddAutomation'YesOrNo' 'SpecialStatement@' ''
+ 1 C.AddAutomation'YesOrNo' 'AddDestinationFolder@' ''
+ C.AddAutomation'Select' 'SelectActionOnGitIgnore@' 2
  res←G.AddGitIgnore tempFolder
  expected←'aplcore' 'CONTINUE' 'CONTINUE.dws' 'conga.crash' '/packages_dev/*' '!/packages_dev/apl-dependencies.txt' '!/packages_dev/apl-buildlist.json' 'Dist/'
  data←⊃FilesAndDirs.NGET(tempFolder,'/.gitignore')1
- →T.GoToTidyUp  A.LazyMatch /FilesAndDirs.EnforceSlash¨¨expected data
+ →T.GoToTidyUp A.LazyMatch/FilesAndDirs.EnforceSlash¨¨expected data
 
  R←T._OK
 
 ∆TidyUp:
- G.CommTools.Cleanup
+ C.Cleanup
  {}0 ⎕SE.Cider.CloseProject'#.BooBoo'
  Assert 0=⊃buff←FilesAndDirs.RmDir tempFolder
  #.⎕EX'BooBoo'

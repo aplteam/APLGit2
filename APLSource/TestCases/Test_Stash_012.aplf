@@ -7,7 +7,7 @@
  'Create!'FilesAndDirs.CheckPath dir
 
  (⊂'Hello')⎕NPUT dir,'/file_1.txt'
- ##.APLGit2.Add ∆StashDir
+ ∆StashDir ##.APLGit2.Add''
  buff←##.APLGit2.StashPush ∆StashDir
  →T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊buff
 

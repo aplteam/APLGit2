@@ -1,6 +1,6 @@
- Initial;result;buff
+ Initial ns;result;buff
 ⍝ 1. Create the needed references
-⍝ 2. Set global `∆TestFlag` to 1
+⍝ 2. Set global `DEVELOPMENT` depending on user decision (if not running in batch mode)
 ⍝ 3. Create two namespaces with (very little) content
 ⍝ 4. Create two Cider projects from those two namespaces
 ⍝ 5. Initialize both Cider projects as local Git repositories
@@ -8,13 +8,19 @@
  A←APLTreeUtils2
  F←FilesAndDirs
  G←APLGit2←##.APLGit2
- C←CommTools
 
- G.∆TestFlag←1 CommTools.YesOrNo'Run code in ⎕SE when a user command (rather than #.APLGit2) ?'
+ :If ns.batchFlag
+     ⎕SE.APLGit2.⎕EX'DEVELOPMENT'
+ :Else
+     ⎕SE.APLGit2.DEVELOPMENT←1 CommTools.YesOrNo'Run code in ⎕SE when a user command (rather than #.APLGit2) ?'
+ :EndIf
 
+ ∆LINK_NOTIFY_WAS←⎕SE.Link.NOTIFY
+ ⎕SE.Link.NOTIFY←0
  ∆TempDir←F.GetTempSubDir'Git_Tests'
  3 ⎕MKDIR ∆Folder1←G.F.EnforceSlash ∆TempDir,'/NoBlanks'
  3 ⎕MKDIR ∆Folder2←G.F.EnforceSlash ∆TempDir,'/Has Blanks'
+ 3 ⎕MKDIR ∆Folder3←G.F.EnforceSlash ∆TempDir,'/StagedAndUnTracked'
 
  'Proj_1'#.⎕NS''
  #.Proj_1.(⎕IO ⎕ML)←1
@@ -23,10 +29,10 @@
  result←⎕SE.UCMD'Cider.CreateProject ',∆Folder1,' #.Proj_1 -acceptConfig -noEdit -batch -ignoreUserExec'
  {}∆Initialize ∆Folder1
  (⊂'r←Hello' 'r←''world''')⎕NPUT ∆Folder1,'/APLSource/help.aplf'
- G.Add ∆Folder1
+ ∆Folder1 G.Add''
  buff←'Function added'G.Commit ∆Folder1
  (⊂'r←Hello' 'r←''World''')⎕NPUT(∆Folder1,'/APLSource/help.aplf')1
- G.Add ∆Folder1
+ ∆Folder1 G.Add''
 
  'Proj_2'#.⎕NS''
  #.Proj_2.(⎕IO ⎕ML)←1
@@ -36,6 +42,18 @@
  {}∆Initialize ∆Folder2
  (⊂'r←Hello2' 'r←''Galaxy''')⎕NPUT ∆Folder2,'/APLSource/help2.aplf'
 
- ∆LINK_NOTIFY_WAS←⎕SE.Link.NOTIFY
- ⎕SE.Link.NOTIFY←0
+ 'Proj_3'#.⎕NS''
+ #.Proj_3.(⎕IO ⎕ML)←1
+ #.Proj_3.⎕FX↑'r←WhoAmI' 'r←''Proj_3'''
+ (∆Folder3,'/cider.config')⎕NCOPY ##.CiderConfig.HOME,'/TestData/cider.config.3'
+ result←⎕SE.UCMD'Cider.CreateProject "',∆Folder3,'" #.Proj_3 -acceptConfig -noEdit -batch -ignoreUserExec'
+ {}∆Initialize ∆Folder3
+ (⊂'r←Hello2' 'r←''Galaxy''')⎕NPUT ∆Folder3,'/APLSource/help2.aplf'
+ {}∆Folder3 G.U.RunGitCommand'add ',∆Folder3,'/APLSource/help2.aplf'
+ (⊂'r←Hello3' 'r←''Virgo''')⎕NPUT ∆Folder3,'/APLSource/help3.aplf'
+ {}∆Folder3 G.U.RunGitCommand'add ',∆Folder3,'/APLSource/help3.aplf'
+ (⊂'r←Hello3' 'r←''Virgo Cluster''')⎕NPUT(∆Folder3,'/APLSource/help3.aplf')1
+ (⊂'r←Hello4' 'r←''Universe''')⎕NPUT ∆Folder3,'/APLSource/help4.aplf'
+ #.Proj_3.⎕FX↑'r←WhoAmI' '⍝ Really!' 'r←''Proj_3'''
+ {}#.Proj_3 ⎕SE.Link.Add ⎕SE.Link.GetFileName'#.Proj_3.WhoAmI'
 ⍝Done

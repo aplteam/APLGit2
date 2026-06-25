@@ -1,4 +1,4 @@
- R←Test_UC_014(stopFlag batchFlag);⎕TRAP;rc;msg;stop;result;result2;ref
+ R←Test_UC_014(stopFlag batchFlag);⎕TRAP;rc;msg;stop;result;result2;C
 ⍝ Runs ]Log
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -25,21 +25,21 @@
  (rc msg result)←stop ∆UCMD'Log "',∆Folder1,'" -verbose'
  →T.PassesIf 0<≢result
 
- ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
- ref.##.CommTools.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_1'
+ C←∆GetRefToCommTools
+ C.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_1'
  (rc msg result)←stop ∆UCMD'Log'
  →T.GoToTidyUp 0=≢result
 
- 1 ref.##.CommTools.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_1'
+ 1 C.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_1'
  (rc msg result)←stop ∆UCMD'Log 2'
  →T.GoToTidyUp 0=≢result
 
- 1 ref.##.CommTools.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_1'
+ 1 C.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_1'
  (rc msg result)←stop ∆UCMD'Log 2022-12-31'
  →T.GoToTidyUp 0=≢result
 
  R←T._OK
 
 ∆TidyUp:
- ref.##.CommTools.Cleanup
+ C.Cleanup
 ⍝Done

@@ -1,4 +1,4 @@
- R←Test_UC∆Stash1_030(stopFlag batchFlag);⎕TRAP;rc;msg;list;more;res;dir;ref
+ R←Test_UC∆Stash1_030(stopFlag batchFlag);⎕TRAP;rc;msg;list;more;res;dir;C
 ⍝ Executes ]StashList, ]StashPush, ]StashPop, ]StashApply and ]StashClear without argument  (user selects project)
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -6,16 +6,16 @@
  dir←FilesAndDirs.AddTrailingSep #.Proj_1.CiderConfig.HOME
  (⊂'Hello')⎕NPUT dir,'file_1.txt'
 
- ##.APLGit2.Add dir
- ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
- ref.##.CommTools.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_1'
+ dir ##.APLGit2.Add''
+ C←∆GetRefToCommTools
+ C.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_1'
  (rc more list)←∆UCMD'StashList'
  more Assert 0=rc
  →T.GoToTidyUp 0<≢list
  (rc more res)←∆UCMD'StashPush'
  more Assert 0=rc
  (⊂'Hello2')⎕NPUT dir,'file_2.txt'
- ##.APLGit2.Add dir
+ dir ##.APLGit2.Add''
  (rc more list)←∆UCMD'StashList'
  more Assert 0=rc
  →T.GoToTidyUp 1≠≢list
@@ -46,7 +46,7 @@
 
 ∆TidyUp:
  ##.APLGit2.StashClear ∆StashDir
- ref.##.CommTools.Cleanup
+ C.Cleanup
  FilesAndDirs.DeleteFile dir∘,¨'file_1.txt' 'file_2.txt '
- ##.APLGit2.Add dir
+ dir ##.APLGit2.Add ''
 ⍝Done

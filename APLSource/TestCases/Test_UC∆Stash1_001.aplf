@@ -8,7 +8,7 @@
 
  (⊂'Hello')⎕NPUT dir,'/file_1.txt'
 
- ##.APLGit2.Add ∆StashDir
+ ∆StashDir ##.APLGit2.Add''
  (rc more list)←∆UCMD'StashList ',∆StashDir
  more Assert 0=rc
  →T.GoToTidyUp 0<≢list
@@ -16,7 +16,7 @@
  more Assert 0=rc
  ⎕MKDIR dir
  (⊂'Hello2')⎕NPUT dir,'/file_2.txt'
- ##.APLGit2.Add ∆StashDir
+ ∆StashDir ##.APLGit2.Add''
  (rc more list)←∆UCMD'StashList  ',∆StashDir
  more Assert 0=rc
  →T.GoToTidyUp 1≠≢list

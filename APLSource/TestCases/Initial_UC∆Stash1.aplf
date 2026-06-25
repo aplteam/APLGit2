@@ -2,7 +2,7 @@
 ⍝ Creates a project for the sole purpose of testing the stash user commands
  ∆StashDir←FilesAndDirs.GetTempSubDir''
  {}1 ##.APLGit2.Init ∆StashDir
- ##.APLGit2.Add ∆StashDir
+ ∆StashDir ##.APLGit2.Add''
  msg←'Initial commit'##.APLGit2.Commit ∆StashDir
  'Something went wrong'Assert∧/∨/¨'Initial commit' ' 2 files changed'⍷¨⊂∊msg
 ⍝Done

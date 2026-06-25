@@ -7,7 +7,7 @@
  'Create!'FilesAndDirs.CheckPath dir
 
  (⊂'Hello')⎕NPUT dir,'/file_1.txt'
- ##.APLGit2.Add ∆StashDir
+ ∆StashDir ##.APLGit2.Add''
  parms←##.APLGit2.CreateStashPushParms
  parms.folder←∆StashDir
  parms.msg←'First stash'
@@ -15,7 +15,7 @@
  →T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊res
  ⎕MKDIR dir
  (⊂'Hello2')⎕NPUT dir,'/file_2.txt'
- ##.APLGit2.Add ∆StashDir
+ ∆StashDir ##.APLGit2.Add''
  parms←##.APLGit2.CreateStashPushParms
  parms.folder←∆StashDir
  parms.msg←'Second stash'
@@ -23,7 +23,7 @@
  →T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊res
  ⎕MKDIR dir
  (⊂'Hello3')⎕NPUT dir,'/file_3.txt'
- ##.APLGit2.Add ∆StashDir
+ ∆StashDir ##.APLGit2.Add''
  parms←##.APLGit2.CreateStashPushParms
  parms.folder←∆StashDir
  parms.msg←'Third stash'

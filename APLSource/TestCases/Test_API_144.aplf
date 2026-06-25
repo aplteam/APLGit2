@@ -1,4 +1,4 @@
- R←Test_API_144(stopFlag batchFlag);⎕TRAP;tempFolder;rc;msg;zipfile;qdmx
+ R←Test_API_144(stopFlag batchFlag);⎕TRAP;tempFolder;rc;msg;zipfile;qdmx;C
 ⍝ Runs "Squash" on "main" with negative confirmation
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -7,12 +7,13 @@
  zipfile←##.CiderConfig.HOME,'/TestData/GitProject.zip'
  zipfile ZipArchive.UnzipTo tempFolder
 
- G.Add tempFolder
+ tempFolder G.Add ''
  {}'README polished'G.Commit tempFolder
  Assert'main'≡G.CurrentBranch tempFolder
+ C←∆GetRefToCommTools
 
  :Trap 0
-     G.CommTools.AddAutomation'YesOrNo' 'SquashOnMain@' 'n'  ⍝ Without confirmation an error must be thrown
+     C.AddAutomation'YesOrNo' 'SquashOnMain@' 'n'  ⍝ Without confirmation an error must be thrown
      {}tempFolder G.Squash'Squash first two commit' 2
      →T.GoToTidyUp 1
  :Else
@@ -23,7 +24,7 @@
  R←T._OK
 
 ∆TidyUp:
- G.CommTools.Cleanup
+ C.Cleanup
  (rc msg)←FilesAndDirs.RmDirByForce tempFolder
  msg Assert rc=0
 ⍝Done
