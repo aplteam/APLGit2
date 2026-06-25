@@ -1,7 +1,12 @@
- r←Add(space folder args);filter
+ r←Add(space folder args);filter;ind;buff
  'Not a URL on GitHub'Assert 0<≢args._1
  filter←args._1
  'Invalid filter'Assert 0<≢filter
- {}filter ##.Add folder
+ ind←1+1⍳⍨(⊂'⎕SE')≡¨⎕NSI
+ :If 0<#.APLGit2.TestCases.⎕NC filter
+     filter←⎕SE.Link.GetFileName(ind⊃⎕NSI),'.',filter
+ :EndIf
+ buff←folder ##.Add filter
+ ∘∘∘
  r←0 0⍴''
 ⍝Done

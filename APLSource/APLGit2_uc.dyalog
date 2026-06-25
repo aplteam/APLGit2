@@ -318,7 +318,6 @@ MinimumVersionOfDyalog←'18.0'
       :If 9=#.⎕NC'APLGit2.APLGit2'
       :AndIf 0<⎕SE.APLGit2.⎕NC'DEVELOPMENT'
       :AndIf ⎕SE.APLGit2.DEVELOPMENT
-      :AndIf 0={0=⍵.⎕NC'∆TestFlag':0 ⋄ ⍵.∆TestFlag}#.APLGit2.APLGit2
           ref←#.APLGit2.APLGit2.API
       :Else
           ref←⎕SE.APLGit2
