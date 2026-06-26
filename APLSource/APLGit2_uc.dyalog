@@ -137,6 +137,14 @@ MinimumVersionOfDyalog←'18.0'
      r,←c
 
      c←⎕NS''
+     c.Name←'Push'
+     c.Desc←'Pushes the current branch after user confirmation'
+     c.Group←'APLGit2'
+     c.Parse←'1s'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
      c.Name←'RefLog'
      c.Desc←'List reference log entries (RefLogs)'
      c.Group←'APLGit2'
