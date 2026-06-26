@@ -14,5 +14,10 @@
  ⎕EX¨'∆Folder1' '∆Folder2' '∆TempDir'
  #.⎕EX¨'Proj_1' 'Proj_2' 'Proj_3'
  ⎕EX'∆LINK_NOTIFY_WAS'
- ⎕SE.APLGit2.⎕EX'DEVELOPMENT'
+ :If ¯1≢∆DevelopmentWas
+     ⎕SE.APLGit2.DEVELOPMENT←∆DevelopmentWas
+ :Else
+     ⎕SE.APLGit2.⎕EX'DEVELOPMENT'
+ :EndIf
+ ⎕EX'∆DevelopmentWas'
 ⍝Done

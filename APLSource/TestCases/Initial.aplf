@@ -1,4 +1,4 @@
- Initial ns;result;buff
+ Initial ns;result;buff;was
 ⍝ 1. Create the needed references
 ⍝ 2. Set global `DEVELOPMENT` depending on user decision (if not running in batch mode)
 ⍝ 3. Create two namespaces with (very little) content
@@ -9,10 +9,11 @@
  F←FilesAndDirs
  G←APLGit2←##.APLGit2
 
+ ∆DevelopmentWas←{0=⍵.⎕NC'DEVELOPMENT':¯1 ⋄ ⍵.DEVELOPMENT}⎕SE.APLGit2
  :If ns.batchFlag
      ⎕SE.APLGit2.⎕EX'DEVELOPMENT'
  :Else
-     ⎕SE.APLGit2.DEVELOPMENT←1 CommTools.YesOrNo'Run code in ⎕SE when a user command (rather than #.APLGit2) ?'
+     ⎕SE.APLGit2.DEVELOPMENT←~1 CommTools.YesOrNo'Run code in ⎕SE when a user command (rather than #.APLGit2) ?'
  :EndIf
 
  ∆LINK_NOTIFY_WAS←⎕SE.Link.NOTIFY

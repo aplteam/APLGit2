@@ -40,6 +40,7 @@
          list←Status folder
      :Else
          list←folder DiffBetween hash1 hash2
+         list←(list,' ')[;3 1 2]
      :EndIf
      :If 0<≢∊list
          ⎕←'Total number of files found: ',⍕≢list
