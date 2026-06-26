@@ -1,4 +1,9 @@
- r←Status(space folder args);short
- short←args.Switch'short'
- r←↑short ##.Status folder
+ r←Status(space folder args);verbose;aplNames
+ verbose←args.Switch'verbose'
+ aplNames←args.Switch'APLnames'
+ r←verbose aplNames ##.Status folder
+ :If args.view
+     {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'ed'}ed←⍵)}r
+     r←''
+ :EndIf
 ⍝Done

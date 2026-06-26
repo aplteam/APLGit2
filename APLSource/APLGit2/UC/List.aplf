@@ -207,7 +207,7 @@
      c.Name←'Status'
      c.Desc←'Reports all untracked files and/or all uncommitted changes'
      c.Group←'APLGit2'
-     c.Parse←'1s -short'
+     c.Parse←'1s -verbose -view -APLnames'
      c._Project←1
      r,←c
 

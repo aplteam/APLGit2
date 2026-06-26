@@ -7,10 +7,10 @@
     ∇ r←List;c;⎕TRAP;MinimumVersionOfDyalog;AtLeastVersion
       :Access Shared Public
       AtLeastVersion←{⊃⍵≤{⊃⊃(//)⎕VFI ⍵/⍨2>+\⍵='.'}2⊃'.'⎕WG'aplversion'}
-
+     
    ⍝ Everything between "⍝ >>>>> Start*" and "⍝ >>>>> End*" is injected as part of
-   ⍝ the build process of the package - don't edit this!     
-      ⍝ >>>>> StartListInject    
+   ⍝ the build process of the package - don't edit this!
+      ⍝ >>>>> StartListInject
 MinimumVersionOfDyalog←'18.0'
  r←⍬
      ⍝ _Project is 1 for commands that allow specifying the project as argument
@@ -220,7 +220,7 @@ MinimumVersionOfDyalog←'18.0'
      c.Name←'Status'
      c.Desc←'Reports all untracked files and/or all uncommitted changes'
      c.Group←'APLGit2'
-     c.Parse←'1s -short'
+     c.Parse←'1s -verbose -view -APLnames'
      c._Project←1
      r,←c
 
@@ -331,5 +331,5 @@ MinimumVersionOfDyalog←'18.0'
       :EndIf
       ⎕←msg
     ∇
-    
+
 :EndClass

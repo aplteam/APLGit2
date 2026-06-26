@@ -37,7 +37,7 @@
      'The length of the hashes must be 4 or more characters'U.Assert∧/{(,'.')≡,⍵:1 ⋄ 4≤≢⍵}¨hash1 hash2
      ⎕←'Comparing ',({(,'.')≡,⍵:'the current working directory' ⋄ ⍵}hash1),' with ',hash2
      :If (,'.')≡,hash1
-         list←1 Status folder
+         list←Status folder
      :Else
          list←folder DiffBetween hash1 hash2
      :EndIf
@@ -47,7 +47,7 @@
              cfg←⊃F.NGET folder,'/cider.config'
              ns←⎕JSON⍠('Dialect' 'JSON5')⊣cfg
          :AndIf F.IsDir folder,'/',ns.CIDER.source
-             list←((F.EnforceSlash{⍵,'/'/⍨~'/\'∊⍨¯1↑⍵}ns.CIDER.source){⍺∘≡¨(≢⍺)↑¨⍵}⊢/list)⌿list
+             list←((F.EnforceSlash{⍵,'/'/⍨~'/\'∊⍨¯1↑⍵}ns.CIDER.source){⍺∘≡¨(≢⍺)↑¨⍵}list[;3])⌿list
          :EndIf
          :If 0<≢list←('.aplc' '.aplf' '.apln' '.aplo' '.apli' '.dyalog'∊⍨{3⊃⎕NPARTS ⍵}¨⊢/list)⌿list
              ⎕←(⍕≢list),' APL source file',((1<≢list)/'s'),' found to compare'

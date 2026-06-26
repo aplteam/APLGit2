@@ -1,21 +1,26 @@
- r←{short}Status y;rc;more;path;⎕TRAP;short;space;ind;branch;msg;cmd
+ r←{x}Status y;rc;more;path;⎕TRAP;short;space;ind;branch;msg;cmd;aplNames;verbose
 ⍝ Reports all unstaged/uncommited/untracked files.\\
 ⍝ `y` must be one of:
 ⍝   * Fully qualfied name of a namespace that is an opened Cider project
 ⍝   * Fully qualified path to a Git-managed project
-⍝ `short` defaults to 0
-⍝ * short←0 gives a full report whith headers, usually useful only for the user command
-⍝ * short←1 returns a matrix with 2 columns: [;1] indicators, [;2] the path
+⍝ `x`, if specified, must be a one- or two-element vector of Booleans: `verbose` and `aplNames`
+⍝ * `verbose` defaults to 0
+⍝   * verbose←1 gives a full report whith headers, usually useful only for the user command
+⍝   * verbose←0 returns a matrix with 3 columns:
+⍝     [;1] index indicators indicators
+⍝     [;2] working area indicators
+⍝     [;3] the path
+⍝ * `aplNames` defaults to 0. Ignored with verbose.
+⍝   When set, a forth column with APL names is added where possible.
  ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
- short←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'short'
+ x←{0<⎕NC ⍵:⍎⍵ ⋄ 0 0}'x'
+ (verbose aplNames)←x,(≢x)↓0 1
  (space path)←EstablishProject y
- cmd←'status',short/' --short'
+ cmd←'status',(~verbose)/' --short'
  (rc more r)←path U.RunGitCommand cmd
  more U.Assert 0=rc
  ((≢'fatal:')↓more)U.Assert'fatal:'{⍺≢(≢⍺)↑⍵}more
- :If short
-     r←(2↑¨r),[1.5]3↓¨r
- :Else
+ :If verbose
      ind←⍸∨/¨'On branch'∘⍷¨r
      branch←⊃¯1↑' '(≠⊆⊢)ind⊃r
      :If (⊂branch)∊'main' 'master'
@@ -24,6 +29,11 @@
          msg←'On branch ',branch
      :EndIf
      (ind⊃r)←msg
-     r←(⊂path{0<≢⍵:'Namespace: ',⍵ ⋄ 'Folder: ',⍺}space),⊆r
+     r←⍪(⊂path{0<≢⍵:'Namespace: ',⍵ ⋄ 'Folder: ',⍺}space),⊆r
+ :Else
+     r←{(↑2↑¨⍵),3↓¨⍵}⍣(0<≢r)⊢r
+     :If aplNames
+         r,←⎕SE.Link.GetItemName¨r[;3]
+     :EndIf
  :EndIf
 ⍝Done

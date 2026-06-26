@@ -1,4 +1,4 @@
- r←level Help Cmd;ref;⎕TRAP
+ r←level Help Cmd;ref;⎕TRAP;buff
  r←''
  :Select level
  :Case 0
@@ -36,7 +36,7 @@
      :Case ⎕C'RefLog'
          r,←⊂']APLGit2.RefLog [space|folder] -max= -all -branch= -project='
      :Case ⎕C'Status'
-         r,←⊂']APLGit2.Status -short -path='
+         r,←⊂']APLGit2.Status -verbose -view='
      :Case ⎕C'StashApply'
          r,←⊂']APLGit2.StashApply [space|folder] -n=<number of stash>'
      :Case ⎕C'StashClear'
@@ -70,6 +70,14 @@
      :Select ⎕C Cmd
      :CaseList ⎕C¨'Add' ''
          r,←AddProjectOptions 1
+     :CaseList ⎕C¨'Status' ''
+         r←AddProjectOptions 1
+         r,←⊂,' '
+         buff←⊂('Code' 'Meaning')
+         buff,←⊂(⍴¨1⊃,buff)⍴¨'-'
+         buff,←('(space)' 'Unmodified')('M' 'Modified')('T' 'File type changed (e.g. regular file → symlink)')('A' 'Added')
+         buff,←('D' 'Deleted')('R' 'Renamed')('C' 'Copied')('U' 'Updated but unmerged')('?' 'Untracked (only in XY as ??)')('!' 'Ignored (only in XY as !!)')
+         r,←↓⍕↑buff
      :Else
          r,←AddProjectOptions 0
      :EndSelect
