@@ -1,4 +1,4 @@
- r←{x}Status y;rc;more;path;⎕TRAP;short;space;ind;branch;msg;cmd;aplNames;verbose
+  r←{x}Status y;rc;more;path;⎕TRAP;short;space;ind;branch;msg;cmd;aplNames;verbose
 ⍝ Reports all unstaged/uncommited/untracked files.\\
 ⍝ `y` must be one of:
 ⍝   * Fully qualfied name of a namespace that is an opened Cider project
@@ -33,7 +33,7 @@
  :Else
      r←{(↑2↑¨⍵),3↓¨⍵}⍣(0<≢r)⊢r
      :If aplNames
-         r,←⎕SE.Link.GetItemName¨r[;3]
+         r,←⎕SE.Link.GetItemName¨path∘,¨r[;3]
      :EndIf
  :EndIf
 ⍝Done

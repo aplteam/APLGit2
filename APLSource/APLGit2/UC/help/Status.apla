@@ -7,7 +7,7 @@
  '  [;1] Status info for index (staging) area'
  '  [;2] Status info for working area'
  '  [;3] Files names relative to the project''s root'
- '  [;4] APL names, if any (only when -APLnames was specified'
+ '  [;4] APL names, if any (only when -APLnames was specified)'
  ''
  '-verbose  : Provide a long report'
  '-view     : Put result in ⎕ED and return ⍬  '

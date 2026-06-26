@@ -266,23 +266,23 @@ MinimumVersionOfDyalog←'18.0'
           :Else
               (r space folder)←G.##.UC.GetSpaceAndFolder Cmd Args
               :If 'stashpush'≡⎕C Cmd
-                  :If 0<≢list←1 G.##.Status folder
-                      list←('D'≠2⊃¨list[;1])⌿list       ⍝ We cannot stash anything deleted from the work tree
+                  :If 0<≢list←G.##.Status folder
+                      list←('D'≠list[;2])⌿list        ⍝ We cannot stash anything deleted from the work tree
                       :If 0=≢''Args.Switch'u'
-                          list←('?'≠⊃¨list[;1])⌿list    ⍝ Remove untracked
+                          list←('?'≠list[;1])⌿list    ⍝ Remove untracked
                       :EndIf
                       :If 0=≢list
                           r←'No changes found you could stash' ⋄ →0
                       :Else
                           :If (,'?')≡,Args._2
-                              ind←'SelectForStash@Select what to stash:' 1 G.##.CommTools.Select list[;2]
+                              ind←'SelectForStash@Select what to stash:' 1 G.##.CommTools.Select list[;3]
                               :If 0=≢ind
                                   r←'Cancelled by user' ⋄ →0
                               :Else
                                   Args._2←list←list[ind;2]
                               :EndIf
                           :Else
-                              Args._2←list←list[;2]
+                              Args._2←list←list[;3]
                           :EndIf
                       :EndIf
                   :Else

@@ -73,6 +73,8 @@
      :CaseList ⎕C¨'Status' ''
          r←AddProjectOptions 1
          r,←⊂,' '
+         r,←'The table returned has three columns:' ' [;1] Staging area' ' [;2] Working tree' ' [;3] File names'
+         r,←⊂,' '
          buff←⊂('Code' 'Meaning')
          buff,←⊂(⍴¨1⊃,buff)⍴¨'-'
          buff,←('(space)' 'Unmodified')('M' 'Modified')('T' 'File type changed (e.g. regular file → symlink)')('A' 'Added')

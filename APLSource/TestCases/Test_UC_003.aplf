@@ -19,9 +19,16 @@
  msg Assert rc=0
  →T.PassesIf∨/'APLSource/help2.aplf'⍷∊result
 
- (rc msg result)←stop ∆UCMD'Status #.Proj_2 -short'
+ (rc msg result)←stop ∆UCMD'Status #.Proj_2 -verbose'
  msg Assert rc=0
- →T.PassesIf 2=≢result
+ →T.PassesIf 2=⍴⍴result
+ →T.PassesIf 1=2⊃⍴result
+
+ (rc msg result)←stop ∆UCMD'Status #.Proj_2 -APLnames'
+ msg Assert rc=0
+ →T.PassesIf 2=⍴⍴result
+ →T.PassesIf 4=2⊃⍴result
+ →T.PassesIf 0∧.<⎕NC result[;4]
 
  R←T._OK
 ⍝Done

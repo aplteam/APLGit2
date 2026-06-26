@@ -7,7 +7,7 @@
      →0 ⋄ R←T._NoBatchTest
  :EndIf
 
- C←∆GetRefToCommTools
+ C←G.CommTools
  C.Pause'This test needs you: when a ⎕ED pops up (twice!) just close it without a change.'
 
  tempFolder←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI

@@ -1,9 +1,8 @@
  {noofBytes}←CompareCommits_(list branch1 branch2 folder currentBranch hash1 hash2 filename1 filename2);thisFile;extension;wsName;header;nc;buff1;rc;more;buff2;name;header2;header1;row;op
  noofBytes←0
- list←((⊃¨(' '~⍨¨list[;1]))∊'ADM?')⌿list ⍝ Suppress copies and renames
+ list←((⊃¨(' '~⍨¨list[;2]))∊'ADM?')⌿list ⍝ Suppress copies and renames
  :For row :In ⍳≢list
-     (op thisFile)←list[row;]
-     op←⊃op
+     (op thisFile)←list[row;2 3]
      extension←⎕C 3⊃⎕NPARTS thisFile
      :If (⊂extension)∊'.aplf' '.aplo' '.apln' '.aplc' '.apli' '.dyalog' '.apla'
          wsName←⎕SE.Link.GetItemName folder,'/',thisFile

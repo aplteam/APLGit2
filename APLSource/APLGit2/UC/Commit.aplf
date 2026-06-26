@@ -1,4 +1,4 @@
- r←Commit(space folder args);msg;ref;branch;rc;data;flag;currentBranch;status;ind;noOf;buff
+  r←Commit(space folder args);msg;ref;branch;rc;data;flag;currentBranch;status;ind;noOf;buff
  branch←##.CurrentBranch folder
  :If 0<noOf←##.NoOfUntrackedFiles folder
      buff←branch,'" has ',(⍕noOf),' unstaged change',((1<noOf)/'s'),' - shall Git''s "Add -A" command be executed?'
@@ -6,16 +6,16 @@
          (rc msg data)←folder ##.U.RunGitCommand'add -A'
          msg Assert 0=rc
      :Else
-         status←1 ##.Status folder
-         :If ∨/status[;1]∊'UU' 'AA' 'DD' '!!'
+         status←##.Status folder
+         :If ∨/(↓status[;1 2])∊'UU' 'AA' 'DD' '!!'
              r←'There is a merge conflict - you cannot continue' ⋄ →0
          :Else
-             status←(({⍵[;2]}↑status[;1])≠' ')⌿status
-             status←(({⍵[;2]}↑status[;1])∊'MD?')⌿status
+             status←(status[;2]≠' ')⌿status
+             status←(status[;2]∊'MD?')⌿status
              :If 0=≢ind←'SelectFiles2Stage@Select file(s) to stage' 1 ##.CommTools.Select↓⍕status
                  r←'Cancelled by user' ⋄ →0
              :EndIf
-             folder ##.Add status[ind;2]
+             folder ##.Add status[ind;3]
          :EndIf
      :EndIf
  :EndIf

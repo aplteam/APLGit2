@@ -1,4 +1,4 @@
  r←∆GetRefToCommTools;ref
-⍝ Might live in # or ⎕SE!
+⍝ Might live in # or ⎕SE! Only use this for test cases that do actually execute user commands!
  ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬
  r←ref.##.CommTools

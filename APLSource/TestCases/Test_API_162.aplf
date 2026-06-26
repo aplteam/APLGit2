@@ -8,7 +8,7 @@
  zipfile ZipArchive.UnzipTo tempFolder
  Assert'main'≡G.CurrentBranch tempFolder
  tempFolder G.Add''
- C←∆GetRefToCommTools
+ C←G.CommTools
 
  :Trap 0
      C.AddAutomation'YesOrNo' 'NoMsgOnCommit@' 'n'  ⍝ Without confirmation an error must be thrown

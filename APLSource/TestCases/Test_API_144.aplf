@@ -10,7 +10,7 @@
  tempFolder G.Add ''
  {}'README polished'G.Commit tempFolder
  Assert'main'≡G.CurrentBranch tempFolder
- C←∆GetRefToCommTools
+ C←G.CommTools
 
  :Trap 0
      C.AddAutomation'YesOrNo' 'SquashOnMain@' 'n'  ⍝ Without confirmation an error must be thrown
