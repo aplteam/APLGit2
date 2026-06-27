@@ -73,6 +73,14 @@ MinimumVersionOfDyalog←'18.0'
      r,←c
 
      c←⎕NS''
+     c.Name←'FetchFromIndex'
+     c.Desc←'Allows you to bring back files from the index that where modified or deleted'
+     c.Group←'APLGit2'
+     c.Parse←'1s'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
      c.Name←'GetLastCommit'
      c.Desc←'Returns the latest hash for the current (or the given) branch'
      c.Group←'APLGit2'

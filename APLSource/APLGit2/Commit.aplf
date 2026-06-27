@@ -35,7 +35,7 @@
  :If ∨/'nothing to commit, working tree clean'⍷∊buff
      r←buff
  :Else
-     (cmd,(⎕UCS 13),¨buff)U.Assert 0=rc
+     (cmd,⊃,/(⎕UCS 13),¨⊆buff)U.Assert 0=rc
      r←buff
  :EndIf
 ⍝Done

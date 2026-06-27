@@ -1,11 +1,12 @@
 (
- '* 0.29.0 ⋄ 2026-06-24'
+ '* 0.29.0 ⋄ 2026-06-27'
  '  * COMPATABILITY issues'
  '    * The API function `Add`  has a changed syntax, refer to the documentation.'
  '      {project} Add file[,file2,file]'
  '    * `]Status` has no longer a -short flag but a -verbose flag instead. '
  '      The default is now the short version   '
  '    * The `Status` API function''s left argument has changed.'
+ '  * New function added: `FetchFromIndex`'
  '  * `]Status` has to new options: `-view` and `-APLnames`'
  '  * `Commit` does no longer quit when the question "There are unstaged changes. Add all of them?" is'
  '    answered with a "N". Instead the user might select one or more files to be staged before the commit'

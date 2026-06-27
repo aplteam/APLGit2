@@ -50,7 +50,7 @@
          :AndIf F.IsDir folder,'/',ns.CIDER.source
              list←((F.EnforceSlash{⍵,'/'/⍨~'/\'∊⍨¯1↑⍵}ns.CIDER.source){⍺∘≡¨(≢⍺)↑¨⍵}list[;3])⌿list
          :EndIf
-         :If 0<≢list←('.aplc' '.aplf' '.apln' '.aplo' '.apli' '.dyalog'∊⍨{3⊃⎕NPARTS ⍵}¨⊢/list)⌿list
+         :If 0<≢list←ListOfDyalogFilesExtensions∊⍨{3⊃⎕NPARTS ⍵}¨⊢/list)⌿list
              ⎕←(⍕≢list),' APL source file',((1<≢list)/'s'),' found to compare'
              (filename1 filename2)←'txt'∘F.GetTempFilename2¨2⍴⊂''
              noofBytes←CompareCommits_ list(branch,': ',hash1)(branch,': ',hash2)folder branch hash1 hash2 filename1 filename2

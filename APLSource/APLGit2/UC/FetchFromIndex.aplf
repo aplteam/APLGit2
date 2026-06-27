@@ -1,0 +1,3 @@
+ r←FetchFromIndex(space folder args)
+ r←##.FetchFromIndex space folder args
+⍝Done

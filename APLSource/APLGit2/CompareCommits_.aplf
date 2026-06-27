@@ -4,7 +4,7 @@
  :For row :In ⍳≢list
      (op thisFile)←list[row;2 3]
      extension←⎕C 3⊃⎕NPARTS thisFile
-     :If (⊂extension)∊'.aplf' '.aplo' '.apln' '.aplc' '.apli' '.dyalog' '.apla'
+     :If (⊂extension)∊ListOfDyalogFilesExtensions
          wsName←⎕SE.Link.GetItemName folder,'/',thisFile
          :If branch1≡currentBranch
          :AndIf 0<nc←⎕NC wsName

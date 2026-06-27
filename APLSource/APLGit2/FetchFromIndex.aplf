@@ -1,0 +1,18 @@
+ r←FetchFromIndex(space folder args);status;mat;ind;list;cmd;result;rc;msg
+⍝ Fetch file(s) from the index that have been modified (or deleted) from the working area.
+ r←'Working area is clean, nothing can be brought back from the index'
+ :If 0<≢status←Status folder
+ :AndIf 0<≢status←(status[;2]∊'MD')⌿status
+ :AndIf 0<≢status←((⎕C{3⊃⎕NPARTS ⍵}¨status[;3])∊ListOfDyalogFilesExtensions)⌿status
+     mat←(⎕SE.Link.GetItemName(F.AddTrailingSep folder)∘,¨status[;3]),⍪{('(Modified)' '(Deleted)')['MD'⍳⍵]}status[;2]
+     ind←'Select files from the working area you want to restore from the index:' 1 CommTools.Select↓⍕mat
+     :If 0=≢ind
+         r←'User did not select any APL object'
+     :Else
+         list←(≢F.AddTrailingSep folder)↓¨⎕SE.Link.GetFileName mat[ind;1]
+         cmd←'restore --source=HEAD --worktree ',⊃,/' ',¨list
+         (rc msg result)←folder U.RunGitCommand cmd
+         (cmd,⊃,/((⎕UCS 13),¨⊆msg))Assert 0=rc
+         r←⍪(⊂'*** Restored from HEAD:'),mat[ind;1]
+     :EndIf
+ :EndIf
