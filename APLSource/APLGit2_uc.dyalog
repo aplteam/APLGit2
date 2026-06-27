@@ -66,9 +66,9 @@ MinimumVersionOfDyalog←'18.0'
 
      c←⎕NS''
      c.Name←'Diff'
-     c.Desc←'Produces a list with changed/deleted/added files by comparing the working directory with HEAD'
+     c.Desc←'Produces a list with changed/deleted/added files by comparing what "op" defines'
      c.Group←'APLGit2'
-     c.Parse←'1s -verbose'
+     c.Parse←'1s -op=all stage work'
      c._Project←1
      r,←c
 

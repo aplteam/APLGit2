@@ -1,3 +1,8 @@
- r←Diff(space folder args);filter
- r←⍪args.verbose ##.Diff folder
+ r←Diff(space folder args);filter;ns
+ ns←⎕NS''
+ ns.op←args.op
+ :If 0≡ns.op
+     ns.op←'all'
+ :EndIf
+ r←⍪ns ##.Diff folder
 ⍝Done

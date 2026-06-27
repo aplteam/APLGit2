@@ -1,7 +1,10 @@
 (
- 'Returns a list of files in the working directory that are different from HEAD.'
+ 'Returns a diff for all changes...'
+ ' * staged (op="stage")'
+ ' * in the working area (op="work")'
+ ' * all changes (op="all")'
  ''
- '-verbose:  Specify this to get a full report'
+ 'Returns a one-column matrix with strings.'
  ''
  'For more information execute:'
  ']APLGit2.Diff -???'
