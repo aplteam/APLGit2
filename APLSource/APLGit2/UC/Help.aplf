@@ -73,7 +73,7 @@
      :CaseList ⎕C¨'Status' ''
          r←AddProjectOptions 1
          r,←⊂,' '
-         r,←'The table returned has three columns:' ' [;1] Staging area' ' [;2] Working tree' ' [;3] File names'
+         r,←'The table returned has three columns:' ' [;1] Staging area (X)' ' [;2] Working tree (Y)' ' [;3] File names'
          r,←⊂,' '
          buff←⊂('Code' 'Meaning')
          buff,←⊂(⍴¨1⊃,buff)⍴¨'-'
