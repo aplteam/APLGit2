@@ -1,0 +1,38 @@
+ R←Test_UC_006(stopFlag batchFlag);⎕TRAP;rc;msg;stop;C;result1;result2;result3;result4
+⍝ Runs ]Diff with all possible op-codes
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ C←∆GetRefToCommTools
+
+ C.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_3*'
+ stop←0
+ (rc msg result1)←stop ∆UCMD'diff'
+ msg Assert rc=0
+ →T.GoToTidyUp'diff '{⍺≢(≢⍺)↑⍵}∊result1
+
+ stop←0
+ (rc msg result2)←stop ∆UCMD'diff -op=all'
+ msg Assert rc=0
+ →T.GoToTidyUp'diff '{⍺≢(≢⍺)↑⍵}∊result2
+ →T.GoToTidyUp result1≢result2
+
+ stop←0
+ (rc msg result3)←stop ∆UCMD'diff -op=stage'
+ msg Assert rc=0
+ →T.GoToTidyUp'diff '{⍺≢(≢⍺)↑⍵}∊result3
+
+ stop←0
+ (rc msg result4)←stop ∆UCMD'diff -op=work'
+ msg Assert rc=0
+ →T.GoToTidyUp'diff '{⍺≢(≢⍺)↑⍵}∊result4
+
+ (rc msg result4)←stop ∆UCMD'diff -op=blabla'
+ →T.GoToTidyUp 911≠rc
+ →T.GoToTidyUp~∨/'invalid value for modifier <op> (must be ONE of "all stage work")'⍷∊msg
+
+ R←T._OK
+
+∆TidyUp:
+ C.Cleanup
+⍝Done
