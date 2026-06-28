@@ -1,7 +1,7 @@
  r←Push(space folder args);msg;branch;isDirty
  branch←##.CurrentBranch folder
  isDirty←##.IsDirty folder
- msg←'SurePush@Are you sure that you want to push branch <',branch,'>',(isDirty/' (which is dirty!)'),' ?'
+ msg←'SurePush@Sure you want to push branch <',branch,'>',(isDirty/' (which is dirty!)'),' of <',(⍕space),'> ?'
  :If ##.CommTools.YesOrNo msg
      r←##.Push folder
  :Else
