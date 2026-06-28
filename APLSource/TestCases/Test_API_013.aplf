@@ -1,4 +1,4 @@
- R←Test_API_013(stopFlag batchFlag);⎕TRAP;parms;result1;result2;result3;result4
+ R←Test_API_013(stopFlag batchFlag);⎕TRAP;result1;result2;result3;result4;parms;qdmx
 ⍝ Runs "Diff"
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -7,22 +7,28 @@
  →T.PassesIf 0<≢result1
  →T.PassesIf'diff '{⍺≡(≢⍺)↑⍵}∊result1
 
- parms←⎕NS''
- parms.op←'all'
- result2←parms G.Diff ∆Folder3
+ result2←'all'G.Diff ∆Folder3
  →T.PassesIf 0<≢result2
  →T.PassesIf'diff '{⍺≡(≢⍺)↑⍵}∊result2
  →T.PassesIf result1≡result2    ⍝ Because the default is "all" these two must match
 
- parms.op←'stage'
- result3←parms G.Diff ∆Folder3
+ result3←'stage'G.Diff ∆Folder3
  →T.PassesIf 0<≢result3
  →T.PassesIf'diff '{⍺≡(≢⍺)↑⍵}∊result3
 
- parms.op←'work'
- result4←parms G.Diff ∆Folder3
+ result4←'work'G.Diff ∆Folder3
  →T.PassesIf 0<≢result4
  →T.PassesIf'diff '{⍺≡(≢⍺)↑⍵}∊result4
+
+ :Trap 11
+     parms←⎕NS''
+     parms.op←'stage'
+     {}parms G.Diff ∆Folder3
+     'We should never get here'Assert 0
+ :Else
+     qdmx←⎕DMX
+     →T.PassesIf'Invalid left argument'≡qdmx.EM
+ :EndTrap
 
  R←T._OK
 ⍝Done
