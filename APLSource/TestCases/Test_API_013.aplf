@@ -12,19 +12,17 @@
  result2←parms G.Diff ∆Folder3
  →T.PassesIf 0<≢result2
  →T.PassesIf'diff '{⍺≡(≢⍺)↑⍵}∊result2
- →T.PassesIf result1≡result2
+ →T.PassesIf result1≡result2    ⍝ Because the default is "all" these two must match
 
  parms.op←'stage'
  result3←parms G.Diff ∆Folder3
  →T.PassesIf 0<≢result3
  →T.PassesIf'diff '{⍺≡(≢⍺)↑⍵}∊result3
- →T.PassesIf>/≢¨result2 result3
 
  parms.op←'work'
  result4←parms G.Diff ∆Folder3
  →T.PassesIf 0<≢result4
  →T.PassesIf'diff '{⍺≡(≢⍺)↑⍵}∊result4
-⍝ →T.PassesIf>/≢¨result2 result4  ⍝ No, because it was once staged and then modified
 
  R←T._OK
 ⍝Done

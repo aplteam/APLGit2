@@ -1,4 +1,4 @@
- R←Test_API_180(stopFlag batchFlag);⎕TRAP;buff
+ R←Test_API_180(stopFlag batchFlag);⎕TRAP;buff;types
 ⍝ Checks whether all APLGit2 user commands have an API equivalent
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -6,7 +6,8 @@
  buff←⎕SE.UCMD'APLGit2* -?'
  buff←APLTreeUtils2.DLB ¯4↓2↓(⎕UCS 13)(≠⊆⊢)buff
  buff←↑{⍵↑⍨¯1+⍵⍳' '}¨buff
- →T.PassesIf 3∧.=⊃∘##.APLGit2.API.⎕NC¨↓buff
+ types←⊃∘##.APLGit2.API.⎕NC¨↓buff
+ →T.PassesIf 3∧.=types
 
  R←T._OK
 ⍝Done
