@@ -10,6 +10,7 @@
 ⍝   * Fully qualified path to a Git-managed project
  ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
  op←{0<⎕NC ⍵:⍎⍵ ⋄ 'all'}'op'
+ 'Invalid left argument'Assert 0<≡op
  (space folder)←EstablishProject y
  cmd←'diff'
  :Select ⎕C op
