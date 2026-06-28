@@ -1,17 +1,18 @@
- r←{ns}Diff y;rc;more;path;⎕TRAP;short;space;folder;buff;cmd
+ r←{op}Diff y;rc;more;path;⎕TRAP;short;space;folder;buff;cmd
 ⍝ Returns a diff for all changes either...
 ⍝ * staged
 ⍝ * in the working area
 ⍝ * all changes
+⍝ Option op-code "op" must be one of: "all" (default), "stage" or "work".
 ⍝ r is a matrix with two columns and zero or more rows.
 ⍝ `y` must be one of:
 ⍝   * Fully qualfied name of a namespace  that is an opened Cider project
 ⍝   * Fully qualified path to a Git-managed project
  ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
- ns←{0<⎕NC ⍵:⍎⍵ ⋄ ns←⎕NS'' ⋄ ns.op←'all' ⋄ ns}'ns'
+ op←{0<⎕NC ⍵:⍎⍵ ⋄ 'all'}'op'
  (space folder)←EstablishProject y
  cmd←'diff'
- :Select ⎕C ns.op
+ :Select ⎕C op
  :Case 'stage'
      cmd,←' --staged'
  :Case 'work'
