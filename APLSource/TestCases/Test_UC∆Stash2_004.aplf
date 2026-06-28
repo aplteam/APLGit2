@@ -27,6 +27,8 @@
  →T.GoToTidyUp 2≠≢list
  ##.APLGit2.StashClear dir
 
+ R←T._OK
+
 ∆TidyUp:
  ##.APLGit2.StashClear dir
  FilesAndDirs.DeleteFile(⊂dir,'/'),¨'file_1.txt' 'file_2.txt'

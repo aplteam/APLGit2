@@ -13,6 +13,8 @@
  buff←##.APLGit2.StashShow ∆StashDir
  →T.GoToTidyUp~∨/'SourceCode/file_1.txt'⍷∊buff
 
+ R←T._OK
+
 ∆TidyUp:
  ##.APLGit2.StashClear ∆StashDir
  (rc msg)←FilesAndDirs.RmDirByForce dir

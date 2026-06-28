@@ -17,6 +17,8 @@
  (rc more res)←∆UCMD'StashClear ',∆StashDir
  more Assert 0=rc
 
+ R←T._OK
+
 ∆TidyUp:
  ##.APLGit2.StashClear ∆StashDir
  (rc msg)←FilesAndDirs.RmDirByForce dir

@@ -21,6 +21,8 @@
  buff←##.APLGit2.StashShow ∆StashDir 0
  →T.GoToTidyUp~∨/'/file_2.txt'⍷∊buff
 
+ R←T._OK
+
 ∆TidyUp:
  ##.APLGit2.StashClear ∆StashDir
  (rc msg)←FilesAndDirs.RmDirByForce dir

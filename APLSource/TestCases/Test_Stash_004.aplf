@@ -34,6 +34,8 @@
  list←##.APLGit2.StashList ∆StashDir
  →T.GoToTidyUp 2≠≢list
 
+ R←T._OK
+
 ∆TidyUp:
  ##.APLGit2.StashClear ∆StashDir
  (rc msg)←FilesAndDirs.RmDirByForce dir

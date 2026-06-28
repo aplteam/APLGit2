@@ -14,7 +14,7 @@
  →T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊buff
  ⎕MKDIR dir
  (⊂'Hello2')⎕NPUT dir,'/file_2.txt'
- ∆StashDir ##.APLGit2.Add ''
+ ∆StashDir ##.APLGit2.Add''
  list←##.APLGit2.StashList ∆StashDir
  →T.GoToTidyUp 1≠≢list
  buff←##.APLGit2.StashPush ∆StashDir
@@ -33,6 +33,8 @@
  ##.APLGit2.StashClear ∆StashDir
  list←##.APLGit2.StashList ∆StashDir
  →T.GoToTidyUp 0<≢list
+
+ R←T._OK
 
 ∆TidyUp:
  ##.APLGit2.StashClear ∆StashDir

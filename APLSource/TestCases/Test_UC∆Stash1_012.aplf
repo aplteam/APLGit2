@@ -17,6 +17,8 @@
  more Assert 0=rc
  →T.GoToTidyUp~∨/'/file_1.txt'⍷∊res
 
+R←T._OK
+
 ∆TidyUp:
  ##.APLGit2.StashClear ∆StashDir
  (rc msg)←FilesAndDirs.RmDirByForce dir

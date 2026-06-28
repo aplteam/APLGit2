@@ -20,6 +20,8 @@
  →T.GoToTidyUp 1≠∨/'stash pop stash@{0}'⍷∊buff  ⍝ Untracked files are NOT listed. Not recognized as a bug by the Git team.
  →T.GoToTidyUp'file_1.txt' 'file_2.txt'{⍺≢⍺{((-≢⍺)↑∊⍵)}¨FilesAndDirs.ListFiles ⍵}dir
 
+ R←T._OK
+
 ∆TidyUp:
  (rc msg)←FilesAndDirs.RmDirByForce dir
  msg Assert 0=rc

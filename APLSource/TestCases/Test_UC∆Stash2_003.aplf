@@ -19,6 +19,8 @@
  →T.GoToTidyUp 1≠∨/'stash pop stash@{0}'⍷,res  ⍝ Untracked files are NOT listed. Not recognized as a bug by the Git team.
  →T.GoToTidyUp'file_1.txt' 'file_2.txt'≢(dir{(1+≢⍺)↓¨FilesAndDirs.ListFiles ⍵}dir,'/')~'.gitattributes' '.gitignore'
 
+ R←T._OK
+
 ∆TidyUp:
  FilesAndDirs.DeleteFile(⊂dir,'/'),¨'file_1.txt' 'file_2.txt'
 ⍝Done

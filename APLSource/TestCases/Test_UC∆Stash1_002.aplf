@@ -34,6 +34,8 @@
  more Assert rc=0
  →T.GoToTidyUp 0<≢list
 
+ R←T._OK
+
 ∆TidyUp:
  ##.APLGit2.StashClear ∆StashDir
  (rc msg)←FilesAndDirs.RmDirByForce dir

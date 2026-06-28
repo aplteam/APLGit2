@@ -41,6 +41,8 @@
  more Assert 0=rc
  →T.GoToTidyUp 0<≢list
 
+ R←T._OK
+
 ∆TidyUp:
  ##.APLGit2.StashClear dir
 ⍝Done

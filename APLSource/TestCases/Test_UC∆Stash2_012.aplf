@@ -16,6 +16,8 @@
  more Assert 0=rc
  →T.GoToTidyUp~∨/'/file_1.txt'⍷∊res
 
+ R←T._OK
+
 ∆TidyUp:
  ##.APLGit2.StashClear dir
  FilesAndDirs.DeleteFile(⊂dir,'/'),¨'file_1.txt' 'file_2.txt'
