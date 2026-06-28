@@ -9,25 +9,33 @@
  stop←0
  (rc msg result1)←stop ∆UCMD'diff'
  msg Assert rc=0
+ C.Cleanup
  →T.GoToTidyUp'diff '{⍺≢(≢⍺)↑⍵}∊result1
 
+ C.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_3*'
  stop←0
  (rc msg result2)←stop ∆UCMD'diff -op=all'
  msg Assert rc=0
+ C.Cleanup
  →T.GoToTidyUp'diff '{⍺≢(≢⍺)↑⍵}∊result2
  →T.GoToTidyUp result1≢result2
 
+ C.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_3*'
  stop←0
  (rc msg result3)←stop ∆UCMD'diff -op=stage'
  msg Assert rc=0
- →T.GoToTidyUp'diff '{⍺≢(≢⍺)↑⍵}∊result3
+ C.Cleanup
 
+ C.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_3*'
  stop←0
  (rc msg result4)←stop ∆UCMD'diff -op=work'
  msg Assert rc=0
+ C.Cleanup
  →T.GoToTidyUp'diff '{⍺≢(≢⍺)↑⍵}∊result4
 
+ C.AddAutomation'Select' 'SelectPrjForAPLGIT2@' '#.Proj_3*'
  (rc msg result4)←stop ∆UCMD'diff -op=blabla'
+ C.Cleanup
  →T.GoToTidyUp 911≠rc
  →T.GoToTidyUp~∨/'invalid value for modifier <op> (must be ONE of "all stage work")'⍷∊msg
 

@@ -17,7 +17,7 @@
  result←G.DiffBranches #.CommTools
  →T.PassesIf 0<≢result
 
- result←1 G.Diff #.CommTools
+ result←G.Diff #.CommTools
 
  R←T._OK
 

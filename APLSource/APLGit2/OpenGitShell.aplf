@@ -26,13 +26,13 @@
              'GitBash not found!'⎕SIGNAL 6
          :EndIf
      :EndIf
-     cmd←('"',pathToGitExe,'" --cd="',path,'"')
+     cmd←('"',pathToGitExe,'" --cd="',((-(¯1↑path)∊'/\')↓path),'"')
      ⎕SH cmd''
  :Case 'lin'
-     cmd←'gnome-terminal -- $SHELL -c "cd ',path,';git status; exec $SHELL"'
+     cmd←'gnome-terminal -- $SHELL -c "cd ',((-(¯1↑path)∊'/\')↓path),';git status; exec $SHELL"'
      ⎕SH cmd
  :Case 'mac'
-     cmd←'osascript -e ''tell app "terminal" to do script "cd ',path,';git status "'''
+     cmd←'osascript -e ''tell app "terminal" to do script "cd ',((-(¯1↑path)∊'/\')↓path),';git status "'''
      ⎕SH cmd
  :EndSelect
 ⍝Done

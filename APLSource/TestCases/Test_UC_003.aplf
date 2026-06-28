@@ -1,4 +1,4 @@
- R←Test_UC_003(stopFlag batchFlag);⎕TRAP;result;msg;rc;stop
+ R←Test_UC_003(stopFlag batchFlag);⎕TRAP;msg;rc;stop;result1;result2;result3;result4;result5
 ⍝ Runs ]Status
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -6,29 +6,29 @@
  ∆ModifyCounter ∆Folder1
 
  stop←0
- (rc msg result)←stop ∆UCMD'Status ',∆Folder1
+ (rc msg result1)←stop ∆UCMD'Status ',∆Folder1
  msg Assert rc=0
- →T.PassesIf∨/'APLSource/Counter.aplf'⍷∊result
+ →T.PassesIf∨/'APLSource/Counter.aplf'⍷∊result1
 
  ∆ModifyCounter ∆Folder2
- (rc msg result)←stop ∆UCMD'Status "',∆Folder2,'"'
+ (rc msg result2)←stop ∆UCMD'Status "',∆Folder2,'"'
  msg Assert rc=0
- →T.PassesIf∨/'APLSource/Counter.aplf'⍷∊result
+ →T.PassesIf∨/'APLSource/Counter.aplf'⍷∊result2
 
- (rc msg result)←stop ∆UCMD'Status #.Proj_2'
+ (rc msg result3)←stop ∆UCMD'Status #.Proj_2'
  msg Assert rc=0
- →T.PassesIf∨/'APLSource/help2.aplf'⍷∊result
+ →T.PassesIf∨/'APLSource/help2.aplf'⍷∊result3
 
- (rc msg result)←stop ∆UCMD'Status #.Proj_2 -verbose'
+ (rc msg result4)←stop ∆UCMD'Status #.Proj_2 -verbose'
  msg Assert rc=0
- →T.PassesIf 2=⍴⍴result
- →T.PassesIf 1=2⊃⍴result
+ →T.PassesIf 2=⍴⍴result4
+ →T.PassesIf 1=2⊃⍴result4
 
- (rc msg result)←stop ∆UCMD'Status #.Proj_2 -APLnames'
+ (rc msg result5)←stop ∆UCMD'Status #.Proj_2 -APLnames'
  msg Assert rc=0
- →T.PassesIf 2=⍴⍴result
- →T.PassesIf 4=2⊃⍴result
- →T.PassesIf 0∧.<⎕NC result[;4]
+ →T.PassesIf 2=⍴⍴result5
+ →T.PassesIf 4=2⊃⍴result5
+ →T.PassesIf 0∧.<⎕NC result5[;4]
 
  R←T._OK
 ⍝Done

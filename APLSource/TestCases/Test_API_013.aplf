@@ -21,6 +21,7 @@
  →T.PassesIf'diff '{⍺≡(≢⍺)↑⍵}∊result4
 
  :Trap 11
+
      parms←⎕NS''
      parms.op←'stage'
      {}parms G.Diff ∆Folder3
