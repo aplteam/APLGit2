@@ -1,9 +1,11 @@
  {r}←InitializeProject dummy
  r←⍬
  InitializeGitUserCommand ⍬
- :If 0=⎕SE.APLGit2.⎕NC'DEVELOPMENT'
+ :If 0<⎕SE.⎕NC'APLGit2'
+     :If 0=⎕SE.APLGit2.⎕NC'DEVELOPMENT'
  ⍝:AndIf ~parms.batch
- :AndIf 1 CommTools.YesOrNo'Set DEVELOPMENT←1 in ⎕SE.APLGit2? (Allows executing user command code in # rather than ⎕SE)'
-     ⎕SE.APLGit2.DEVELOPMENT←1
+     :AndIf 1 CommTools.YesOrNo'Set DEVELOPMENT←1 in ⎕SE.APLGit2? (Allows executing user command code in # rather than ⎕SE)'
+         ⎕SE.APLGit2.DEVELOPMENT←1
+     :EndIf
  :EndIf
 ⍝Done

@@ -9,6 +9,7 @@
  F←FilesAndDirs
  G←APLGit2←##.APLGit2
 
+ 'There is no APLGit2 in ⎕SE?!'Assert 9=⎕SE.⎕NC'APLGit2'
  ∆DevelopmentWas←{0=⍵.⎕NC'DEVELOPMENT':¯1 ⋄ ⍵.DEVELOPMENT}⎕SE.APLGit2
  :If ns.batchFlag
      ⎕SE.APLGit2.⎕EX'DEVELOPMENT'
