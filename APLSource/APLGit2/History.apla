@@ -1,4 +1,6 @@
 (
+ '* 0.30.0 ⋄ 2026-07-04'
+ '  * `CloneRepo` added'
  '* 0.29.0 ⋄ 2026-07-01'
  '  * COMPATABILITY issues'
  '    * The API function `Add`  has a changed syntax; refer to the documentation.'

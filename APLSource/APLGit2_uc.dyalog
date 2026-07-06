@@ -33,6 +33,14 @@ MinimumVersionOfDyalog←'18.0'
      r,←c
 
      c←⎕NS''
+     c.Name←'CloneRepo'
+     c.Desc←'Creates a clone of the given repository'
+     c.Group←'APLGit2'
+     c.Parse←'2s -branch= -depth= -dry'
+     c._Project←0
+     r,←c
+
+     c←⎕NS''
      c.Name←'ListBranches'
      c.Desc←'Lists all branches for a Git-managed project'
      c.Group←'APLGit2'
