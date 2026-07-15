@@ -57,5 +57,5 @@
  (⊂'r←Hello3' 'r←''Virgo Cluster''')⎕NPUT(∆Folder3,'/APLSource/help3.aplf')1
  (⊂'r←Hello4' 'r←''Universe''')⎕NPUT ∆Folder3,'/APLSource/help4.aplf'
  #.Proj_3.⎕FX↑'r←WhoAmI' '⍝ Really!' 'r←''Proj_3'''
- {}#.Proj_3 ⎕SE.Link.Add ⎕SE.Link.GetFileName'#.Proj_3.WhoAmI'
+ {}⎕SE.Link.Add ⎕SE.Link.GetFileName'#.Proj_3.WhoAmI'
 ⍝Done

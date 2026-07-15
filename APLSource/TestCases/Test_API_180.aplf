@@ -6,6 +6,7 @@
  buff←⎕SE.UCMD'APLGit2* -?'
  buff←APLTreeUtils2.DLB ¯4↓2↓(⎕UCS 13)(≠⊆⊢)buff
  buff←↑{⍵↑⍨¯1+⍵⍳' '}¨buff
+ buff←((' '~⍨¨↓buff)≢¨⊂'CloneRepo')⌿buff   ⍝ Those have not API call
  types←⊃∘##.APLGit2.API.⎕NC¨↓buff
  →T.PassesIf 3∧.=types
 
