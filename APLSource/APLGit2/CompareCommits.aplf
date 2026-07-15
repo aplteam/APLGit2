@@ -56,16 +56,14 @@
              (filename1 filename2)←'txt'∘F.GetTempFilename2¨2⍴⊂''
              noofBytes←CompareCommits_ list(branch,': ',hash1)(branch,': ',hash2)folder branch hash1 hash2 filename1 filename2
              :If 0=noofBytes
-                 ⎕←'After removing non-APL-source files no files left to compare'
-             :Else
                  ⎕NDELETE filename1 filename2
                  filename1←filename2←''
              :EndIf
+         :Else
+             ⎕←'After removing non-APL-source files no files left to compare'
          :EndIf
-     :Else
-         ⎕←'No files found to compare'
      :EndIf
  :Else
-     ⎕←'Nothing to compare?!'
+     ⎕←'No files found to compare'
  :EndIf
 ⍝Done
