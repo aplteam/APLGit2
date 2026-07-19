@@ -20,5 +20,5 @@
   source: "APLSource/APLGit2",
   tags: "apl-git-interface",
   userCommandScript: "APLSource/APLGit2_UC.dyalog",
-  version: "0.30.0+485",
+  version: "0.30.1+489",
 }

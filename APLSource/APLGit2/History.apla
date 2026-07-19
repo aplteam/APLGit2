@@ -1,4 +1,6 @@
 (
+ '* 0.30.1 ⋄ 2026-07-20'
+ '  * Bug fix: Commit did not handle all circumstances with -amend correctly '
  '* 0.30.0 ⋄ 2026-07-15'
  '  * CloneRepo added'
  '  * CompareCommits did not handle files having acre-specific filenames'
