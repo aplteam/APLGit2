@@ -1,5 +1,7 @@
-  r←Commit(space folder args);msg;ref;branch;rc;data;flag;currentBranch;status;ind;noOf;buff
+ r←Commit(space folder args);ref;branch;rc;data;flag;currentBranch;status;ind;noOf;buff;amend;commitMsg;msg
  branch←##.CurrentBranch folder
+ amend←0 args.Switch'amend'
+ commitMsg←''args.Switch'm'
  :If 0<noOf←##.NoOfUntrackedFiles folder
      buff←branch,'" has ',(⍕noOf),' unstaged change',((1<noOf)/'s'),' - shall Git''s "Add -A" command be executed?'
      :If ##.CommTools.YesOrNo'StageAll@Branch "',buff
@@ -8,53 +10,53 @@
      :Else
          status←##.Status folder
          :If ∨/(↓status[;1 2])∊'UU' 'AA' 'DD' '!!'
-             r←'There is a merge conflict - you cannot continue' ⋄ →0
+             r←'There is a merge conflict - you cannot continue' ⋄ :Return
          :Else
              status←(status[;2]≠' ')⌿status
              status←(status[;2]∊'MD?')⌿status
              :If 0=≢ind←'SelectFiles2Stage@Select file(s) to stage' 1 ##.CommTools.Select↓⍕status
-                 r←'Cancelled by user' ⋄ →0
+                 :If ~amend
+                     r←'Cancelled by user' ⋄ :Return
+                 :EndIf
+             :Else
+                 folder ##.Add status[ind;3]
              :EndIf
-             folder ##.Add status[ind;3]
          :EndIf
      :EndIf
  :EndIf
- :If 0 args.Switch'amend'
-     status←##.Status folder
+ :If amend
+     status←1 ##.Status folder
      :If ∨/'nothing to commit, working tree clean'⍷∊status
-     :AndIf 0=≢''args.Switch'm'
-         r←'There is nothing to commit and you have not specified a message either?!' ⋄ →0
+     :AndIf 0=≢commitMsg
+         r←'There is nothing to commit and you have not specified a message either?!' ⋄ :Return
      :EndIf
      currentBranch←##.CurrentBranch folder
-     r←⍪({0≡⍵:'' ⋄ ⍵}args.m)##.Commit folder 1
+     r←⍪commitMsg ##.Commit folder 1
  :Else
-     :If (,0)≢,args.m
-     :AndIf 0<≢args.m
-         msg←args.m
-     :Else
+     :If 0=≢commitMsg
          flag←0
          :Repeat
              ref←⎕NS''
-             ref.msg←,⊂''
-             ref.⎕ED'msg'
-             msg←ref.msg{⍺/⍨~(⌽∧\0=⌽⍵)∨(∧\0=⍵)}≢¨ref.msg
+             ref.commitMsg←,⊂''
+             ref.⎕ED'commitMsg'
+             commitMsg←ref.commitMsg{⍺/⍨~(⌽∧\0=⌽⍵)∨(∧\0=⍵)}≢¨ref.commitMsg
              :If (⊂branch)∊'main' 'master'
-             :AndIf 0=≢(∊msg)~'.'
+             :AndIf 0=≢(∊commitMsg)~'.'
                  :If 0=1 ##.CommTools.YesOrNo'You MUST specify a meaningful message for "',branch,'"; try again (no=cancel) ?'
                      r←'Commit cancelled by user'
                      :Return
                  :EndIf
-             :ElseIf 0<≢(∊msg)~'.'
+             :ElseIf 0<≢(∊commitMsg)~'.'
              :OrIf ##.CommTools.YesOrNo'Sure you don''t want to provide a message? ("No" cancels the whole operation)'
                  flag←1
              :Else
                  r←'Operation cancelled by user'
                  :Return
              :EndIf
-             msg←{0=≢⍵:'...' ⋄ ⍵}msg
-             msg←1↓⊃,/(⎕UCS 10),¨⊆msg
+             commitMsg←{0=≢⍵:'...' ⋄ ⍵}commitMsg
+             commitMsg←1↓⊃,/(⎕UCS 10),¨⊆commitMsg
          :Until flag
      :EndIf
-     r←msg ##.Commit folder
+     r←commitMsg ##.Commit folder
      r←⍪r
  :EndIf
