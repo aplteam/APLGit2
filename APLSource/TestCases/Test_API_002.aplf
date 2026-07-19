@@ -19,5 +19,11 @@
  result←G.Status ∆Folder1
  →T.PassesIf 1=≢result
 
+ result←0 1 G.Status ∆Folder1
+ →T.PassesIf 4=2⊃⍴result
+
+ result←1 0 G.Status ∆Folder1
+ →T.PassesIf 5 1≡⍴result
+
  R←T._OK
 ⍝Done
