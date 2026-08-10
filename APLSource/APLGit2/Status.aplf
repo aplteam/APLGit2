@@ -1,9 +1,9 @@
- r←{x}Status y;rc;more;path;⎕TRAP;short;space;ind;branch;msg;cmd;aplNames;verbose
+ r←{x}Status y;rc;more;path;⎕TRAP;short;space;ind;branch;msg;cmd;aplNames;verbose;b;noAplNames
 ⍝ Reports all unstaged/uncommited/untracked files.\\
 ⍝ `y` must be one of:
 ⍝   * Fully qualfied name of a namespace that is an opened Cider project
 ⍝   * Fully qualified path to a Git-managed project
-⍝ `x`, if specified, must be a one- or two-element vector of Booleans: `verbose` and `aplNames`
+⍝ `x`, if specified, must be a one- or two-element vector of Booleans: `verbose` and `noAplNames`
 ⍝ * `verbose` defaults to 0
 ⍝   * verbose←1 gives a full report whith headers, usually useful only for the user command
 ⍝   * verbose←0 returns a matrix with 3 columns:
@@ -14,7 +14,7 @@
 ⍝   When set, a forth column with APL names is added when possible.
  ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
  x←{0<⎕NC ⍵:⍎⍵ ⋄ 0 0}'x'
- (verbose aplNames)←x,(≢x)↓0 1
+ (verbose noAplNames)←x,(≢x)↓0 1
  (space path)←EstablishProject y
  cmd←'status',(~verbose)/' --short'
  (rc more r)←path U.RunGitCommand cmd
@@ -32,8 +32,14 @@
      r←⍪(⊂path{0<≢⍵:'Namespace: ',⍵ ⋄ 'Folder: ',⍺}space),⊆r
  :Else
      r←{(↑2↑¨⍵),3↓¨⍵}⍣(0<≢r)⊢r
-     :If aplNames
+     :If ~noAplNames
          r,←⎕SE.Link.GetItemName¨(⊂path,'/'),¨r[;3]
+         :If 0=+/b←≢¨r[;4]
+         :AndIf 0<⎕SE.⎕NC'acre'
+             b←~b
+         :AndIf ∨/b←b∧(⎕C{⊃⊢/⎕NPARTS ⍵}¨r[;3])∊'.aplc' '.apln' '.apli' '.aplf' '.aplo' '.apla' '.charlist' '.charmat' '.charstring' '.dyalog'
+             r[⍸b;4]←⎕SE.acre.Itemname(⊂path,'/'),¨b⌿r[;3]
+         :EndIf
      :EndIf
  :EndIf
 ⍝Done

@@ -36,7 +36,7 @@
      :Case ⎕C'RefLog'
          r,←⊂']APLGit2.RefLog [space|folder] -max= -all -branch= -project='
      :Case ⎕C'Status'
-         r,←⊂']APLGit2.Status -verbose -view='
+         r,←⊂']APLGit2.Status -noAPLnames -verbose -view='
      :Case ⎕C'StashApply'
          r,←⊂']APLGit2.StashApply [space|folder] -n=<number of stash>'
      :Case ⎕C'StashClear'
@@ -73,7 +73,7 @@
      :CaseList ⎕C¨'Status' ''
          r←AddProjectOptions 1
          r,←⊂,' '
-         r,←'The table returned has three columns:' ' [;1] Staging area (X)' ' [;2] Working tree (Y)' ' [;3] File names'
+         r,←'The table returned has up to 4 columns:' ' [;1] Staging area (X)' ' [;2] Working tree (Y)' ' [;3] File names' ' [;4] APL names (if any)'
          r,←⊂,' '
          buff←⊂('Code' 'Meaning')
          buff,←⊂(⍴¨1⊃,buff)⍴¨'-'

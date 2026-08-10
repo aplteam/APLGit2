@@ -1,7 +1,7 @@
- r←Status(space folder args);verbose;aplNames
+  r←Status(space folder args);verbose;noAPLnames
  verbose←args.Switch'verbose'
- aplNames←args.Switch'APLnames'
- r←verbose aplNames ##.Status folder
+ noAPLnames←args.Switch'noAPLnames'
+ r←verbose noAPLnames ##.Status folder
  :If args.view
      {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'ed'}ed←⍵)}r
      r←''
