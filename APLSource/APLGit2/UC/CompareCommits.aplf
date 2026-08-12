@@ -1,8 +1,5 @@
  {(filename1 filename2)}←CompareCommits(space folder args);hash1;hash2;flag;exe;parms;qdmx;name;default;hash1_;msg;rc;hash2_;buff
  (hash1 hash2)←{0≡⍵:'' ⋄ ⍵}¨args.(_1 _2)
- :If (,'.')≡,hash1
-     'Argument is invalid'Assert 0=≢hash2
- :EndIf
  'Argument is invalid'Assert(,'.')≢hash2
  buff←folder ##.CompareCommits hash1 hash2
  (filename1 filename2 hash1 hash2)←4↑buff,'' ''    ⍝ Because old versions of CompareCommits did not return the hashes
