@@ -50,7 +50,7 @@ MinimumVersionOfDyalog←'18.0'
 
      c←⎕NS''
      c.Name←'ChangeLog'
-     c.Desc←'Takes an APL name and list all commits the object was part of'
+     c.Desc←'Takes an APL name and lists all commits the object was part of'
      c.Group←'APLGit2'
      c.Parse←'1 -project='
      c._Project←0
@@ -82,7 +82,7 @@ MinimumVersionOfDyalog←'18.0'
 
      c←⎕NS''
      c.Name←'FetchFromIndex'
-     c.Desc←'Allows you to bring back files from the index that where modified or deleted'
+     c.Desc←'Brings back files from the index that were modified or deleted'
      c.Group←'APLGit2'
      c.Parse←'1s'
      c._Project←1
@@ -114,7 +114,7 @@ MinimumVersionOfDyalog←'18.0'
 
      c←⎕NS''
      c.Name←'IsDirty'
-     c.Desc←'Reports whether there are uncommited changes'
+     c.Desc←'Reports whether there are uncommitted changes'
      c.Group←'APLGit2'
      c.Parse←'1s'
      c._Project←1
@@ -146,7 +146,7 @@ MinimumVersionOfDyalog←'18.0'
 
      c←⎕NS''
      c.Name←'OpenGitShell'
-     c.Desc←'Opens a Git shell for a Git managed project'
+     c.Desc←'Opens a Git shell for a Git-managed project'
      c.Group←'APLGit2'
      c.Parse←'1s'
      c._Project←1
@@ -170,7 +170,7 @@ MinimumVersionOfDyalog←'18.0'
 
      c←⎕NS''
      c.Name←'Repack'
-     c.Desc←'Cleans up and optimise Git''s internal storage by consolidating loose objects into packfiles'
+     c.Desc←'Cleans up and optimises Git''s internal storage by consolidating loose objects into packfiles'
      c.Group←'APLGit2'
      c.Parse←'1s -window= -depth='
      c._Project←1
@@ -258,7 +258,7 @@ MinimumVersionOfDyalog←'18.0'
 
      c←⎕NS''
      c.Name←'Version'
-     c.Desc←'Returns name, version number and version date as a three-element vector'
+     c.Desc←'Returns the version number as a text vector'
      c.Group←'APLGit2'
      c.Parse←''
      c._Project←0
