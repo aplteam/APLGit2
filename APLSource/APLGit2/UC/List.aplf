@@ -180,10 +180,10 @@
      r,←c
 
      c←⎕NS''
-     c.Name←'StashShow'
-     c.Desc←'Shows all files of a stash (default is the last one)'
+     c.Name←'StashListContent'
+     c.Desc←'List all files captured in a stash'
      c.Group←'APLGit2'
-     c.Parse←'1s -n= -p'
+     c.Parse←'2s -noAPLnames'
      c._Project←1
      r,←c
 
