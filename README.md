@@ -108,7 +108,7 @@ Names marked with `]` are available as user commands; the others are API functio
  ]StashPop                Applies a given stash and removes it from the stash cache
  ]StashPush               Saves modifications as a new stash entry and rolls them back
  ]Status                  Reports all untracked files and/or all uncommitted changes
- ]Version                 APLGit2's version: name, version number and version date
+ ]Version                 Returns APLGit2's version number as a text vector
 ```
 
 Two names in that list are asymmetric:
