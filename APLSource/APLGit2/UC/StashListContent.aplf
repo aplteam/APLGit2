@@ -1,0 +1,4 @@
+ r←StashListContent(space folder Args);n;noAPLnames
+ noAPLnames←0 Args.Switch'noAPLnames'
+ r←noAPLnames ##.StashListContent folder Args._2
+⍝Done
