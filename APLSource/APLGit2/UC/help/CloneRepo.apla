@@ -10,10 +10,10 @@
  'or you just add a leading "@":'
  '  @<userid>/<reponame.'
  (' '⋄)
- 'However, this defaults to GitHub, so in case you do not use GitHub the syntax shortcut is not available. '
+ 'However, this defaults to GitHub, so in case you do not use GitHub, the syntax shortcut is not available. '
  ''
  'Note that there is no way to provide an SSH passphrase when called from Dyalog. So if you want to use'
- 'SSH make sure that you do not specify a pasphrase to encrypt your private key. '
+ 'SSH make sure that you do not specify a passphrase to encrypt your private key. '
  ''
  'By default, the user command acts on the current directory but asks for confirmation.  '
  'You may specify a path via an optional second argument.'

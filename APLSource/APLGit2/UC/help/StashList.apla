@@ -11,6 +11,4 @@
  'If it does not find any open projects it will ask the user whether it should act on the current directory.'
  'If the user negates the question an error will be thrown. '
  ''
- 'Note that this command will NOT list any untracked files in the stash. This is a Git-restriction.'
- 'The Git team has not accepted this to be a bug.'
 )

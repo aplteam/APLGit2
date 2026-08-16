@@ -1,6 +1,6 @@
 (
  'Reports the status from Git''s perspective.'
- 'By default a long report is printed (4 volumns).'
+ 'By default a long report is printed (4 columns).'
  'The short report comes as a three-column matrix.'
  ''
  '  [;1] Status info for index (staging) area'
@@ -10,7 +10,7 @@
  ''
  '-verbose    : Provide a long report'
  '-view       : Put result in ⎕ED and return ⍬  '
- '-noAPLnames : Add a forth column with APL names (if any). Ignored with -verbose. '
+ '-noAPLnames : Suppress the forth column with APL names (if any). '
  ''
  'For more information (particularly the meaning of "status info"):'
  ']APLGit2.Status -???'
