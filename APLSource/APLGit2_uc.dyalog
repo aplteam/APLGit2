@@ -193,10 +193,10 @@ MinimumVersionOfDyalog←'18.0'
      r,←c
 
      c←⎕NS''
-     c.Name←'StashShow'
-     c.Desc←'Shows all files of a stash (default is the last one)'
+     c.Name←'StashListContent'
+     c.Desc←'List all files captured in a stash'
      c.Group←'APLGit2'
-     c.Parse←'1s -n= -p'
+     c.Parse←'2s -noAPLnames'
      c._Project←1
      r,←c
 
@@ -267,7 +267,7 @@ MinimumVersionOfDyalog←'18.0'
    ⍝ >>>>> EndListInject
     ∇
 
-    ∇ r←Run(Cmd Args);folder;G;space;ns;noProjectSelected;func;list;ind
+    ∇ r←Run(Cmd Args);folder;G;space;ns;noProjectSelected;func;list;ind;msg
       :Access Shared Public
       :If 0=⎕SE.⎕NC'APLGit2'
           {}⎕SE.Tatin.LoadDependencies(⊃⎕NPARTS ##.SourceFile)'⎕SE'
@@ -287,9 +287,36 @@ MinimumVersionOfDyalog←'18.0'
           :AndIf ∨/'/\'∊Args._1
               folder←Args._1
               space←''
+          :ElseIf ≡/⎕C'StashListContent'Cmd
+              :Select ≢Args.Arguments
+              :Case 0
+                  (space folder)←G.##.EstablishProject''
+              :Case 1
+                  :If ⊃⊃⎕VFI Args._1
+                      (space folder)←G.##.EstablishProject''
+                      Args._2←Args._1
+                      Args._1←folder
+                  :Else
+                      (msg space folder)←G.##.UC.GetSpaceAndFolder Cmd Args
+                      :If 0<≢msg
+                          r←msg ⋄ :Return
+                      :EndIf
+                  :EndIf
+              :Case 2
+                  :If ⊃⊃⎕VFI Args._1
+                      (space folder)←G.##.EstablishProject Args._2
+                      Args._2←Args._1
+                      Args._1←folder
+                  :Else
+                      (msg space folder)←G.##.UC.GetSpaceAndFolder Cmd Args
+                      :If 0<≢msg
+                          r←msg ⋄ :Return
+                      :EndIf
+                  :EndIf
+              :EndSelect
           :Else
               (r space folder)←G.##.UC.GetSpaceAndFolder Cmd Args
-              :If 'stashpush'≡⎕C Cmd
+              :If ≡/⎕C'StashPush'Cmd
                   :If 0<≢list←G.##.Status folder
                       list←('D'≠list[;2])⌿list        ⍝ We cannot stash anything deleted from the work tree
                       :If 0=≢''Args.Switch'u'
