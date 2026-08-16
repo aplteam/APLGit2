@@ -1,7 +1,7 @@
 (
  'Commits staged changes to the repository.'
  ''
- 'If there are unstaged changes, the user will be given the opportunity to select files '
+ 'If there are unstaged changes, the user will be given the opportunity to select files'
  'for the commit.'
  ''
  '-m=     Use this to specify a message for the commit.'

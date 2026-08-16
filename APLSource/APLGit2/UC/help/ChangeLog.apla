@@ -6,7 +6,7 @@
  ' 2. Commiter''s name'
  ' 3. Date of the commit date in strict ISO 8601 format'
  ' 4. Message of the commit'
- (' '⋄)
+ (,' ')
  ' The command tries to work out the project itself, but you can specify it with'
- ' -project= '
+ ' -project='
 )

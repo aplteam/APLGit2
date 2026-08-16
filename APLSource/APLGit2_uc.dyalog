@@ -60,7 +60,7 @@ MinimumVersionOfDyalog←'18.0'
      c.Name←'Commit'
      c.Desc←'Performs a commit on the current branch'
      c.Group←'APLGit2'
-     c.Parse←'1s -m= -add -amend'
+     c.Parse←'1s -m= -amend'
      c._Project←1
      r,←c
 

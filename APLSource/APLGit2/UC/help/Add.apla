@@ -1,18 +1,18 @@
 (
- 'Add files to the index (staging).                                                 '
- '                                                                         '
- 'You may specify one of:          '
- '                                       '
- ' * A file                                                               '
+ 'Add files to the index (staging).'
+ ''
+ 'You may specify one of:'
+ ''
+ ' * A file'
  ' * A list of files, separated by commas'
  ' * A folder'
- ' * An APL object                                                             '
+ ' * An APL object'
  ' * A "." (dot), meaning that all so far untracked files should be added'
- (' '⋄)
+ (,' ')
  'Names of files and folders may contain wildcard characters: ?*'
  ''
- 'For more information execute:                                           '
- ']APLGit2.Add -???                                                       '
+ 'The command tries to work out the project itself, but you can specify it with -project='
  ''
- ''
+ 'For more information execute:'
+ ']APLGit2.Add -???'
 )

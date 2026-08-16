@@ -1,6 +1,6 @@
 (
  'The ]APLGit2.* user commands are particularly useful when used in conjunction with the project'
- 'manager Cider or acre, but they can be used without Cider/acre as well, though you must then  '
+ 'manager Cider or acre, but they can be used without Cider/acre as well, though you must then'
  'specify the folder you wish the user command to act on.'
  ''
  'Note that APLGit2 does not accept URLs pointing to GitHub, it works only locally.'

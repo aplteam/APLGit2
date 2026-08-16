@@ -2,5 +2,9 @@
  'Returns the tag number of the latest release.'
  'Drafts are ignored.'
  ''
- '-verbose   If specified the date of the commit & the caption of the release are returned as well'
+ 'The project must be hosted on GitHub.'
+ ''
+ '-verbose    If specified the date of the commit & the caption of the release are returned as well'
+ '-username=  The GitHub username the repository belongs to. By default it is taken from the'
+ '            project_url of the open Cider project.'
 )

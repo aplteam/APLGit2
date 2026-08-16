@@ -5,5 +5,5 @@
  'it, and want to see the last version saved in the Git index.'
  ''
  'The command tries to work out the project itself, but you can specify it with'
- '-project= '
+ '-project='
 )
