@@ -10,11 +10,10 @@
 ⍝     [;1] index indicators (one of ADM)
 ⍝     [;2] working area indicators (one of ADM)
 ⍝     [;3] the path
-⍝ * `aplNames` defaults to 0. Ignored with verbose.
-⍝   When set, a forth column with APL names is added when possible.
+⍝ * `noAPLnames` defaults to 1. When set, no forth column with APL names is returned
  ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
  x←{0<⎕NC ⍵:⍎⍵ ⋄ 0 0}'x'
- (verbose noAplNames)←x,(≢x)↓0 1
+ (verbose noAplNames)←x,(≢x)↓0 0
  (space path)←EstablishProject y
  cmd←'status',(~verbose)/' --short'
  (rc more r)←path U.RunGitCommand cmd
