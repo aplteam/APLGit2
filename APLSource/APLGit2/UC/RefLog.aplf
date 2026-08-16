@@ -1,14 +1,11 @@
  r←RefLog(space folder args);branch;value;flag
- :If (,0)≡args.branch
-     branch←''
- :Else
-     branch←args.branch
- :EndIf
+ branch←{(,0)≡,⍵:'' ⋄ ⍵}args.branch
  :If (,0)≡,args.max
-     r←folder ##.RefLog~args.all
+     r←folder ##.RefLog(~args.all)branch
  :Else
-     r←folder ##.RefLog 0
+     r←folder ##.RefLog 0 branch
      (flag value)←⎕VFI args.max
      '"max" must be a positive integer'Assert flag
      r←value↑r
  :EndIf
+⍝Done
