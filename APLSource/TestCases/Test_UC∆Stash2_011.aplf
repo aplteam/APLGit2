@@ -1,5 +1,5 @@
  R←Test_UC∆Stash2_011(stopFlag batchFlag);⎕TRAP;dir;rc;msg;more;res
-⍝ Executes ]StashShow with an explicit stash number with no argument
+⍝ Executes ]StashListContent with an explicit stash number with no argument
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
@@ -17,10 +17,10 @@
  more Assert 0=rc
  →T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊res
 
- (rc more res)←∆UCMD'StashShow -n=1'
+ (rc more res)←∆UCMD'StashListContent 1'
  more Assert 0=rc
  →T.GoToTidyUp~∨/'file_1.txt'⍷∊res
- (rc more res)←∆UCMD'StashShow '
+ (rc more res)←∆UCMD'StashListContent '
  more Assert 0=rc
  →T.GoToTidyUp~∨/'file_2.txt'⍷∊res
 

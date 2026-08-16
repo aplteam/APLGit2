@@ -12,15 +12,15 @@
  :EndTrap
 
  result←G.Status ∆Folder1
- →T.PassesIf(1 3⍴'M' ' ' 'APLSource/help.aplf')≡result
+ →T.PassesIf(⍉⍪'M' ' ' 'APLSource/help.aplf' '#.Proj_1.Hello')≡result
  result←G.Status'#.Proj_2'
- →T.PassesIf(1 3⍴'?' '?' 'APLSource/help2.aplf')≡result
+ →T.PassesIf(⍉⍪'?' '?' 'APLSource/help2.aplf' '#.Proj_2.Hello2')≡result
 
  result←G.Status ∆Folder1
  →T.PassesIf 1=≢result
 
  result←0 1 G.Status ∆Folder1
- →T.PassesIf 4=2⊃⍴result
+ →T.PassesIf 3=2⊃⍴result
 
  result←1 0 G.Status ∆Folder1
  →T.PassesIf 5 1≡⍴result

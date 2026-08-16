@@ -1,23 +1,23 @@
  R←Test_Stash_012(stopFlag batchFlag);⎕TRAP;dir;rc;msg;buff
-⍝ Executes StashShow with a different format on the default
+⍝ Executes StashListContent without APL names
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- dir←∆StashDir,'/SourceCode'
- 'Create!'FilesAndDirs.CheckPath dir
+ dir←'#.Proj_1'{3⊃⍵[⍵[;1]⍳⊆⍺;]}⎕SE.Link.Status''
 
- (⊂'Hello')⎕NPUT dir,'/file_1.txt'
- ∆StashDir ##.APLGit2.Add''
- buff←##.APLGit2.StashPush ∆StashDir
- →T.GoToTidyUp~∨/'Saved working directory and index state'⍷∊buff
+ (⊂'r←Pi' 'r←3.14')⎕NPUT dir,'/PI.aplf'
+ (⊂'r←Hello' 'r←''World''')⎕NPUT dir,'/Hello.aplf'
+ dir ##.APLGit2.Add''
+ buff←##.APLGit2.StashPush dir
+ Assert∨/'Saved working directory and index state WIP on main:'⍷∊buff
+ →T.GoToTidyUp 1≠≢##.APLGit2.StashList dir
 
- buff←1 ##.APLGit2.StashShow ∆StashDir
- →T.GoToTidyUp~∨/'/file_1.txt'⍷∊buff
+ buff←##.APLGit2.StashListContent dir 0
+ →T.GoToTidyUp'APLSource/Hello.aplf' 'APLSource/PI.aplf'≢(1+≢dir)↓¨buff[;1]
+ →T.GoToTidyUp 0≠+/≢¨buff[;2]  ⍝ Because their is no history of them, therefore the APL names cannot be established
 
  R←T._OK
 
 ∆TidyUp:
- ##.APLGit2.StashClear ∆StashDir
- (rc msg)←FilesAndDirs.RmDirByForce dir
- msg Assert 0=rc
+ ##.APLGit2.StashClear dir
 ⍝Done

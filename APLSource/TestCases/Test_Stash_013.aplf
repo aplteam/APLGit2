@@ -1,0 +1,21 @@
+ R←Test_Stash_013(stopFlag batchFlag);⎕TRAP;rc;msg;buff;dir
+⍝ Executes StashListContent with APL names
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ dir←'#.Proj_1'{3⊃⍵[⍵[;1]⍳⊂⍺;]}⎕SE.Link.Status''
+ Assert' '=1↑0⍴#.Proj_1.⎕FX↑{(⍵[1]),(⊂'⍝ '),(⍵[≢⍵])}⎕NR'#.Proj_1.WhoAmI'
+ {}⎕SE.Link.Add'#.Proj_1.WhoAmI'
+ buff←##.APLGit2.StashPush dir
+ Assert∨/'Saved working directory and index state WIP on main:'⍷∊buff
+ →T.GoToTidyUp 1≠≢##.APLGit2.StashList dir
+
+ buff←##.APLGit2.StashListContent'#.Proj_1' 0
+ →T.GoToTidyUp~F.IsFile buff[;1]
+ →T.GoToTidyUp(,⊂'#.Proj_1.WhoAmI')≢buff[;2]
+
+ R←T._OK
+
+∆TidyUp:
+ ##.APLGit2.StashClear dir
+⍝Done

@@ -24,11 +24,11 @@
  →T.PassesIf 2=⍴⍴result4
  →T.PassesIf 1=2⊃⍴result4
 
- (rc msg result5)←stop ∆UCMD'Status #.Proj_2 -APLnames'
+ (rc msg result5)←stop ∆UCMD'Status #.Proj_2 -noAPLnames'
  msg Assert rc=0
  →T.PassesIf 2=⍴⍴result5
  →T.PassesIf 0<≢result5
- →T.PassesIf 4=2⊃⍴result5
+ →T.PassesIf 3=2⊃⍴result5
 
  R←T._OK
 ⍝Done
