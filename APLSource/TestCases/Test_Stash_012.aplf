@@ -3,7 +3,7 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- dir←'#.Proj_1'{3⊃⍵[⍵[;1]⍳⊆⍺;]}⎕SE.Link.Status''
+ dir←⊃{⍺,'/',⍵}/#.Proj_1.CiderConfig.(HOME CIDER.source)
 
  (⊂'r←Pi' 'r←3.14')⎕NPUT dir,'/PI.aplf'
  (⊂'r←Hello' 'r←''World''')⎕NPUT dir,'/Hello.aplf'
@@ -13,7 +13,7 @@
  →T.GoToTidyUp 1≠≢##.APLGit2.StashList dir
 
  buff←##.APLGit2.StashListContent dir 0
- →T.GoToTidyUp'APLSource/Hello.aplf' 'APLSource/PI.aplf'≢(1+≢dir)↓¨buff[;1]
+ →T.GoToTidyUp'APLSource/Hello.aplf' 'APLSource/PI.aplf'≢F.EnforceSlash(1+≢dir)↓¨buff[;1]
  →T.GoToTidyUp 0≠+/≢¨buff[;2]  ⍝ Because their is no history of them, therefore the APL names cannot be established
 
  R←T._OK

@@ -3,7 +3,7 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- dir←'#.Proj_1'{3⊃⍵[⍵[;1]⍳⊂⍺;]}⎕SE.Link.Status''
+ dir←⊃{⍺,'/',⍵}/#.Proj_1.CiderConfig.(HOME CIDER.source)
  Assert' '=1↑0⍴#.Proj_1.⎕FX↑{(⍵[1]),(⊂'⍝ '),(⍵[≢⍵])}⎕NR'#.Proj_1.WhoAmI'
  {}⎕SE.Link.Add'#.Proj_1.WhoAmI'
  buff←##.APLGit2.StashPush dir

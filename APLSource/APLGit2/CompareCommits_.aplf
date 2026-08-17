@@ -10,7 +10,7 @@
          :EndIf
          :If 0=≢wsName
          :AndIf 9=⎕SE.⎕NC'acre'
-             wsName←⊃⎕SE.acre.Itemname folder,'/',thisFile
+             wsName←''GetAcreItemName folder,'/',thisFile
          :EndIf
          ('Could not establish APL name for ',folder,'/',thisFile)Assert 0<≢wsName
          :If branch1≡currentBranch

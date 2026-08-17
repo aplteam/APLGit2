@@ -37,7 +37,7 @@
          :AndIf 0<⎕SE.⎕NC'acre'
              b←~b
          :AndIf ∨/b←b∧(⎕C{⊃⊢/⎕NPARTS ⍵}¨r[;3])∊'.aplc' '.apln' '.apli' '.aplf' '.aplo' '.apla' '.charlist' '.charmat' '.charstring' '.dyalog'
-             r[⍸b;4]←⎕SE.acre.Itemname(⊂path,'/'),¨b⌿r[;3]
+             r[⍸b;4]←space∘GetAcreItemName¨(⊂path,'/'),¨b⌿r[;3]
          :EndIf
      :EndIf
  :EndIf
