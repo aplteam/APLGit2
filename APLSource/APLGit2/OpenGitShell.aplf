@@ -1,38 +1,35 @@
-{r}←OpenGitShell y;bool;cmd;home;path;pathToGitExe;paths;space
-⍝ Opens a Terminal in `y`.\\
-⍝ `y` must be one of:\\
-⍝   * Fully qualified path to a Git-managed project
-⍝   * Fully qualified name of a namespace that is an opened Cider project\\
-⍝   * A dot (`.`) for "current directory"
-⍝ Returns always 0\\
-⍝ This has been tested on Windows, Mac OS and Ubuntu.
- r←0
+ success←OpenGitShell y;term;terms;exe;path;space
+⍝ Open an interactive shell window in `path`. Does not block the interpreter.
+⍝ Returns 1 if a terminal was launched, 0 if none was found.
+ success←0
  :If (,'.')≡,y
      path←'.'
      space←''
  :Else
      (space path)←EstablishProject y
  :EndIf
+ :If ~⎕NEXISTS path
+     ⎕SIGNAL⊂('EN' 22)('Message'('No such directory: ',path))
+ :EndIf
+
  :Select ⎕C A.GetOperatingSystem ⍬
  :Case 'win'
-     paths←';'A.Split 2 ⎕NQ #'GetEnvironment' 'PATH'
-     :If 1=+/bool←∨/¨'\git\bin'∘⍷¨⎕C paths
-         home←(bool⍳1)⊃paths
-         pathToGitExe←home,'\sh.exe'
-     :Else
-         home←(⊢2 ⎕NQ #'GetEnvironment' 'ProgramFiles'),'/Git/bin'
-         pathToGitExe←home,'/sh.exe'
-         :If ~⎕NEXISTS home
-             'GitBash not found!'⎕SIGNAL 6
-         :EndIf
+     exe←FindGitBash ⍬
+     :If ~0∊⍴exe
+         {}⎕CMD'start "" "',exe,'" --cd="',path,'"'
+         success←1
      :EndIf
-     cmd←('"',pathToGitExe,'" --cd="',((-(¯1↑path)∊'/\')↓path),'"')
-     ⎕SH cmd''
  :Case 'lin'
-     cmd←'gnome-terminal -- $SHELL -c "cd ',((-(¯1↑path)∊'/\')↓path),';git status; exec $SHELL"'
-     ⎕SH cmd
+     terms←'x-terminal-emulator' 'konsole' 'gnome-terminal'
+     'xfce4-terminal' 'xterm'
+     term←⊃⎕SH'command -v ',(⊃,/terms,¨⊂' '),'2>/dev/null'
+     :If ~0∊⍴term
+         {}⎕SH'cd "',path,'" && setsid ',term,' >/dev/null 2>&1 &'
+         success←1
+     :EndIf
  :Case 'mac'
-     cmd←'osascript -e ''tell app "terminal" to do script "cd ',((-(¯1↑path)∊'/\')↓path),';git status "'''
-     ⎕SH cmd
+     {}⎕SH'open -a Terminal "',path,'"'
+     success←1
+ :Else
+     'Unknown operating system'⎕SIGNAL 11
  :EndSelect
-⍝Done
