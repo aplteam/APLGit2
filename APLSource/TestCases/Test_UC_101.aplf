@@ -29,11 +29,11 @@
  msg Assert rc=0
  →T.GoToTidyUp 0<≢msg
 
- (rc msg buff)←stop ∆UCMD'Add . -project="',tempDir,'"'
+ (rc msg buff)←stop ∆UCMD'Commit "',tempDir,'" -m="firlefanz"'
  msg Assert rc=0
  →T.GoToTidyUp 0<≢msg
 
- (rc msg buff)←stop ∆UCMD'Commit "',tempDir,'" -m="firlefanz" -add'
+ (rc msg buff)←stop ∆UCMD'Add . -project="',tempDir,'"'
  msg Assert rc=0
  →T.GoToTidyUp 0<≢msg
 
