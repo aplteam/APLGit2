@@ -1,14 +1,20 @@
- r←GetTagOfLatestRelease(project path args);username;wsPathRef;project;l;lop
+ r←GetTagOfLatestRelease(project path args);username;wsPathRef;repoName;lop;ind
  r←''
+ wsPathRef←⎕NULL
+ :If 0<≢lop←⎕SE.Cider.ListOpenProjects 0                ⍝ List Of Projects
+ :AndIf (≢lop)≥ind←lop[;2]⍳⊂path
+     wsPathRef←⍎⊃lop[ind;]                              ⍝ [1] is the namespace, [2] the path
+ :EndIf
+ :If ⎕NULL≡wsPathRef
+     repoName←⊃⌽'/'(≠⊆⊢){'/'@(⍸'\'=⍵)⊣⍵}path            ⍝ Not a Cider project: take the folder name
+ :Else
+     repoName←wsPathRef.CiderConfig.CIDER.projectSpace
+ :EndIf
  :If 0≡args.username
-     :If 0=≢lop←⎕SE.Cider.ListOpenProjects 0   ⍝ List Of Projcts
-         :Return
-     :EndIf
-     wsPathRef←⍎lop[lop[;2]⍳⊂path;]
+     'Cannot establish the GitHub username; specify it with -username='Assert ⎕NULL≢wsPathRef
      username←{(¯1+≢⍵)⊃⍵}'/'(≠⊆⊢)wsPathRef.CiderConfig.CIDER.project_url
  :Else
      username←args.username
  :EndIf
- project←wsPathRef.CiderConfig.CIDER.projectSpace
- r←args.verbose ##.GetTagOfLatestRelease username project
+ r←args.verbose ##.GetTagOfLatestRelease username repoName
 ⍝Done
