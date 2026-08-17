@@ -1,4 +1,4 @@
- success←OpenGitShell y;term;terms;exe;path;space
+ success←OpenGitShell y;term;terms;exe;path;space;cmd
 ⍝ Open an interactive shell window in `path`. Does not block the interpreter.
 ⍝ Returns 1 if a terminal was launched, 0 if none was found.
  success←0
@@ -15,8 +15,9 @@
  :Select ⎕C A.GetOperatingSystem ⍬
  :Case 'win'
      exe←FindGitBash ⍬
-     :If ~0∊⍴exe
-         {}⎕CMD'start "" "',exe,'" --cd="',path,'"'
+     :If 0<≢exe
+         cmd←'"',exe,'" --cd="',path,'"'
+         {}⎕CMD cmd''
          success←1
      :EndIf
  :Case 'lin'
