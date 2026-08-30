@@ -1,0 +1,29 @@
+ R←Test_UC_023(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;buff;stop;status;staged
+⍝ Runs ]Add with a comma-separated list of files, as promised by its help.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-Tests'
+ stop←0
+ (rc msg buff)←stop ∆UCMD'Init "',tempDir,'" -quiet'
+ msg Assert rc=0
+ (⊂'one')⎕NPUT tempDir,'/one.txt'
+ (⊂'two')⎕NPUT tempDir,'/two.txt'
+ (⊂'three')⎕NPUT tempDir,'/three.txt'
+
+ (rc msg buff)←stop ∆UCMD'Add one.txt,two.txt -project="',tempDir,'"'
+ msg Assert rc=0
+ →T.GoToTidyUp 0<≢msg
+
+ status←G.Status tempDir
+ staged←(status[;1]∊'A')⌿status
+ →T.GoToTidyUp~(⊂'one.txt')∊staged[;3]
+ →T.GoToTidyUp~(⊂'two.txt')∊staged[;3]
+ →T.GoToTidyUp(⊂'three.txt')∊staged[;3]   ⍝ This one was not mentioned, so it must not be staged
+
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done

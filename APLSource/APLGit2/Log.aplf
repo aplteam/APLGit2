@@ -50,7 +50,7 @@
  :EndIf
  cmd,←'--date=',U.GetDateFormat
  :If 0<≢parms.name
-     cmd,←' ',⎕SE.Link.GetFileName parms.name
+     cmd,←' ',⊃space IdentifyObject parms.name
  :EndIf
  (rc msg buff)←folder U.RunGitCommand cmd
  msg U.Assert 0=rc

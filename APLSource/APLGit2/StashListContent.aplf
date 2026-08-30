@@ -1,4 +1,4 @@
- r←{noAPLnames}StashListContent(projectID n);rc;more;path;⎕TRAP;space;cmd;data;hasUntrackedFiles;b
+ r←{noAPLnames}StashListContent(projectID n);rc;more;path;⎕TRAP;space;cmd;data;hasUntrackedFiles
 ⍝ Lists all files, tracked and untracked, in a stash.
 ⍝ Specify projectID and the stash number via ⍵.
 ⍝ `projectID` must be one of:\\
@@ -30,11 +30,5 @@
  :If ~noAPLnames
      r←⍪r
      r,←⊂''
-     r[;2]←{⎕NEXISTS ⍵:⎕SE.Link.GetItemName ⍵ ⋄ ''}¨,r[;1]
-     :If 0=+/b←≢¨r[;2]
-     :AndIf 0<⎕SE.⎕NC'acre'
-         b←~b
-     :AndIf ∨/b←b∧(⎕C{⊃⊢/⎕NPARTS ⍵}¨r[;1])∊'.aplc' '.apln' '.apli' '.aplf' '.aplo' '.apla' '.charlist' '.charmat' '.charstring' '.dyalog'
-         r[⍸b;2]←space∘GetAcreItemName¨b⌿r[;1]
-     :EndIf
+     r[;2]←space∘{⎕NEXISTS ⍵:⍺ GetItemName ⍵ ⋄ ''}¨,r[;1]
  :EndIf

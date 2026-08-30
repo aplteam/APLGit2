@@ -1,0 +1,35 @@
+ R←Test_API_026(stopFlag batchFlag);⎕TRAP;buff;filename1;filename2;hash1;hash2;folder
+⍝ Exercises what only the ready-made fixture Proj_4 offers: a file in the root of the project,
+⍝ and a file that was changed by more than two commits.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+ folder←''
+
+ ⍝ A file in the ROOT of the project carries no path separator, yet it is not an APL name:
+ →T.PassesIf'README.md'≡⊃∆Folder4 G.IdentifyObject'README.md'
+
+ ⍝ A bare filename that is neither an APL object nor in the root: the source folder is searched
+ →T.PassesIf'APLSource/Counter.aplf'≡⊃∆Folder4 G.IdentifyObject'Counter.aplf'
+
+ ⍝ The same file, this time addressed relative to the root, with and without "./":
+ →T.PassesIf'APLSource/Counter.aplf'≡⊃∆Folder4 G.IdentifyObject'APLSource/Counter.aplf'
+ →T.PassesIf'APLSource/Counter.aplf'≡⊃∆Folder4 G.IdentifyObject'./APLSource/Counter.aplf'
+
+ ⍝ Counter.aplf was changed by three commits, README.md by two:
+ →T.PassesIf 3=≢∆Folder4 G.ChangeLog'Counter.aplf'
+ →T.PassesIf 2=≢∆Folder4 G.ChangeLog'README.md'
+
+ ⍝ Comparing the two most recent versions of Counter.aplf must yield 3 and 2:
+ (filename1 filename2 hash1 hash2)←∆Folder4 G.CompareVersions'Counter.aplf'
+ folder←⊃⎕NPARTS filename1
+ →T.GoToTidyUp hash1≡hash2
+ →T.GoToTidyUp' r←3'≢2⊃⊃⎕NGET filename1 1
+ →T.GoToTidyUp' r←2'≢2⊃⊃⎕NGET filename2 1
+
+ R←T._OK
+
+∆TidyUp:
+ :If 0<≢folder
+     {}FilesAndDirs.RmDirByForce folder
+ :EndIf
+⍝Done

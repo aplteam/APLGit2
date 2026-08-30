@@ -5,6 +5,7 @@
  r,←⊂'ChangeLog'
  r,←⊂'Commit'
  r,←⊂'CompareCommits'
+ r,←⊂'CompareVersions'
  r,←⊂'CurrentBranch'
  r,←⊂'Diff'
  r,←⊂'EstablishProject'

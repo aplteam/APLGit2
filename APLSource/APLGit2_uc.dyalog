@@ -33,26 +33,18 @@ MinimumVersionOfDyalog←'18.0'
      r,←c
 
      c←⎕NS''
-     c.Name←'CloneRepo'
-     c.Desc←'Creates a clone of the given repository'
-     c.Group←'APLGit2'
-     c.Parse←'2s -branch= -depth= -dry'
-     c._Project←0
-     r,←c
-
-     c←⎕NS''
-     c.Name←'ListBranches'
-     c.Desc←'Lists all branches for a Git-managed project'
-     c.Group←'APLGit2'
-     c.Parse←'1s -a -r'
-     c._Project←1
-     r,←c
-
-     c←⎕NS''
      c.Name←'ChangeLog'
      c.Desc←'Takes an APL name and lists all commits the object was part of'
      c.Group←'APLGit2'
      c.Parse←'1 -project='
+     c._Project←0
+     r,←c
+
+     c←⎕NS''
+     c.Name←'CloneRepo'
+     c.Desc←'Creates a clone of the given repository'
+     c.Group←'APLGit2'
+     c.Parse←'2s -branch= -depth= -dry'
      c._Project←0
      r,←c
 
@@ -69,6 +61,14 @@ MinimumVersionOfDyalog←'18.0'
      c.Desc←'Compares two different commits'
      c.Group←'APLGit2'
      c.Parse←'2s -project= -use= -files'
+     c._Project←0
+     r,←c
+
+     c←⎕NS''
+     c.Name←'CompareVersions'
+     c.Desc←'Compares two versions of a file or an APL object'
+     c.Group←'APLGit2'
+     c.Parse←'1-2 -project= -use= -files'
      c._Project←0
      r,←c
 
@@ -129,6 +129,14 @@ MinimumVersionOfDyalog←'18.0'
      r,←c
 
      c←⎕NS''
+     c.Name←'ListBranches'
+     c.Desc←'Lists all branches for a Git-managed project'
+     c.Group←'APLGit2'
+     c.Parse←'1s -a -r'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
      c.Name←'Log'
      c.Desc←'Shows the commit logs'
      c.Group←'APLGit2'
@@ -177,42 +185,18 @@ MinimumVersionOfDyalog←'18.0'
      r,←c
 
      c←⎕NS''
+     c.Name←'ShowLastVersionInIndex'
+     c.Desc←'Returns the last version of an APL object or a file in the index'
+     c.Group←'APLGit2'
+     c.Parse←'1 -project='
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
      c.Name←'Squash'
      c.Desc←'Squashes some commits in the current branch into a single one'
      c.Group←'APLGit2'
      c.Parse←'2s -m='
-     c._Project←1
-     r,←c
-
-     c←⎕NS''
-     c.Name←'StashList'
-     c.Desc←'List all stashes, if any'
-     c.Group←'APLGit2'
-     c.Parse←'1s'
-     c._Project←1
-     r,←c
-
-     c←⎕NS''
-     c.Name←'StashListContent'
-     c.Desc←'List all files captured in a stash'
-     c.Group←'APLGit2'
-     c.Parse←'2s -noAPLnames'
-     c._Project←1
-     r,←c
-
-     c←⎕NS''
-     c.Name←'StashPush'
-     c.Desc←'Save your local modifications to a new stash entry and roll them back to HEAD (in the working tree and in the index)'
-     c.Group←'APLGit2'
-     c.Parse←'999s -m= -u'
-     c._Project←1
-     r,←c
-
-     c←⎕NS''
-     c.Name←'StashPop'
-     c.Desc←'Apply a stash to the working area & remove from stash stack, by default the last one'
-     c.Group←'APLGit2'
-     c.Parse←'1s -n='
      c._Project←1
      r,←c
 
@@ -241,18 +225,42 @@ MinimumVersionOfDyalog←'18.0'
      r,←c
 
      c←⎕NS''
-     c.Name←'Status'
-     c.Desc←'Reports all untracked files and/or all uncommitted changes'
+     c.Name←'StashList'
+     c.Desc←'List all stashes, if any'
      c.Group←'APLGit2'
-     c.Parse←'1s -verbose -view -noAPLnames'
+     c.Parse←'1s'
      c._Project←1
      r,←c
 
      c←⎕NS''
-     c.Name←'ShowLastVersionInIndex'
-     c.Desc←'Returns the last version of an APL object or a file in the index'
+     c.Name←'StashListContent'
+     c.Desc←'List all files captured in a stash'
      c.Group←'APLGit2'
-     c.Parse←'1 -project='
+     c.Parse←'2s -noAPLnames'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'StashPop'
+     c.Desc←'Apply a stash to the working area & remove from stash stack, by default the last one'
+     c.Group←'APLGit2'
+     c.Parse←'1s -n='
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'StashPush'
+     c.Desc←'Save your local modifications to a new stash entry and roll them back to HEAD (in the working tree and in the index)'
+     c.Group←'APLGit2'
+     c.Parse←'999s -m= -u'
+     c._Project←1
+     r,←c
+
+     c←⎕NS''
+     c.Name←'Status'
+     c.Desc←'Reports all untracked files and/or all uncommitted changes'
+     c.Group←'APLGit2'
+     c.Parse←'1s -verbose -view -noAPLnames'
      c._Project←1
      r,←c
 

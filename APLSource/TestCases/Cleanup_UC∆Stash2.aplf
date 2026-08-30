@@ -1,0 +1,16 @@
+ Cleanup_UC∆Stash2
+⍝ Removes the override established by `Initial_UC∆Stash2`, closes the temporary project and
+⍝ removes its folder. Note that no project of the user was ever closed, so there is nothing
+⍝ to re-open here.
+ {}∆SetOpenProjects ⎕NULL
+ :If 0<⎕NC'∆StashProject'
+     {}0 ⎕SE.Cider.CloseProject¨∆StashProject[;1]
+     ⎕EX'∆StashProject'
+ :EndIf
+ :If 0<⎕NC'∆StashDir'
+     :If FilesAndDirs.IsDir ∆StashDir
+         {}FilesAndDirs.RmDirByForce ∆StashDir
+     :EndIf
+     ⎕EX'∆StashDir'
+ :EndIf
+⍝Done

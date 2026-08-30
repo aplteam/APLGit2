@@ -1,11 +1,22 @@
- R←Test_Misc_002(stopFlag batchFlag);⎕TRAP;res
-⍝ Runs the "GetMostRecentAncestor" method
+ R←Test_Misc_002(stopFlag batchFlag);⎕TRAP;res;tempDir;rc;msg
+⍝ Runs the "GetMostRecentAncestor" method on the second branch of the fixture.
+⍝ Note that this works on a private copy of the fixture: switching branches in ∆Folder4 would
+⍝ leave that shared fixture behind in a state later test cases do not expect.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- res←G.GetMostRecentAncestor'#.APLGit2'
-→T.PassesIf 1=≡res
-→T.PassesIf 40≡≢res
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ (##.CiderConfig.HOME,'/TestData/CiderProject4.zip')ZipArchive.UnzipTo tempDir
+ {}tempDir G.U.RunGitCommand'checkout feature'
+ →T.GoToTidyUp'feature'≢G.CurrentBranch tempDir
+
+ res←G.GetMostRecentAncestor tempDir
+ →T.GoToTidyUp 1≠≡res
+ →T.GoToTidyUp 40≠≢res
 
  R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
 ⍝Done

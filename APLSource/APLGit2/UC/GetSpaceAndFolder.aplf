@@ -20,7 +20,7 @@
      :EndIf
      :If 0=≢space,folder
          :If 1 ##.CommTools.YesOrNo'Act on the current directory (',(⊃1 ⎕NPARTS''),') ?'
-             folder←⊃1 ⎕NPARTS''
+             folder←##.U.NormalizeFolder⊃1 ⎕NPARTS''
          :Else
              r←'No argument provided',(9=⎕SE.⎕NC'Cider')/' and no open Cider project(s) found.'
          :EndIf

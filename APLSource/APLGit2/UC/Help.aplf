@@ -20,6 +20,12 @@
      :Select ⎕C Cmd
      :CaseList ⎕C¨'Add' ''
          r,←AddProjectOptions 1
+         r,←⊂,' '
+         r,←AddFileArgOptions
+     :CaseList ⎕C¨'ChangeLog' 'CompareVersions' 'Log' 'ShowLastVersionInIndex'
+         r,←AddProjectOptions 0
+         r,←⊂,' '
+         r,←AddFileArgOptions
      :CaseList ⎕C¨'Status' ''
          r←AddProjectOptions 1
          r,←⊂,' '

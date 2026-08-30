@@ -1,0 +1,29 @@
+ R←Test_API_024(stopFlag batchFlag);⎕TRAP;home;expected;this
+⍝ Runs "IdentifyObject": checks that every documented form of the argument resolves to the
+⍝ very same filename, and that this filename is relative to the root of the project.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ home←##.CiderConfig.HOME
+ expected←'APLSource/APLGit2/IdentifyObject.aplf'   ⍝ Note that this name is unique in this project
+ this←'#.APLGit2'
+
+ ⍝ An APL object, relative to the project space as well as fully qualified:
+ →T.PassesIf expected≡⊃this G.IdentifyObject'APLGit2.IdentifyObject'
+ →T.PassesIf expected≡⊃this G.IdentifyObject'#.APLGit2.APLGit2.IdentifyObject'
+
+ ⍝ A filename, relative to the root of the project, with and without a leading "./":
+ →T.PassesIf expected≡⊃this G.IdentifyObject expected
+ →T.PassesIf expected≡⊃this G.IdentifyObject'./',expected
+
+ ⍝ An absolute filename pointing into an opened project:
+ →T.PassesIf expected≡⊃this G.IdentifyObject home,'/',expected
+
+ ⍝ Just a filename: this must be found in the source folder of the project:
+ →T.PassesIf expected≡⊃this G.IdentifyObject'IdentifyObject.aplf'
+
+ ⍝ Backslashes must not make a difference:
+ →T.PassesIf expected≡⊃this G.IdentifyObject'APLSource\APLGit2\IdentifyObject.aplf'
+
+ R←T._OK
+⍝Done

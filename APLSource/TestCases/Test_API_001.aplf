@@ -8,7 +8,7 @@
      →T.FailsIf 1
  :Else
      qdmx←⎕DMX
-     →T.PassesIf'Is not a namespace'≡qdmx.EM
+     →T.PassesIf'Is not a fully qualified namespace name'≡qdmx.EM
  :EndTrap
 
  →T.PassesIf(,⊂'* main')≡buff←G.ListBranches ∆Folder1
@@ -21,7 +21,7 @@
      →T.FailsIf 1
  :Else
      qdmx←⎕DMX
-     →T.PassesIf'Is not a namespace'≡qdmx.EM
+     →T.PassesIf'Is not a fully qualified namespace name'≡qdmx.EM
  :EndTrap
 
  →T.PassesIf(,⊂'* main')≡buff←G.Branch ∆Folder1

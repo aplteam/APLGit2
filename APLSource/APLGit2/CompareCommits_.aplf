@@ -5,13 +5,7 @@
      (op thisFile)←list[row;2 3]
      extension←⎕C 3⊃⎕NPARTS thisFile
      :If (⊂extension)∊ListOfDyalogFilesExtensions
-         :If 9=⎕SE.⎕NC'Link'
-             wsName←⎕SE.Link.GetItemName folder,'/',thisFile
-         :EndIf
-         :If 0=≢wsName
-         :AndIf 9=⎕SE.⎕NC'acre'
-             wsName←''GetAcreItemName folder,'/',thisFile
-         :EndIf
+         wsName←GetItemName folder,'/',thisFile
          ('Could not establish APL name for ',folder,'/',thisFile)Assert 0<≢wsName
          :If branch1≡currentBranch
          :AndIf 0<nc←⎕NC wsName
@@ -37,7 +31,7 @@
                  :AndIf op∊'AD?'
                      buff1←,⊂'>>> Not available <<<'
                  :ElseIf 0≠rc
-                     ∘∘∘ ⍝ It appears that the file does not exist/is unknown to Git when it should
+                     'File does not exist/is unknown to Git when it should?!'Assert 0
                  :EndIf
              :EndIf
          :EndIf

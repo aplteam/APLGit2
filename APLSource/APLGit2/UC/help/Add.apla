@@ -7,7 +7,9 @@
  ' * A list of files, separated by commas'
  ' * A folder'
  ' * An APL object'
- ' * A "." (dot), meaning that all so far untracked files should be added'
+ ' * A "." (dot), meaning that all unstaged files should be added'
+ (,' ')
+ 'Files and folders are relative to the ROOT of the project; see -??? for the full rule.'
  (,' ')
  'Names of files and folders may contain wildcard characters: ?*'
  ''

@@ -9,3 +9,4 @@ conga.crash
 !/packages_dev/apl-buildlist.json
 /TestResults/*
 /APLSource/.linkconfig
+/Dist/

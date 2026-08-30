@@ -3,7 +3,7 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- dir←{⊃⍵[1;2]}⎕SE.Cider.ListOpenProjects 0
+ dir←⊃∆StashProject[;2]   ⍝ NOT Cider's list: other projects may well be open
 
  ##.APLGit2.Add''
  (rc more list)←∆UCMD'StashList '

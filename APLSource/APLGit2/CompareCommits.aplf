@@ -1,4 +1,4 @@
-(filename1 filename2 hash1 hash2)←{x}CompareCommits y;space;folder;hash1;hash2;list;noofBytes;flag;exe;alias;parms;branch;name;cfg;ns
+(filename1 filename2 hash1 hash2)←{x}CompareCommits y;space;folder;hash1;hash2;list;noofBytes;branch;source;why;rc;msg;buff
 ⍝ Allows inspection of all differences between two commits in a single comparison.\\
 ⍝ In case `⍵` is empty the last commit is compared with the checkout commit of the current branch.
 ⍝ In case `⍵` is a single commit it is compared with the last commit.
@@ -19,23 +19,36 @@
      :If 0=≢y
      :OrIf 0=+/≢¨y
          hash1←GetLastCommit folder
-         hash2←GetMostRecentAncestor folder
+         :If (⊂branch)∊'main' 'master'    ⍝ There is no branch we could have branched off from
+             (rc msg buff)←folder U.RunGitCommand'rev-parse HEAD~1'
+             ('There is just a single commit in "',branch,'", so there is nothing to compare')U.Assert 0=rc
+             hash2←∊buff
+             why←'No hashes specified: comparing the last commit in "',branch,'" with its predecessor'
+         :Else
+             hash2←GetMostRecentAncestor folder
+             why←'No hashes specified: comparing the tip of "',branch,'" with where it branched off "',(GetMainOrMaster folder),'"'
+         :EndIf
      :ElseIf 1=≢y
      :OrIf 1=+/0=≢¨y
          :If (,'.')≡,1⊃,y
              hash1←'.'
              hash2←GetLastCommit folder
+             why←'Only one argument: comparing the working area with the last commit in "',branch,'"'
          :Else
              hash1←1⊃,y
              hash2←GetLastCommit folder
+             why←'Only one hash specified: comparing it with the last commit in "',branch,'"'
          :EndIf
      :Else
          (hash1 hash2)←y~''⍬ 0
+         why←''
      :EndIf
      'The two hashes match - that makes no sense'U.Assert hash1≢hash2
      (hash1 hash2)←{⍵↑⍨¨8⌊≢¨⍵}hash1 hash2
      'The length of the hashes must be 4 or more characters'U.Assert∧/{(,'.')≡,⍵:1 ⋄ 4≤≢⍵}¨hash1 hash2
-     ⎕←'Comparing ',({(,'.')≡,⍵:'the working directory' ⋄ ⍵}hash1),' with ',hash2
+     ⎕←{0=≢⍵:'Comparing:' ⋄ ⍵}why
+     ⎕←'  ',folder U.GetCommitCaption hash1
+     ⎕←'  ',folder U.GetCommitCaption hash2
      :If (,'.')≡,hash1
          list←0 1 Status folder
      :Else
@@ -44,11 +57,8 @@
      :EndIf
      :If 0<≢∊list
          ⎕←'Total number of files found: ',⍕≢list
-         :If F.IsFile folder,'/cider.config'
-             cfg←⊃F.NGET folder,'/cider.config'
-             ns←⎕JSON⍠('Dialect' 'JSON5')⊣cfg
-         :AndIf F.IsDir folder,'/',ns.CIDER.source
-             list←((F.EnforceSlash{⍵,'/'/⍨~'/\'∊⍨¯1↑⍵}ns.CIDER.source){⍺∘≡¨(≢⍺)↑¨⍵}list[;3])⌿list
+         :If 0<≢source←U.GetSourceFolder folder
+             list←(source{⍺∘≡¨(≢⍺)↑¨⍵}list[;3])⌿list
          :EndIf
          list⌿⍨←ListOfDyalogFilesExtensions∊⍨{3⊃⎕NPARTS ⍵}¨⊢/list
          :If 0<≢list

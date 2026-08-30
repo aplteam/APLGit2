@@ -29,7 +29,7 @@
      :Case 2
          r{⍺⍪'body'⍵}←¨ns.body
      :Else
-         ∘∘∘                                                    ⍝ Huh?!
+         'Invalid call?!'Assert 0
      :EndSelect
      r←↑r
  :EndIf

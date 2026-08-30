@@ -3,7 +3,7 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- result←'#.APLGit2'G.ChangeLog'#.APLGit2.APLGit2.Add'
+ result←##.CiderConfig.HOME G.ChangeLog'#.APLGit2.APLGit2.Add'
  →T.PassesIf 0<≢result
 
  result←'#.APLGit2'G.ChangeLog'APLGit2.Add'

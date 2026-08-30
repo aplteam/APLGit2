@@ -1,4 +1,4 @@
- r←{x}Status y;rc;more;path;⎕TRAP;short;space;ind;branch;msg;cmd;aplNames;verbose;b;noAplNames
+ r←{x}Status y;rc;more;path;⎕TRAP;short;space;ind;branch;msg;cmd;aplNames;verbose;noAplNames
 ⍝ Reports all unstaged/uncommited/untracked files.\\
 ⍝ `y` must be one of:
 ⍝   * Fully qualfied name of a namespace that is an opened Cider project
@@ -32,13 +32,7 @@
  :Else
      :If 0<≢r←{(↑2↑¨⍵),3↓¨⍵}⍣(0<≢r)⊢r
      :AndIf ~noAplNames
-         r,←⎕SE.Link.GetItemName¨(⊂path,'/'),¨r[;3]
-         :If 0=+/b←≢¨r[;4]
-         :AndIf 0<⎕SE.⎕NC'acre'
-             b←~b
-         :AndIf ∨/b←b∧(⎕C{⊃⊢/⎕NPARTS ⍵}¨r[;3])∊'.aplc' '.apln' '.apli' '.aplf' '.aplo' '.apla' '.charlist' '.charmat' '.charstring' '.dyalog'
-             r[⍸b;4]←space∘GetAcreItemName¨(⊂path,'/'),¨b⌿r[;3]
-         :EndIf
+         r,←space∘GetItemName¨(⊂path,'/'),¨r[;3]
      :EndIf
  :EndIf
 ⍝Done

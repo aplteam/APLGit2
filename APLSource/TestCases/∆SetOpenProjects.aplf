@@ -1,0 +1,30 @@
+ {r}←∆SetOpenProjects list;refs;ref
+⍝ Defines what `U.GetOpenProjects` reports as the open projects, and therefore what
+⍝ `EstablishProject` acts on. `list` must be a matrix with a namespace name in [;1] and a
+⍝ folder in [;2]; a matrix with no rows at all means "no project is open".\\
+⍝ Pass `⎕NULL` in order to remove the override again.\\
+⍝ A user command executes its code either in `#.APLGit2.APLGit2` or in `⎕SE.APLGit2` - see
+⍝ `GetRefToAPLGit2` - so both are catered for. Mind that when APLGit2 was loaded as a Tatin
+⍝ package then `⎕SE.APLGit2` is that package's API namespace, so `U` is a sibling of it rather
+⍝ than a child: that's what `##` is for.
+ r←⍬
+ refs←⍬
+ :If 9=#.⎕NC'APLGit2.APLGit2.U'
+     refs,←#.APLGit2.APLGit2.U
+ :EndIf
+ :If 9=⎕SE.⎕NC'APLGit2'
+     :If 9=⎕SE.APLGit2.⎕NC'U'
+         refs,←⎕SE.APLGit2.U
+     :ElseIf 9=⎕SE.APLGit2.##.⎕NC'U'
+         refs,←⎕SE.APLGit2.##.U
+     :EndIf
+ :EndIf
+ 'Found no namespace "U" the override could be established in'Assert 0<≢refs
+ :For ref :In refs
+     :If ⎕NULL≡list
+         {}ref.⎕EX'∆OPEN_PROJECTS'
+     :Else
+         ref.∆OPEN_PROJECTS←list
+     :EndIf
+ :EndFor
+⍝Done

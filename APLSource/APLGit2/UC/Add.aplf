@@ -1,11 +1,14 @@
- r←Add(space folder args);filter;ind
- 'Not a URL on GitHub'Assert 0<≢args._1
+ r←Add(space folder args);filter;i
  filter←args._1
  'Invalid filter'Assert 0<≢filter
- ind←1+1⍳⍨(⊂'⎕SE')≡¨⎕NSI
- :If 0<#.APLGit2.TestCases.⎕NC filter
-     filter←⎕SE.Link.GetFileName(ind⊃⎕NSI),'.',filter
- :EndIf
+ filter←','(≠⊆⊢)filter                    ⍝ A comma-separated list of files is permitted
+ :For i :In ⍳≢filter
+     :If ~(,'.')≡,i⊃filter                ⍝ "." means "everything"
+     :AndIf ~∨/'?*'∊i⊃filter              ⍝ Leave wildcard expressions to Git
+     :AndIf ~##.F.Exists folder,'/',i⊃filter   ⍝ An existing file or folder needs no interpretation
+         (i⊃filter)←⊃space ##.IdentifyObject i⊃filter
+     :EndIf
+ :EndFor
  {}folder ##.Add filter
  r←0 0⍴''
 ⍝Done

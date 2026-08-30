@@ -1,0 +1,38 @@
+ R←Test_API_025(stopFlag batchFlag);⎕TRAP;tempDir;filename1;filename2;hash1;hash2;rc;msg;folder1;folder2
+⍝ Runs "CompareVersions": checks that the two files it produces really do carry the two
+⍝ versions the two commits are holding.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+ folder1←folder2←''
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-Tests'
+ (⊂'first')⎕NPUT tempDir,'/one.txt'
+ {}∆Initialize tempDir
+ (⊂'second')⎕NPUT(tempDir,'/one.txt')1
+ {}tempDir G.U.RunGitCommand'add .'
+ {}tempDir G.U.RunGitCommand'commit -m "Second commit"'
+
+ ⍝ Without any hashes the two most recent commits must be taken:
+ (filename1 filename2 hash1 hash2)←tempDir G.CompareVersions'./one.txt'
+ folder1←⊃⎕NPARTS filename1
+
+ →T.GoToTidyUp 0=≢filename1
+ →T.GoToTidyUp 0=≢filename2
+ →T.GoToTidyUp hash1≡hash2
+ →T.GoToTidyUp'.txt'≢¯4↑filename1                     ⍝ The extension must survive
+ →T.GoToTidyUp(,⊂'second')≢⊃⎕NGET filename1 1         ⍝ hash1 is the most recent commit
+ →T.GoToTidyUp(,⊂'first')≢⊃⎕NGET filename2 1
+
+ ⍝ The very same thing but with the two hashes specified explicitly, in reverse order:
+ (filename1 filename2)←2↑tempDir G.CompareVersions'./one.txt'hash2 hash1
+ folder2←⊃⎕NPARTS filename1
+ →T.GoToTidyUp(,⊂'first')≢⊃⎕NGET filename1 1
+ →T.GoToTidyUp(,⊂'second')≢⊃⎕NGET filename2 1
+
+ R←T._OK
+
+∆TidyUp:
+ {}{0=≢⍵:0 ⋄ FilesAndDirs.RmDirByForce ⍵}¨folder1 folder2
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done

@@ -9,14 +9,14 @@
  r←0 4⍴''
  x←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'x'
  (filename path)←x IdentifyObject name
- cmd←'log --follow --pretty=format:"',U.GetLogFormat,'" -- ',filename
+ cmd←'log --follow --date=short --pretty=format:"',U.GetLogFormat,'" -- ',filename
  (rc msg buff)←path U.RunGitCommand cmd
  :If 1=≢'fatal: your current branch ''[^'']+'' does not have any commits yet'⎕S 0⊣∊msg
      r←''
  :Else
      (∊msg)U.Assert 0=rc
      :If 0<≢buff
-         r←↑U.FormatLog buff
+         r←U.FormatLog buff
      :EndIf
  :EndIf
 ⍝Done

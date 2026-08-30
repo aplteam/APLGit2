@@ -11,7 +11,7 @@
  CommTools.Pause'This test needs you: it opens a Terminal in Git''s project directory.'
 
  :Trap 6
-     {}G.OpenGitShell #.APLGit2
+     {}G.OpenGitShell ##.CiderConfig.HOME
      →T.PassesIf 1
  :Else
      dmx←⎕DMX

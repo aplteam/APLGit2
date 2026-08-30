@@ -1,25 +1,21 @@
- R←Test_API_131(stopFlag batchFlag);⎕TRAP;fn2;fn1;name;flag;buff
-⍝ Runs "CompareCommits" on a dot
+ R←Test_API_131(stopFlag batchFlag);⎕TRAP;fn1;fn2
+⍝ Runs "CompareCommits" on a dot: the working area against the last commit.
+⍝ This needs a modified file in the working area, so it acts on the fixture: manufacturing one
+⍝ in the project one is actually working on (as this test used to do) means writing a file into
+⍝ APLGit2's own APLSource, and leaving it behind whenever the tidy-up does not get a chance.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
+ fn1←fn2←''
 
- buff←1 ##.APLGit2.Status'#.APLGit2'
- :If flag←∨/'nothing to commit, working tree clean'⍷∊1 ##.APLGit2.Status'#.APLGit2'   ⍝ Only possible if there are files in the working area
- :OrIf flag←0=+/'APLSource'{⍺∘≡¨(≢⍺)↑¨⍵}{⍵[;2]}##.APLGit2.Status'#.APLGit2'
-     name←{⍵[?80⍴≢⍵]}⎕A,'_',⎕C ⎕A
-     Assert' '=1↑0⍴⊃##.APLGit2.⎕FX('r←',name)'r←42'
-     {}⎕SE.Link.Add'##.APLGit2.',name
- :EndIf
- (fn1 fn2)←2↑#.APLGit2 ##.APLGit2.CompareCommits'.'
+ (⊂' r←Counter' ' r←4711')⎕NPUT(∆Folder4,'/APLSource/Counter.aplf')1
 
+ (fn1 fn2)←2↑∆Folder4 G.CompareCommits'.'
  →T.GoToTidyUp~∧/⎕NEXISTS fn1 fn2
 
  R←T._OK
 
 ∆TidyUp:
+ {}∆Folder4 G.U.RunGitCommand'checkout -- APLSource/Counter.aplf'   ⍝ Leave the fixture as we found it
  :Trap 0 ⋄ FilesAndDirs.DeleteFile fn1 ⋄ :EndTrap
  :Trap 0 ⋄ FilesAndDirs.DeleteFile fn2 ⋄ :EndTrap
- :If flag
-     {}⎕SE.Link.Expunge'##.APLGit2.',name
- :EndIf
- ⍝Done
+⍝Done

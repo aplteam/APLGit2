@@ -1,4 +1,4 @@
- Initial ns;result;buff;was
+ Initial ns;result;buff;was;parms
 ⍝ 1. Create the needed references
 ⍝ 2. Set global `DEVELOPMENT` depending on user decision (if not running in batch mode)
 ⍝ 3. Create two namespaces with (very little) content
@@ -15,6 +15,16 @@
      ⎕SE.APLGit2.⎕EX'DEVELOPMENT'
  :Else
      ⎕SE.APLGit2.DEVELOPMENT←~1 CommTools.YesOrNo'Run code in ⎕SE when a user command (rather than #.APLGit2) ?'
+ :EndIf
+
+ ⍝ Make it plain which code the user commands are about to execute: a green run against
+ ⍝ a stale installed package would not tell us anything. Note that the version numbers
+ ⍝ of the two may well match, because a build does not have to be followed by a change.
+ :If {0=⍵.⎕NC'DEVELOPMENT':0 ⋄ ⍵.DEVELOPMENT}⎕SE.APLGit2
+     ⎕←'*** User commands will execute the code in #.APLGit2.APLGit2 (the project itself)'
+ :Else
+     ⎕←'*** User commands will execute the INSTALLED package ⎕SE.APLGit2, version ',⎕SE.APLGit2.Version
+     ⎕←'    Execute #.APLGit2.Admin.Make 1 in case that is not what you want to test!'
  :EndIf
 
  ∆LINK_NOTIFY_WAS←⎕SE.Link.NOTIFY
@@ -58,4 +68,17 @@
  (⊂'r←Hello4' 'r←''Universe''')⎕NPUT ∆Folder3,'/APLSource/help4.aplf'
  #.Proj_3.⎕FX↑'r←WhoAmI' '⍝ Really!' 'r←''Proj_3'''
  {}⎕SE.Link.Add ⎕SE.Link.GetFileName'#.Proj_3.WhoAmI'
+
+ ⍝ Proj_4 is a ready-made fixture rather than something built here: it carries a Git history,
+ ⍝ a second branch, a file in the root of the project, two files with the same name in two
+ ⍝ different folders, and a file that is not APL source. See TestData/CiderProject4.zip.
+ ⍝ Note that the committer identity is part of that ZIP, so commits can be made in the copy.
+ ∆Folder4←G.F.EnforceSlash ∆TempDir,'/CiderProject4'
+ 3 ⎕MKDIR ∆Folder4
+ (##.CiderConfig.HOME,'/TestData/CiderProject4.zip')ZipArchive.UnzipTo ∆Folder4
+ parms←⎕SE.Cider.CreateOpenParms''
+ parms.folder←∆Folder4
+ parms.batch←1
+ parms.watch←'ns'
+ {}⎕SE.Cider.OpenProject parms
 ⍝Done

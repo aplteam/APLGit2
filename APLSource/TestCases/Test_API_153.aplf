@@ -4,10 +4,10 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- tempFolder←FilesAndDirs.GetTempSubDir'APLGit2-Tests-',⊃⎕SI
+ tempFolder←FilesAndDirs.NormalizePath FilesAndDirs.GetTempSubDir'APLGit2-Tests-',⊃⎕SI
  (⊂'/AppData/' '/Assets/')FilesAndDirs.NPUT tempFolder,'/.gitignore'
  res←1 G.AddGitIgnore tempFolder
- →T.GoToTidyUp('.gitignore merged in ',tempFolder)≢res
+ →T.GoToTidyUp('.gitignore merged in ',tempFolder)≢FilesAndDirs.NormalizePath res
  buff←⊃FilesAndDirs.NGET(tempFolder,'/.gitignore')1
  expected←'/AppData/' '/Assets/' 'aplcore' 'CONTINUE' 'CONTINUE.dws' 'conga.crash'
  →T.GoToTidyUp expected≢buff

@@ -1,15 +1,11 @@
- r←Initial_UC∆Stash2;dir2;msg;stashDir;parms;res;parms2;q;noOf;openProjects
-⍝ Creates and opens a project for the sole purpose of testing the stash user commands
+ r←Initial_UC∆Stash2;msg;stashDir;parms;parms2;res;openProjects;bool
+⍝ Creates and opens a project for the sole purpose of testing the stash user commands with no
+⍝ argument at all. For that the stash project must be the only one that is "open".\
+⍝ Rather than closing whatever the user has open - which is what this function used to do, and
+⍝ it never opened them again - `∆OPEN_PROJECTS` is set: from then on `U.GetOpenProjects`
+⍝ reports just this one project. Nothing else is disturbed. See `Cleanup_UC∆Stash2`.
  r←1
- openProjects←⎕SE.Cider.ListOpenProjects 0
- :If 0<noOf←≢openProjects
-     q←'In order to execute the test group "UC∆Stash2" there must be no open projects - currently there are ',(⍕noOf),' open project(s)',(⎕UCS 13),'Close all open projects?'
- :AndIf 1 CommTools.YesOrNo'InitialUC∆Stash2@',q
-     {}⎕SE.Cider.CloseProject openProjects[;1]
- :Else
-     r←0
- :EndIf
- stashDir←FilesAndDirs.GetTempSubDir''
+ ∆StashDir←stashDir←FilesAndDirs.GetTempSubDir''
  {}1 ##.APLGit2.Init stashDir
  stashDir ##.APLGit2.Add''
  msg←'Initial commit'##.APLGit2.Commit stashDir
@@ -21,4 +17,9 @@
  parms2.folder←stashDir
  res←⎕SE.Cider.OpenProject parms2
  Assert∨/'Project successfully opened and established in'⍷∊res
+ openProjects←⎕SE.Cider.ListOpenProjects 0
+ bool←(FilesAndDirs.NormalizePath¨openProjects[;2])≡¨⊂FilesAndDirs.NormalizePath stashDir
+ 'The temporary stash project was not found among the open ones'Assert 1=+/bool
+ ∆StashProject←openProjects[⍸bool;]
+ {}∆SetOpenProjects ∆StashProject
 ⍝Done

@@ -1,12 +1,18 @@
  R←Test_Misc_003(stopFlag batchFlag);⎕TRAP;res
-⍝ Runs the "LogForBranch" method
+⍝ Runs the "LogForBranch" method against the fixture, whose history is known.
+⍝ Note that "LogForBranch" reports what is unique to the given branch ("--not" all others), so
+⍝ asking for "main" yields nothing at all: "feature" was branched off it and holds every one of
+⍝ its commits. Asking for "feature" yields exactly the one commit made on it.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- res←'#.APLGit2'G.LogForBranch'main'
-⍝ →T.PassesIf 2=≡res ⍝ Might well be empty...
+ res←∆Folder4 G.LogForBranch'feature'
  →T.PassesIf 2=⍴⍴res
- →T.PassesIf 4=2⊃⍴res
+ →T.PassesIf 4=2⊃⍴res                                  ⍝ Hash, committer, date and subject
+ →T.PassesIf 1=≢res
+ →T.PassesIf'Extra added on the feature branch'≡4⊃res[1;]
+
+ →T.PassesIf 0=≢∆Folder4 G.LogForBranch'main'
 
  R←T._OK
 ⍝Done
