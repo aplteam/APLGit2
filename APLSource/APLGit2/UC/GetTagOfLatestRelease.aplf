@@ -1,4 +1,7 @@
  r←GetTagOfLatestRelease(project path args);username;wsPathRef;repoName;lop;ind
+⍝ Desc: Returns the tag of the latest release
+⍝ Parse: 1s -verbose -username=
+⍝ Project: 1
  r←''
  wsPathRef←⎕NULL
  :If 0<≢lop←⎕SE.Cider.ListOpenProjects 0                ⍝ List Of Projects

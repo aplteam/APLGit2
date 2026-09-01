@@ -1,4 +1,7 @@
  r←RefLog(space folder args);branch;value;flag
+⍝ Desc: List reference log entries (RefLogs)
+⍝ Parse: 1s -max= -all -branch= -project=
+⍝ Project: 1
  branch←{(,0)≡,⍵:'' ⋄ ⍵}args.branch
  :If (,0)≡,args.max
      r←folder ##.RefLog(~args.all)branch

@@ -47,6 +47,7 @@
      M.RecreateFolder path
      M.FetchLaterUserCommand cfg C'[MyUCMDs]'
      {}⎕SE.Tatin.CreateAPIfromCFG ##.APLGit2 cfg
+     {}UpdateCommandTable C   ⍝ Re-generates the table in UC.List from the UC functions
      InjectListOfObjectsIntoUserCommandScript C cfg
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
      parms.targetPath←C.CIDER.distributionFolder

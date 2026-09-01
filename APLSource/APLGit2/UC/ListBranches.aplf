@@ -1,4 +1,7 @@
  r←ListBranches(space folder args);parms
+⍝ Desc: Lists all branches for a Git-managed project
+⍝ Parse: 1s -a -r
+⍝ Project: 1
  :If (,0)≢,args.a
      parms←'-a'
  :ElseIf (,0)≢,args.r

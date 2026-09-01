@@ -1,4 +1,7 @@
  r←Log(space folder args);parms;buff
+⍝ Desc: Shows the commit logs
+⍝ Parse: 2s -verbose -name= -commit=
+⍝ Project: 1
  parms←⎕NS''
  parms.verbose←args.verbose
  parms.max←¯1

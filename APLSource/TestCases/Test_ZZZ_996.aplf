@@ -1,0 +1,20 @@
+ R←Test_ZZZ_996(stopFlag batchFlag);⎕TRAP;filename;data;start;end;injected;current
+⍝ Checks that the "List" injected into the user command script really is what `UC.List`
+⍝ currently is. When this fails then `#.APLGit2.Admin.Make 1` was not run since `UC.List` last
+⍝ changed, and the script therefore advertises other commands - or other "Parse" strings -
+⍝ than the source does. Note that this cannot be noticed at runtime: `Name`, `Desc` and
+⍝ "Parse" always come from the script, no matter what DEVELOPMENT says.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ filename←##.CiderConfig.HOME,'/APLSource/APLGit2_uc.dyalog'
+ data←⊃⎕NGET filename 1
+ start←⍸∨/¨'⍝ >>>>> StartListInject'∘⍷¨data
+ end←⍸∨/¨'⍝ >>>>> EndListInject'∘⍷¨data
+ →T.PassesIf 1 1≡(≢start)(≢end)
+ injected←1↓(⊃start)↓(¯1+⊃end)↑data          ⍝ 1↓ : that is the MinimumVersionOfDyalog line
+ current←1↓G.UC.⎕NR'List'                    ⍝ 1↓ : that is the header
+ →T.PassesIf current≡injected
+
+ R←T._OK
+⍝Done

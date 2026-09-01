@@ -1,6 +1,8 @@
 (
+ '* 1.0.1 ⋄ 2026-09-??'
+ '  * Internal changes in order to get rid of technical debt.'
  '* 1.0.0 ⋄ 2026-09-01'
- '  * Promoted to versio 1.0    '
+ '  * Promoted to version 1.0    '
  '  * `]CompareVersions` added'
  '  * `]CompareCommits` now tells the user which commits it compares, and no longer fails on main/master'
  '  * acre support: all Link-specific calls now go via `GetFileName`/`GetItemName`, and both fall back to acre'

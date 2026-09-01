@@ -1,0 +1,11 @@
+ r←ShowLastVersionInIndex(space folder args);name
+⍝ Desc: Returns the last version of an APL object or a file in the index
+⍝ Parse: 1 -project=
+⍝ Project: 1
+ name←args._1
+ :If ∧/~'/\:'∊name                 ⍝ A filename must not be qualified, of course
+ :AndIf ~(⊃name)∊'#⎕'
+     name←(⍕space),'.',name
+ :EndIf
+ r←folder ##.ShowLastVersionInIndex name
+⍝Done

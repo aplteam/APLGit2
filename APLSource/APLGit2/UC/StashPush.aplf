@@ -1,5 +1,8 @@
   r←StashPush(space folder Args);parms
 ⍝ Stashes all files in the working area
+⍝ Desc: Save your local modifications to a new stash entry and roll them back to HEAD (in the working tree and in the index)
+⍝ Parse: 999s -m= -u
+⍝ Project: 1
  parms←##.CreateStashPushParms
  parms.folder←folder
  parms.msg←''Args.Switch'm'

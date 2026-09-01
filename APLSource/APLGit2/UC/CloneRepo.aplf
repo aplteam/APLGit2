@@ -1,5 +1,8 @@
  r←CloneRepo(space folder args);branch;depth;repo;path;cmd;dry;name;isSSH;short
 ⍝ Clone a repository, by default from GitHub and into the current directory.
+⍝ Desc: Creates a clone of the given repository
+⍝ Parse: 2s -branch= -depth= -dry
+⍝ Project: 0
  r←''
  'Right argument is invalid (empty)'Assert 0<≢args.Arguments
  branch←''args.Switch'branch'

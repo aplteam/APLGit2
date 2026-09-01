@@ -1,4 +1,7 @@
  {msg}←CompareVersions(space folder args);y;obj;till;buff;max;hash1;hash2;ind;hashes;filename;filename1;filename2;exe;name
+⍝ Desc: Compares two versions of a file or an APL object
+⍝ Parse: 1-2 -project= -use= -files
+⍝ Project: 0
  (obj y)←{0≡⍵:'' ⋄ ⍵}¨args.(_1 _2)
  :If args.files
      exe←''                                        ⍝ The user asked for the filenames, so don't bother the comparison utility

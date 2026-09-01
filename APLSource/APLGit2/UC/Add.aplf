@@ -1,4 +1,7 @@
  r←Add(space folder args);filter;i
+⍝ Desc: Executes the git "Add" command
+⍝ Parse: 1 -project=
+⍝ Project: 0
  filter←args._1
  'Invalid filter'Assert 0<≢filter
  filter←','(≠⊆⊢)filter                    ⍝ A comma-separated list of files is permitted

@@ -1,0 +1,17 @@
+ {r}←UpdateCommandTable prjCfg;path;table;rows;src;start;end;Quote
+⍝ Re-generates the table inside `UC.List` from the metadata carried by the user command
+⍝ functions themselves; see `GetCommandTable`.\\
+⍝ The function is fixed in the workspace, so Link writes it back to `UC/List.aplf`. Run this
+⍝ before `InjectListOfObjectsIntoUserCommandScript`, which takes it from there.
+ r←⍬
+ path←prjCfg.HOME,'/APLSource/APLGit2/UC'
+ table←GetCommandTable path
+ Quote←{'''',(⍵/⍨1+''''=⍵),''''}
+ rows←{'     table⍪←',(Quote 1⊃⍵),' ',(Quote 2⊃⍵),' ',(⍕3⊃⍵),' ',Quote 4⊃⍵}¨↓table
+ src←##.APLGit2.UC.⎕NR'List'
+ start←⍸∨/¨'⍝ >>>>> StartTableInject'∘⍷¨src
+ end←⍸∨/¨'⍝ >>>>> EndTableInject'∘⍷¨src
+ 'The markers were not found in UC.List'Assert 1 1≡(≢start)(≢end)
+ src←(start↑src),rows,(end-1)↓src
+ 'Could not fix UC.List'Assert'List'≡##.APLGit2.UC.⎕FX src
+⍝Done

@@ -1,0 +1,36 @@
+ table←GetCommandTable path;list;names;ind;file;name;buff;desc;parse;project;Get
+⍝ Scans the user command functions in `path` - the "UC" folder of the project - and returns a
+⍝ matrix with one row per user command and four columns: name, `Parse`, `_Project`, `Desc`.\\
+⍝ The metadata lives in the leading comments of the function itself:\\
+⍝ ~~~
+⍝ ⍝ Desc: Executes the git "Add" command
+⍝ ⍝ Parse: 1 -project=
+⍝ ⍝ Project: 0
+⍝ ~~~
+⍝ A function counts as a user command exactly when it carries a "Parse:" line, so the helpers
+⍝ in "UC" are ignored without having to list them anywhere.\\
+⍝ The result is sorted alphabetically, and every command must come with a help file.
+ Get←{i←⍸(⊂⍺)≡¨(≢⍺)↑¨⍵ ⋄ 0=≢i:⎕NULL ⋄ {⍵↓⍨+/∧\' '=⍵}(≢⍺)↓(⊃i)⊃⍵}
+ table←0 4⍴⊂''
+ list←⊃##.APLGit2.FilesAndDirs.Dir path,'/*.aplf'
+ names←{2⊃⎕NPARTS ⍵}¨list
+ ind←⍋⎕C↑names
+ list←list[ind]
+ names←names[ind]
+ :For file name :InEach list names
+     buff←1↓⊃⎕NGET file 1
+     :If 0<≢buff
+         buff←(∧\'⍝'=⊃¨buff)/buff       ⍝ The leading comments, and nothing else
+     :EndIf
+     parse←'⍝ Parse:'Get buff
+     :If ⎕NULL≢parse                    ⍝ No "Parse:" means: not a user command but a helper
+         desc←'⍝ Desc:'Get buff
+         project←'⍝ Project:'Get buff
+         ('No "Desc:" for the user command "',name,'"')Assert ⎕NULL≢desc
+         ('No "Project:" for the user command "',name,'"')Assert ⎕NULL≢project
+         ('No help file for the user command "',name,'"')Assert ⎕NEXISTS path,'/help/',name,'.apla'
+         table⍪←name parse('1'≡⊃project)desc
+     :EndIf
+ :EndFor
+ 'No user commands found at all'Assert 0<≢table
+⍝Done

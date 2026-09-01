@@ -1,4 +1,7 @@
  r←Commit(space folder args);ref;branch;rc;data;flag;currentBranch;status;ind;noOf;buff;amend;commitMsg;msg
+⍝ Desc: Performs a commit on the current branch
+⍝ Parse: 1s -m= -amend
+⍝ Project: 1
  branch←##.CurrentBranch folder
  amend←0 args.Switch'amend'
  commitMsg←''args.Switch'm'
