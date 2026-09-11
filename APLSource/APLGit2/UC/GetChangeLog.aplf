@@ -1,8 +1,6 @@
  {hashes}←GetChangeLog(space folder args);y;obj
+ ∘∘∘ ⍝ Work in progess
  (obj y)←{0≡⍵:'' ⋄ ⍵}¨args.(_1 _2)
- :If 1
-     ∘∘∘
- :EndIf
  'Argument is invalid'Assert(,'.')≢hash2
  buff←folder ##.CompareCommits hash1 hash2
  (filename1 filename2 hash1 hash2)←4↑buff,'' ''    ⍝ Because old versions of CompareCommits did not return the hashes
