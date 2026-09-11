@@ -1,0 +1,45 @@
+ R←Test_API_028(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;buff;log;fn1;fn2;h1;h2;folders;folder
+⍝ Runs "CompareVersions" on a file that was renamed by a commit. `ChangeLog` follows the file
+⍝ across the rename, so it hands out commits that know the file only under its OLD name: asking
+⍝ Git for "hash:new" fails.\\
+⍝ Works on a private copy of the fixture: the commit would change a history that later test
+⍝ cases rely on.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+ folders←⍬
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ (##.CiderConfig.HOME,'/TestData/CiderProject4.zip')ZipArchive.UnzipTo tempDir
+ (rc msg buff)←tempDir G.U.RunGitCommand'mv APLSource/Counter.aplf APLSource/Counter2.aplf'
+ →T.GoToTidyUp 0≠rc
+ (rc msg buff)←tempDir G.U.RunGitCommand'commit -m "Counter renamed"'
+ →T.GoToTidyUp 0≠rc
+ log←tempDir G.ChangeLog'APLSource/Counter2.aplf'
+ →T.GoToTidyUp 4≠≢log                          ⍝ The rename plus the three commits before it
+
+ ⍝ No hashes: the rename commit, and the commit before it, which knows only "Counter.aplf"
+ (fn1 fn2 h1 h2)←tempDir G.CompareVersions'APLSource/Counter2.aplf'
+ folders,←⊂⊃⎕NPARTS fn1
+ →T.GoToTidyUp~∨/' r←3'⍷⊃⎕NGET fn1
+ →T.GoToTidyUp~∨/' r←3'⍷⊃⎕NGET fn2
+
+ ⍝ An older commit that changed the file ("Counter bumped to 2"), compared with the rename commit
+ (fn1 fn2 h1 h2)←tempDir G.CompareVersions'APLSource/Counter2.aplf'((⊂3 1)⊃log)
+ folders,←⊂⊃⎕NPARTS fn1
+ →T.GoToTidyUp~∨/' r←2'⍷⊃⎕NGET fn1
+ →T.GoToTidyUp~∨/' r←3'⍷⊃⎕NGET fn2
+
+ ⍝ A commit that did NOT change the file ("README extended"): its path must be inferred
+ (fn1 fn2 h1 h2)←tempDir G.CompareVersions'APLSource/Counter2.aplf'((⊂1 1)⊃tempDir G.ChangeLog'README.md')
+ folders,←⊂⊃⎕NPARTS fn1
+ →T.GoToTidyUp~∨/' r←3'⍷⊃⎕NGET fn1
+
+ R←T._OK
+
+∆TidyUp:
+ :For folder :In folders
+     {}FilesAndDirs.RmDirByForce folder
+ :EndFor
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done
