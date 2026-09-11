@@ -1,4 +1,4 @@
-(filename1 filename2 hash1 hash2)←{x}CompareCommits y;space;folder;hash1;hash2;list;noofBytes;branch;source;why;rc;msg;buff
+ (filename1 filename2 hash1 hash2)←{x}CompareCommits y;space;folder;hash1;hash2;list;noofBytes;branch;source;why;rc;msg;buff
 ⍝ Allows inspection of all differences between two commits in a single comparison.\\
 ⍝ In case `⍵` is empty the last commit is compared with the checkout commit of the current branch.
 ⍝ In case `⍵` is a single commit it is compared with the last commit.
@@ -51,6 +51,9 @@
      ⎕←'  ',folder U.GetCommitCaption hash2
      :If (,'.')≡,hash1
          list←0 1 Status folder
+         :If 0<≢list
+             list[;2]←CombineStatus¨↓list[;1 2]  ⍝ Staged or not makes no difference to the working area
+         :EndIf
      :Else
          list←folder DiffBetween hash1 hash2
          list←(list,' ')[;3 1 2]
@@ -64,7 +67,9 @@
          :If 0<≢list
              ⎕←(⍕≢list),' APL source file',((1<≢list)/'s'),' found to compare'
              (filename1 filename2)←'txt'∘F.GetTempFilename2¨2⍴⊂''
-             noofBytes←CompareCommits_ list(branch,': ',hash1)(branch,': ',hash2)folder branch hash1 hash2 filename1 filename2
+             buff←↑HandleRenames¨list[;3]            ⍝ Per file: the path in the commit, the path now
+             list←list[;1 2],⌽buff                   ⍝ [;3] the path now, [;4] the path in the commit
+             noofBytes←CompareCommits_ list(branch,': ',hash1)(branch,': ',hash2)folder branch hash1 hash2 filename1 filename2 space
              :If 0=noofBytes
                  ⎕NDELETE filename1 filename2
                  filename1←filename2←''

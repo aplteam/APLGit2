@@ -1,0 +1,56 @@
+ R←Test_API_133(stopFlag batchFlag);⎕TRAP;fn1;fn2;text1;text2;NA
+⍝ Runs "CompareCommits" on a dot with every kind of change in the working area at once. The
+⍝ working area is compared with the last commit, so whether a change is staged or not must not
+⍝ make any difference:
+⍝ * Counter.aplf        "M "  changed and staged
+⍝ * New1.aplf           "A "  added and staged
+⍝ * New2.aplf           "AM"  added and staged, then changed again
+⍝ * New3.aplf           "??"  untracked
+⍝ * Tools/Helper.aplf   "D "  deleted and staged
+⍝ * Utils/Helper.aplf   " D"  deleted, not staged
+⍝ * WhoAmI.aplf         "R "  renamed and nothing else: there is no difference to report\\
+⍝ Acts on the fixture, because the files must be known to Link; it therefore restores it.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+ fn1←fn2←''
+ NA←'>>> Not available <<<'
+ →0/⍨0<≢0 1 G.Status ∆Folder4     ⍝ The fixture must be clean: the tidy-up would destroy anything else
+
+ (⊂' r←Counter' ' r←4712')⎕NPUT(∆Folder4,'/APLSource/Counter.aplf')1
+ {}∆Folder4 G.U.RunGitCommand'add APLSource/Counter.aplf'
+ (⊂' r←New1' ' r←''AddedAndStaged''')⎕NPUT ∆Folder4,'/APLSource/New1.aplf'
+ {}∆Folder4 G.U.RunGitCommand'add APLSource/New1.aplf'
+ (⊂' r←New2' ' r←''Added''')⎕NPUT ∆Folder4,'/APLSource/New2.aplf'
+ {}∆Folder4 G.U.RunGitCommand'add APLSource/New2.aplf'
+ (⊂' r←New2' ' r←''AddedThenChanged''')⎕NPUT(∆Folder4,'/APLSource/New2.aplf')1
+ (⊂' r←New3' ' r←''Untracked''')⎕NPUT ∆Folder4,'/APLSource/New3.aplf'
+ {}∆Folder4 G.U.RunGitCommand'rm APLSource/Tools/Helper.aplf'
+ ⎕NDELETE ∆Folder4,'/APLSource/Utils/Helper.aplf'
+ {}∆Folder4 G.U.RunGitCommand'mv APLSource/WhoAmI.aplf APLSource/WhoAmI2.aplf'
+
+ (fn1 fn2)←2↑∆Folder4 G.CompareCommits'.'
+ →T.GoToTidyUp~∧/⎕NEXISTS fn1 fn2
+ text1←⊃⎕NGET fn1                              ⍝ The working area
+ text2←⊃⎕NGET fn2                              ⍝ The last commit
+
+ ⍝ Everything changed or added, staged or not, is in the working area:
+ →T.GoToTidyUp~∧/∨/¨(' r←4712' '''AddedAndStaged''' '''AddedThenChanged''' '''Untracked''')⍷¨⊂text1
+ ⍝ ... while the last commit has the old Counter and both deleted files:
+ →T.GoToTidyUp~∧/∨/¨(' r←3' ' r←''Tools''' ' r←''Utils''')⍷¨⊂text2
+ ⍝ Both deleted files are missing from the working area, the three new ones from the commit:
+ →T.GoToTidyUp 2≠+/NA⍷text1
+ →T.GoToTidyUp 3≠+/NA⍷text2
+ ⍝ The pure rename is no difference at all:
+ →T.GoToTidyUp∨/' r←''Proj_4'''⍷text1,text2
+
+ R←T._OK
+
+∆TidyUp:
+ {}∆Folder4 G.U.RunGitCommand'reset -q --hard'   ⍝ Leave the fixture as we found it ...
+ :Trap 0 ⋄ FilesAndDirs.DeleteFile ∆Folder4,'/APLSource/New1.aplf' ⋄ :EndTrap   ⍝ ... including the files it
+ :Trap 0 ⋄ FilesAndDirs.DeleteFile ∆Folder4,'/APLSource/New2.aplf' ⋄ :EndTrap   ⍝ does not know about
+ :Trap 0 ⋄ FilesAndDirs.DeleteFile ∆Folder4,'/APLSource/New3.aplf' ⋄ :EndTrap
+ :Trap 0 ⋄ FilesAndDirs.DeleteFile ∆Folder4,'/APLSource/WhoAmI2.aplf' ⋄ :EndTrap
+ :Trap 0 ⋄ FilesAndDirs.DeleteFile fn1 ⋄ :EndTrap
+ :Trap 0 ⋄ FilesAndDirs.DeleteFile fn2 ⋄ :EndTrap
+⍝Done

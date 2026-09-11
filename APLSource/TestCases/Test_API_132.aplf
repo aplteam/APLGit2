@@ -1,0 +1,26 @@
+ R←Test_API_132(stopFlag batchFlag);⎕TRAP;fn1;fn2;rc;msg;buff
+⍝ Runs "CompareCommits" on a dot after a file was renamed AND changed in the working area, which
+⍝ Git reports as "RM old -> new". The working area must be read under the new name, but the last
+⍝ commit knows only the old one: asking Git for "hash:new" fails.\\
+⍝ Acts on the fixture, because a file must be known to Link; it therefore restores it.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+ fn1←fn2←''
+
+ (rc msg buff)←∆Folder4 G.U.RunGitCommand'mv APLSource/Counter.aplf APLSource/Counter2.aplf'
+ →T.GoToTidyUp 0≠rc
+ (⊂' r←Counter' ' r←4711')⎕NPUT(∆Folder4,'/APLSource/Counter2.aplf')1
+
+ (fn1 fn2)←2↑∆Folder4 G.CompareCommits'.'
+ →T.GoToTidyUp~∧/⎕NEXISTS fn1 fn2
+ →T.GoToTidyUp~∨/' r←4711'⍷⊃⎕NGET fn1         ⍝ The working area, under the new name
+ →T.GoToTidyUp~∨/' r←3'⍷⊃⎕NGET fn2            ⍝ The last commit, under the old name
+
+ R←T._OK
+
+∆TidyUp:
+ {}∆Folder4 G.U.RunGitCommand'mv -f APLSource/Counter2.aplf APLSource/Counter.aplf'
+ {}∆Folder4 G.U.RunGitCommand'checkout HEAD -- APLSource/Counter.aplf'   ⍝ Leave the fixture as we found it
+ :Trap 0 ⋄ FilesAndDirs.DeleteFile fn1 ⋄ :EndTrap
+ :Trap 0 ⋄ FilesAndDirs.DeleteFile fn2 ⋄ :EndTrap
+⍝Done
