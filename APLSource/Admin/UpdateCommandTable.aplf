@@ -1,8 +1,9 @@
  {r}←UpdateCommandTable prjCfg;path;table;rows;src;start;end;Quote
 ⍝ Re-generates the table inside `UC.List` from the metadata carried by the user command
 ⍝ functions themselves; see `GetCommandTable`.\\
-⍝ The function is fixed in the workspace, so Link writes it back to `UC/List.aplf`. Run this
-⍝ before `InjectListOfObjectsIntoUserCommandScript`, which takes it from there.
+⍝ The function is fixed in the workspace AND written to `UC/List.aplf`: Link does not pick up a
+⍝ ⎕FX, and `BuildPackage` takes the file, not the workspace. Run this before
+⍝ `InjectListOfObjectsIntoUserCommandScript`, which takes it from the workspace.
  r←⍬
  path←prjCfg.HOME,'/APLSource/APLGit2/UC'
  table←GetCommandTable path
@@ -14,4 +15,5 @@
  'The markers were not found in UC.List'Assert 1 1≡(≢start)(≢end)
  src←(start↑src),rows,(end-1)↓src
  'Could not fix UC.List'Assert'List'≡##.APLGit2.UC.⎕FX src
+ (⊂src)⎕NPUT(path,'/List.aplf')1
 ⍝Done
