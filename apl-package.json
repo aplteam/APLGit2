@@ -16,9 +16,9 @@
   os_lin: 1,
   os_mac: 1,
   os_win: 1,
-  project_url: "https://github.com/aplteam/APLGit",
+  project_url: "https://github.com/aplteam/APLGit2",
   source: "APLSource/APLGit2",
   tags: "apl-git-interface",
   userCommandScript: "APLSource/APLGit2_uc.dyalog",
-  version: "1.0.1-beta-1+533",
+  version: "1.0.1-beta-5+537",
 }
