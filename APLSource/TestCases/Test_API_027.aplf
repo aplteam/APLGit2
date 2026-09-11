@@ -1,0 +1,18 @@
+ R←Test_API_027(stopFlag batchFlag);⎕TRAP;res
+⍝ Runs "ShowLastVersionInIndex" against the fixture, whose content is known.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ ⍝ Addressed as a filename, relative to the root of the project:
+ res←∆Folder4 G.ShowLastVersionInIndex'APLSource/Counter.aplf'
+ →T.PassesIf 1=≡res
+ →T.PassesIf∨/' r←3'⍷res              ⍝ That is what the last commit holds
+
+ ⍝ The very same file, this time addressed as an APL object:
+ →T.PassesIf res≡'#.Proj_4'G.ShowLastVersionInIndex'Counter'
+
+ ⍝ And as a bare filename, which must be found in the source folder:
+ →T.PassesIf res≡∆Folder4 G.ShowLastVersionInIndex'Counter.aplf'
+
+ R←T._OK
+⍝Done

@@ -1,11 +1,10 @@
- r←ChangeLog(space folder args);msg;name;⎕TRAP
+ r←ChangeLog(space folder args);project
 ⍝ Desc: Takes an APL name and lists all commits the object was part of
 ⍝ Parse: 1 -project=
 ⍝ Project: 0
- name←args._1
- :If ~(⊃name)∊'#⎕'
-     name←(⍕space),'.',name
+ project←folder
+ :If 0<≢space                       ⍝ Only a project space can qualify a relative APL name
+     project←⍕space
  :EndIf
- ('Not an APL object: ',name)Assert 0<⎕NC name
- r←folder ##.ChangeLog name
+ r←project ##.ChangeLog args._1     ⍝ `IdentifyObject` works out what the argument is
 ⍝Done

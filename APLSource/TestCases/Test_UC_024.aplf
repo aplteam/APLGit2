@@ -1,0 +1,19 @@
+ R←Test_UC_024(stopFlag batchFlag);⎕TRAP;rc;msg;buff;stop
+⍝ Runs ]ShowLastVersionInIndex - the user command, not just the API function.
+⍝ Note that there was no test at all for this command, which is why nobody noticed that its
+⍝ user command function was missing altogether; see GitHub issue 19.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ stop←0
+ (rc msg buff)←stop ∆UCMD'ShowLastVersionInIndex APLSource/Counter.aplf -project="',∆Folder4,'"'
+ msg Assert rc=0
+ →T.PassesIf 0=≢msg
+ →T.PassesIf∨/' r←3'⍷∊buff
+
+ (rc msg buff)←stop ∆UCMD'ShowLastVersionInIndex Counter -project=#.Proj_4'
+ msg Assert rc=0
+ →T.PassesIf∨/' r←3'⍷∊buff
+
+ R←T._OK
+⍝Done
