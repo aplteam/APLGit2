@@ -1,14 +1,18 @@
- {msg}←CompareVersions(space folder args);y;obj;till;buff;max;hash1;hash2;ind;hashes;filename;filename1;filename2;exe;name
+ {msg}←CompareVersions(space folder args);y;obj;till;buff;max;hash1;hash2;ind;hashes;filename;filename1;filename2;exe;name;project
 ⍝ Desc: Compares two versions of a file or an APL object
 ⍝ Parse: 1-2 -project= -use= -files
 ⍝ Project: 0
+ project←folder
+ :If 0<≢space                                      ⍝ Only a project space can qualify a relative APL name
+     project←⍕space
+ :EndIf
  (obj y)←{0≡⍵:'' ⋄ ⍵}¨args.(_1 _2)
  :If args.files
      exe←''                                        ⍝ The user asked for the filenames, so don't bother the comparison utility
  :Else                                             ⍝ Establish this early: don't let the user select two hashes for nothing
      (exe name)←##.U.EstablishComparisonTool''args.Switch'use'
  :EndIf
- filename←⊃space ##.IdentifyObject obj             ⍝ Relative to the root of the project
+ filename←⊃project ##.IdentifyObject obj           ⍝ Relative to the root of the project
  msg←'Not found'
  hashes←till←''
  max←0
@@ -42,7 +46,7 @@
          (hash1 hash2)←buff[ind;1]
      :EndSelect
  :EndIf
- (filename1 filename2 hash1 hash2)←space ##.CompareVersions filename hash1 hash2
+ (filename1 filename2 hash1 hash2)←project ##.CompareVersions filename hash1 hash2
  :If 0=≢exe
      ⎕←msg←filename1 filename2                     ⍝ No comparison utility: leave the files behind for the user
  :Else

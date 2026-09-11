@@ -1,0 +1,34 @@
+ R←Test_UC_025(stopFlag batchFlag);⎕TRAP;rc;msg;result;tempDir;log;files;stop
+⍝ Runs ]CompareVersions with -project= pointing to a folder that is NOT an opened project.
+⍝ The space is then empty, so the object must be identified - and the versions extracted - in
+⍝ that folder: passing on the empty space instead falls back to whatever project happens to be
+⍝ open, or asks the user to pick one.\\
+⍝ Works on a private copy of the fixture, which nobody opens.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+ files←⍬
+ stop←0
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ (##.CiderConfig.HOME,'/TestData/CiderProject4.zip')ZipArchive.UnzipTo tempDir
+ log←tempDir G.ChangeLog'APLSource/Counter.aplf'
+ →T.GoToTidyUp 3≠≢log
+
+ ⍝ The two most recent commits, passed explicitly: with three of them the user would be asked
+ (rc msg result)←stop ∆UCMD'CompareVersions APLSource/Counter.aplf ',((⊂1 1)⊃log),',',((⊂2 1)⊃log),' -project="',tempDir,'" -files'
+ →T.GoToTidyUp 0≠rc
+ files←,result
+ →T.GoToTidyUp 2≠≢files
+ →T.GoToTidyUp~∧/⎕NEXISTS files
+ →T.GoToTidyUp~∨/' r←3'⍷⊃⎕NGET 1⊃files
+ →T.GoToTidyUp~∨/' r←2'⍷⊃⎕NGET 2⊃files
+
+ R←T._OK
+
+∆TidyUp:
+ :If 2=≢files
+     {}FilesAndDirs.RmDirByForce⊃⎕NPARTS⊃files
+ :EndIf
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done

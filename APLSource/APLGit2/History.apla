@@ -1,5 +1,10 @@
 (
- '* 1.0.1 ⋄ 2026-09-??'
+ '* 1.0.1 ⋄ 2026-09-11'
+ '  * CompareCommits and CompareVersions both... '
+ '    * take staged changes into account as well now'
+ '    * do handle renamed APL objects now '
+ '  * `]ChangeLog` and `]ShowLastVersionInIndex` accept filenames as well as APL names'
+ '  * `project_url` in the package config file corrected: ws still pointing to APLGit'
  '  * Internal changes in order to get rid of technical debt.'
  '* 1.0.0 ⋄ 2026-09-01'
  '  * Promoted to version 1.0    '
