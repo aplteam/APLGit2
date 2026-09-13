@@ -1,5 +1,8 @@
 (
- '* 1.0.2 ⋄ 2026-09-13'
+ '* 1.1.1 ⋄ 2026-09-??'
+ '   * Bug fixes'
+ '     * `Status` showed mutilated drawing chars'
+ '* 1.1.0 ⋄ 2026-09-13'
  '  * Commit improved: now -amend can be executed without adding a single file, but the user might'
  '    still also quit the whole operation by enterin "q". '
  '  * Status provided a much more readable result with the -view option'
