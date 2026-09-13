@@ -40,9 +40,11 @@
      :Case 2
          (hash1 hash2)←buff[;1]
      :Else
-         ind←'Select the two hashes you want to compare' 1 ##.CommTools.Select↓⍕buff
-         →(0=≢ind)/0
-         'You did not select 2 hashes!'Assert 2=≢ind
+         ind←'Select the two hashes you want to compare'(2 2)##.CommTools.Select↓⍕buff
+         :If ¯1≡ind
+         :OrIf 0=≢ind
+             :Return
+         :EndIf
          (hash1 hash2)←buff[ind;1]
      :EndSelect
  :EndIf

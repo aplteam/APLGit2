@@ -1,7 +1,9 @@
 (
- '* 1.0.2 ⋄ 2026-09-??'
+ '* 1.0.2 ⋄ 2026-09-13'
  '  * Commit improved: now -amend can be executed without adding a single file, but the user might'
  '    still also quit the whole operation by enterin "q". '
+ '  * Status provided a much more readable result with the -view option'
+ '  * Several syntax changes in the way CommTools.Select is called due to breaking changes in 3.0.0'
  '* 1.0.1 ⋄ 2026-09-11'
  '  * CompareCommits and CompareVersions both... '
  '    * take staged changes into account as well now'

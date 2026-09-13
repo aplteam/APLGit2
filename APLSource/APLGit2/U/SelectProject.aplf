@@ -10,6 +10,8 @@
      l←⍵
      0=≢l:l
      caption←'SelectPrjForAPLGIT2@APLGit2: please select a',(type⊃' Cider' 'n acre' ' Cider or acre'),' project'
-     0=≢i←caption ##.CommTools.Select↓⎕FMT l:'' ''
+     i←caption ##.CommTools.Select↓⎕FMT l
+     ¯1≡i::'' ''  ⍝ Cancelled?
+     0=≢i:'' ''   ⍝ Nothing selected?
      l[i;]
  }
