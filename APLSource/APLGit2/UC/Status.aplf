@@ -6,7 +6,7 @@
  noAPLnames←args.Switch'noAPLnames'
  r←verbose noAPLnames ##.Status folder
  :If args.view
-     {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'ed'}ed←⍵)}r
+     {{}(#.⎕NS'').(⎕ED⍠('ReadOnly' 1)&{'ed'}ed←⍵)}⍕r
      r←''
  :EndIf
 ⍝Done
