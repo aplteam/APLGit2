@@ -17,11 +17,11 @@
          :Else
              status←(status[;2]≠' ')⌿status
              status←(status[;2]∊'MD?')⌿status
-             :If 0=≢ind←'SelectFiles2Stage@Select file(s) to stage' 1 ##.CommTools.Select↓⍕status
-                 :If ~amend
-                     r←'Cancelled by user' ⋄ :Return
-                 :EndIf
-             :Else
+             ind←'SelectFiles2Stage@Select file(s) to stage' 1 ##.CommTools.Select↓⍕status
+             :If ¯1≡ind
+                 r←'Cancelled by user' ⋄ :Return
+             :EndIf
+             :If 0<≢ind
                  folder ##.Add status[ind;3]
              :EndIf
          :EndIf
