@@ -4,6 +4,21 @@
 ⍝ 3. Create two namespaces with (very little) content
 ⍝ 4. Create two Cider projects from those two namespaces
 ⍝ 5. Initialize both Cider projects as local Git repositories
+⍝ The test cases of the "API" group are numbered in blocks, one per topic. That is what keeps
+⍝ related test cases together without giving each of them a group of its own:
+⍝ * 001-023  One test case per API function
+⍝ * 024-028  Whatever needs the ready-made fixture Proj_4
+⍝ * 100-102  Establishing a project from a name or a path
+⍝ * 131-133  CompareCommits
+⍝ * 140-144  Squash
+⍝ * 148      ListIssues
+⍝ * 150-153  GetTagOfLatestRelease, IsGitInstalled and AddGitIgnore
+⍝ * 160-162  Add and Commit
+⍝ * 170-174  NoOfUntrackedFiles, Version, BeautifyDateTime and Methods
+⍝ * 180      Checks that every user command has an API equivalent
+⍝ A new test case joins the block it belongs to; every block has plenty of gaps left. Only a
+⍝ family that needs setup and tear-down of its own gets a real group, like "Stash" does with
+⍝ `Initial_Stash` and `Cleanup_Stash`.
 
  A←APLTreeUtils2
  F←FilesAndDirs
