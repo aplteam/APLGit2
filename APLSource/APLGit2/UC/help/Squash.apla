@@ -1,6 +1,6 @@
 (
  'Squashes some commits of the current branch into a single commit.'
- 'The current branch MUST be neither "main" nor "master".'
+ 'In case the current branch is "main" or "master" you will be asked for confirmation.'
  ''
  'If no argument is specified all suitable commits will be listed.'
  'By specifying a positive integer you can specify the number of commits to be squashed.'
