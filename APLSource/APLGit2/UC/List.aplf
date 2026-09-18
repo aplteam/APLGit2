@@ -19,7 +19,7 @@
  :If AtLeastVersion⊃(//)⎕VFI MinimumVersionOfDyalog
 ⍝ >>>>> StartTableInject
      table⍪←'Add' '1 -project=' 0 'Executes the git "Add" command'
-     table⍪←'AddGitIgnore' '1s' 0 'Create a file .gitignore, or merge default values with an existing one'
+     table⍪←'AddGitIgnore' '1s' 1 'Create a file .gitignore, or merge default values with an existing one'
      table⍪←'ChangeLog' '1 -project=' 0 'Takes an APL name and lists all commits the object was part of'
      table⍪←'CloneRepo' '2s -branch= -depth= -dry' 0 'Creates a clone of the given repository'
      table⍪←'Commit' '1s -m= -amend' 1 'Performs a commit on the current branch'

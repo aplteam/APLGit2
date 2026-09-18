@@ -6,7 +6,7 @@
  r←''
  'Right argument is invalid (empty)'Assert 0<≢args.Arguments
  branch←''args.Switch'branch'
- depth←args.Switch'depth'
+ depth←0 args.Switch'depth'
  dry←args.Switch'dry'
  (repo path)←args.(_1 _2)
  'First arguement is invalid (no "/"separating group and repo-name)'Assert'/'∊repo
@@ -41,7 +41,7 @@
  :EndIf
  :If ⎕NEXISTS path
      ('Not empty: ',path)Assert 0=≢⊃##.F.Dir path,'/*'
- :Else
+ :ElseIf ~dry                      ⍝ A dry run must not create anything
      ⎕MKDIR path
  :EndIf
  r←dry ##.CloneRepo repo path branch depth

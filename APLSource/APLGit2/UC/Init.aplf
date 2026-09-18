@@ -4,6 +4,8 @@
 ⍝ Project: 1
  ('This folder is already managed by Git: ',folder)Assert~##.IsGitProject folder
  :If args.quiet
- :OrIf ##.CommTools.YesOrNo'Sure that you want to make ',folder,' a Git-managed folder?'
+ :OrIf ##.CommTools.YesOrNo'InitFolder@Sure that you want to make ',folder,' a Git-managed folder?'
      r←args.quiet ##.Init folder
+ :Else
+     r←'Cancelled by user'
  :EndIf
