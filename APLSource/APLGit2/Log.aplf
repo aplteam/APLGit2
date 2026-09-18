@@ -63,7 +63,7 @@
          b←buff{∧\(↑(≢⍵)↑¨⍺)∨.≠⍵}'commit ',parms.commit
      :Else
         ⍝ The default format carries the SHORT hash, so compare as far as the shorter one goes
-         b←∧\~parms.commit{h←⊃'⍙'(≠⊆⊢)⍵ ⋄ n←(≢h)⌊≢⍺ ⋄ (n↑h)≡n↑⍺}¨buff
+         b←∧\~(⊂parms.commit){h←⊃'⍙'(≠⊆⊢)⍵ ⋄ n←(≢h)⌊≢⍺ ⋄ (n↑h)≡n↑⍺}¨buff
      :EndIf
      ('No commit found that matches ',parms.commit)Assert 0∊b
      buff←b/buff

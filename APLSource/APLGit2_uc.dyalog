@@ -148,7 +148,7 @@ MinimumVersionOfDyalog←'18.2'
               :EndIf
           :EndIf
       :EndIf
-      :If (⊂⎕C Cmd)∊,⊂'version'
+      :If (⊂⎕C Cmd)∊⎕C'Version' 'CloneRepo'   ⍝ Neither needs a project; <GetSpaceAndFolder> skips both as well
       :OrIf ~noProjectSelected←∧/space folder∊''⍬
           func←G.##.UC⍎Cmd
           r←func space folder Args
