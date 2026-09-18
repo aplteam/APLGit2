@@ -1,10 +1,24 @@
- success←GitHub_SSH_OK;cmd;r
-⍝ 1 if SSH auth to GitHub works right now, else 0
-⍝ Does not get stuck on "Enter passphrase" but would return a 0.
+ success←GitHub_SSH_OK;cmd;r;tfn;Found
+⍝ 1 if SSH authentication to GitHub works right now, 0 if GitHub refused the key.\\
+⍝ Does not get stuck on "Enter passphrase" but would return a 0.\\
+⍝ Anything that prevents an answer - no network, no SSH, a timeout - is signalled rather than
+⍝ returned as a 0: "your key is not accepted" and "GitHub could not be reached" are different
+⍝ problems, and a caller that gets a 0 for both can only guess.\\
+⍝ Note that <ssh -T git@github.com> exits with 1 even when it worked, so the exit code says
+⍝ nothing and only the greeting does. On Unix a non-zero exit makes ⎕SH signal, which is why the
+⍝ output is collected in a file rather than taken from the result of ⎕SH.
+ Found←{∨/∨/¨(⍺∘⍷)¨⊆⍵}
+ tfn←F.GetTempFilename2'APLGit2_ssh'
  cmd←'ssh -o BatchMode=yes -o ConnectTimeout=5 '
- cmd,←'-o StrictHostKeyChecking=accept-new -T git@github.com 2>&1'
- success←0
+ cmd,←'-o StrictHostKeyChecking=accept-new -T git@github.com >"',tfn,'" 2>&1'
  :Trap 0
-     r←⎕SH cmd
-     success←∨/∨/¨('successfully authenticated'∘⍷)¨r
+     {}⎕SH cmd
  :EndTrap
+ r←{22::'' ⋄ ⊃⎕NGET ⍵ 1}tfn
+ F.DeleteFile tfn
+ success←'successfully authenticated'Found r
+ :If ~success
+ :AndIf ~'Permission denied'Found r                  ⍝ Then it is not an authentication problem
+     ('Cannot tell whether SSH to GitHub works: ',{0=≢∊⍵:'SSH said nothing at all' ⋄ ⊃{⍺,' ',⍵}/⊆⍵}r)Assert 0
+ :EndIf
+⍝Done
