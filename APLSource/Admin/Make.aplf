@@ -38,7 +38,7 @@
              M←refToMakeHelpers
          :EndIf
      :EndSection
-     ⎕←'Using "MakeHelpers" version ',⎕SE.MakeHelpers.Version
+     ⎕←'Using "MakeHelpers" version ',M.Version
      C←##.CiderConfig
      :If ⎕NULL≡cfg←M.EditPackageConfigFile ##.TatinVars
          ⎕←'Cancelled by user' ⋄ →0

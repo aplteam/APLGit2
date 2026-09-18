@@ -20,7 +20,8 @@
  :For file name :InEach list names
      buff←1↓⊃⎕NGET file 1
      :If 0<≢buff
-         buff←(∧\'⍝'=⊃¨buff)/buff       ⍝ The leading comments, and nothing else
+         buff←{⍵↓⍨+/∧\' '=⍵}¨buff     ⍝ An indented leading comment is a leading comment, too
+         buff←(∧\'⍝'=⊃¨buff)/buff      ⍝ The leading comments, and nothing else
      :EndIf
      parse←'⍝ Parse:'Get buff
      :If ⎕NULL≢parse                    ⍝ No "Parse:" means: not a user command but a helper

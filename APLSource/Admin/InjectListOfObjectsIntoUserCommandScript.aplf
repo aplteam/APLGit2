@@ -4,6 +4,7 @@
  data←⊃⎕NGET userCommandFilename 1
  start←⍸∨/¨'⍝ >>>>> StartListInject'∘⍷¨data
  end←⍸∨/¨'⍝ >>>>> EndListInject'∘⍷¨data
+ 'The markers were not found in the user command script'Assert 1 1≡(≢start)(≢end)
  top←start↑data
  bottom←(end-1)↓data
  inject←1↓##.APLGit2.UC.⎕NR'List'

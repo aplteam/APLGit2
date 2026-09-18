@@ -20,5 +20,5 @@
  r,←⊂'Docs/ linguist-vendored=true'
  r,←⊂'Testcases/ linguist-vendored=true'
  r,←⊂'*.js linguist-vendored=true'
- r,←⊂'*.html/ linguist-vendored=true'
- r,←⊂'*.iss/ linguist-vendored=true'
+ r,←⊂'*.html linguist-vendored=true'
+ r,←⊂'*.iss linguist-vendored=true'

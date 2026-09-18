@@ -18,11 +18,12 @@
  :Else
      listAcre←0 2⍴⍬
  :EndIf
+ listCider←(F.IsDir(F.AddTrailingSep¨listCider[;2]),¨⊂'.git')⌿listCider
+ listAcre←(F.IsDir(F.AddTrailingSep¨listAcre[;2]),¨⊂'.git')⌿listAcre
  :If 0∧.<≢¨listCider listAcre
      list←(listCider,⊂'(Cider)')⍪listAcre,⊂'(acre)'
  :Else
      list←listCider⍪listAcre
  :EndIf
- list←(F.IsDir(F.AddTrailingSep¨list[;2]),¨⊂'.git')⌿list
  type←{2=+/⍵:3 ⋄ 0=+/⍵:0 ⋄ ⊃⍵/1 2}0<≢¨listCider listAcre
 ⍝Done
