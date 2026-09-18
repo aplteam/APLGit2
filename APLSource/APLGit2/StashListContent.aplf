@@ -5,6 +5,11 @@
 ⍝   * Fully qualified name of a namespace that is managed by Git
 ⍝   * Path to a Git-managed project\\
 ⍝ `n` is the number of the stash.\\
+⍝ The optional `noAPLnames` defaults to 0, and it decides the SHAPE of the result:
+⍝ * 0: a two-column matrix, [;1] the filenames (fully qualified), [;2] the APL names, if any
+⍝ * 1: a vector of filenames (fully qualified)
+⍝ Note that this is unlike `Status`, which returns a matrix either way, just with one column
+⍝ less. Changing it here would break `]StashListContent`, whose help promises the vector.
  ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
  noAPLnames←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'noAPLnames'
  (space path)←EstablishProject projectID

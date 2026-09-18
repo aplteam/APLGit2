@@ -1,0 +1,28 @@
+ R←Test_Stash_014(stopFlag batchFlag);⎕TRAP;dir;rc;msg;buff;vec
+⍝ Executes StashListContent with "noAPLnames" in ⍺. The result is then a VECTOR of filenames
+⍝ rather than the two-column matrix the default returns - the shape ]StashListContent promises
+⍝ with -noAPLnames. Neither the shape nor the left argument itself was covered here.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ dir←∆StashDir,'/SourceCode'
+ 'Create!'FilesAndDirs.CheckPath dir
+
+ (⊂'Hello')⎕NPUT(dir,'/file_3.txt')1
+ ∆StashDir ##.APLGit2.Add''
+ buff←##.APLGit2.StashPush ∆StashDir
+ Assert∨/'Saved working directory and index state WIP on main'⍷∊buff
+
+ buff←##.APLGit2.StashListContent ∆StashDir 0        ⍝ The default: a two-column matrix
+ →T.GoToTidyUp 2≠⍴⍴buff
+ vec←1 ##.APLGit2.StashListContent ∆StashDir 0       ⍝ With the flag: the filenames alone
+ →T.GoToTidyUp 1≠⍴⍴vec
+ →T.GoToTidyUp vec≢,buff[;1]
+
+ R←T._OK
+
+∆TidyUp:
+ ##.APLGit2.StashClear ∆StashDir
+ (rc msg)←FilesAndDirs.RmDirByForce dir
+ msg Assert 0=rc
+⍝Done
