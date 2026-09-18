@@ -1,4 +1,4 @@
- r←FetchFromIndex(space folder args);status;mat;ind;list;cmd;result;rc;msg
+ r←FetchFromIndex(space folder);status;mat;ind;list;cmd;result;rc;msg
 ⍝ Fetch file(s) from the index that have been modified (or deleted) from the working area.
  r←'Working area is clean, nothing can be brought back from the index'
  :If 0<≢status←Status folder
@@ -11,9 +11,9 @@
          r←'Cancelled by user'
      :Else
          list←(≢F.AddTrailingSep folder)↓¨GetFileName¨mat[ind;1]
-         cmd←'restore --source=HEAD --worktree ',⊃,/' ',¨list
+         cmd←'restore --worktree ',⊃,/{' '∊⍵:' "',⍵,'"' ⋄ ' ',⍵}¨list
          (rc msg result)←folder U.RunGitCommand cmd
          (cmd,⊃,/((⎕UCS 13),¨⊆msg))Assert 0=rc
-         r←⍪(⊂'*** Restored from HEAD:'),mat[ind;1]
+         r←⍪(⊂'*** Restored from the index:'),mat[ind;1]
      :EndIf
  :EndIf

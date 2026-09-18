@@ -28,7 +28,7 @@
      ('There is no branch "',branch,'" in this project')U.Assert 0
  :EndIf
  ('RefLog crashed with RC=',(⍕rc),'; ',∊more)U.Assert 0=rc
- r←↑3{⍺{(⍺↑⍵),{⍺,' ',⍵}/⍺↓⍵}' '(≠⊆⊢)⍵}¨buff
+ r←↑3{⍺{(⍺↑⍵),{0=≢⍵:⊂'' ⋄ {⍺,' ',⍵}/⍵}⍺↓⍵}' '(≠⊆⊢)⍵}¨buff
  :If restrictFlag
  :AndIf 0<≢r
      r←(¯1+r[;3]⍳⊂'checkout:')↑r

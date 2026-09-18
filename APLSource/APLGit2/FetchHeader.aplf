@@ -38,8 +38,13 @@
      r←{⍵↑⍨¯1+⌊/⍵⍳')'}r
      r←{'}'∊⍵:⍵↓⍨⍵⍳'}' ⋄ ⍵}r
      r←{⍵↓⍨-+/∧\' '=⌽⍵}r
-     r←{⍵↑⍨-¯1+' '⍳⍨⌽⍵}r
+     :If '('∊r                     ⍝ The operator's name sits inside the parens ...
+         r←{(' '≠⍵)⊆⍵}r↓⍨r⍳'('
+         r←{2≤≢⍵:2⊃⍵ ⋄ ⊃⌽⍵}r       ⍝ ... second in both (LO Op) and (LO Op RO)
+     :Else
+         r←{⍵↑⍨-¯1+' '⍳⍨⌽⍵}r
+     :EndIf
  :Case 9
      r←{⍵↓⍨⍵⍳' '}firstLine
-     r←' '~⍨{⍵↑⍨⌈/⍵⍳' ⍝'}r
+     r←' '~⍨{⍵↑⍨⌊/⍵⍳' ⍝'}r
  :EndSelect

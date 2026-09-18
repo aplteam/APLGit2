@@ -1,1 +1,1 @@
-StashClear←{##.StashClear ⍵}
+StashClear←{1:shy←##.StashClear ⍵}

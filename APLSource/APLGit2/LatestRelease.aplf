@@ -12,8 +12,8 @@
      qdmx←⎕DMX
      U.ErrNo ⎕SIGNAL⍨qdmx.EM
  :EndTrap
- :If 90=rc
-     msg U.Assert rc≠90
+ :If 0≠rc
+     msg U.Assert 0=rc
  :Else
      :If verbose
          r←data.(tag_name published_at name)

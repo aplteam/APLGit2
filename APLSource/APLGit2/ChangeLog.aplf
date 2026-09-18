@@ -12,7 +12,7 @@
  cmd←'log --follow --date=short --pretty=format:"',U.GetLogFormat,'" -- ',filename
  (rc msg buff)←path U.RunGitCommand cmd
  :If 1=≢'fatal: your current branch ''[^'']+'' does not have any commits yet'⎕S 0⊣∊msg
-     r←''
+     r←0 4⍴''
  :Else
      (∊msg)U.Assert 0=rc
      :If 0<≢buff

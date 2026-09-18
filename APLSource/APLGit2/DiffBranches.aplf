@@ -1,5 +1,5 @@
- r←{x}DiffBranches y;⎕TRAP;space;path;branch2;msg;rc;buff;branch1;branches;branch;currentBranch
-⍝ Peforma `Diff` on (by default) the current branch and main
+ r←{x}DiffBranches y;⎕TRAP;space;path;branch2;msg;rc;buff;branch1;branches;currentBranch
+⍝ Performs `Diff` between two branches; by default the current one and the first other one.
  ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
  (space path)←EstablishProject y
  :If 0=⎕NC'x'
@@ -7,17 +7,14 @@
      branches←(ListBranches path)~¨⊂' *'
      'There is just one branch?!'U.Assert 1<≢branches
      currentBranch←CurrentBranch path
-     :If 1=≢branches~⊂currentBranch
-         branch1←currentBranch
-         branch2←⊃branches~⊂currentBranch
-     :Else
+     :If 1≠≢branches~⊂currentBranch
          'It''s not clear which branches you want to diff'U.Assert~(⊂currentBranch)∊'main' 'master'
-         branch1←currentBranch
-         branch2←⊃branches~⊂currentBranch
      :EndIf
+     branch1←currentBranch
+     branch2←⊃branches~⊂currentBranch
  :Else
      x←⊆x
-     'Optional left argument must have a length of 0, 1 or 2'U.Assert(≢x)∊1 2
+     'Optional left argument must have a length of 1 or 2'U.Assert(≢x)∊1 2
      :If 1=≢⊆x
          branch1←1⊃,x
          branches←(ListBranches path)~¨⊂' *'

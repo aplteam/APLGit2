@@ -27,7 +27,7 @@
      :Case 1
      ⍝ No action required
      :Case 2
-         r{⍺⍪'body'⍵}←¨ns.body
+         r←r{⍺⍪'body'⍵}¨ns.body
      :Else
          'Invalid call?!'Assert 0
      :EndSelect

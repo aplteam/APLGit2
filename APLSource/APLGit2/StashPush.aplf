@@ -4,7 +4,7 @@
 ⍝ * A folder holding a Git-managed project
 ⍝ * A parameter space, usually create by calling `CreateStashPushParms`, with a variable `folder` set.\\
 ⍝ By default untracked files are not stashed. You can change that by setting `addUntracked` to 1.\\
-⍝ Returns an empty text vector in case of success and a message otherwise.
+⍝ Returns what Git reports; problems are signalled rather than returned.
  r←''
  :If 326=⎕DR y
      parms←y
@@ -19,7 +19,7 @@
      parms.files←⊆parms.files
      cmd,←⊃{⍺,' ',⍵}/{'"',(⍵~'"'),'"'}¨FilesAndDirs.EnforceSlash¨parms.files
  :EndIf
- cmd,←' ',((0<≢parms.msg)/'-m="',(parms.msg~'"'),'" '),(parms.addUntracked/'-u ')
+ cmd,←' ',((0<≢parms.msg)/'-m "',(parms.msg~'"'),'" '),(parms.addUntracked/'-u ')
  (rc more r)←parms.folder U.RunGitCommand cmd
  more U.Assert 0=rc
 ⍝Done
