@@ -16,6 +16,7 @@
  '  * Every Git call now carries "-c core.quotepath=off", so non-ASCII characters in a path are'
  '    no longer escaped, whatever Git is configured to do'
  '  * Documentation corrected in a number of places where it contradicted the code'
+ '  * UC.Assert now sets ⎕ML←1 '
  '  * Bug fixes'
  '    * `Status` showed mutilated drawing chars'
  '    * `]CloneRepo` was never executed at all: it was taken for a command that needs a project'
