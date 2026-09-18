@@ -1,0 +1,23 @@
+ R←Test_Misc_006(stopFlag batchFlag);⎕TRAP;buff
+⍝ Runs two small utilities that were quietly wrong:
+⍝ * <U.AddSlash> turned an EMPTY path into "/", because ¯1↑'' yields a blank, so the test for a
+⍝   trailing separator was true. An empty path must stay empty.
+⍝ * <U.GetGitAttributes> offered "*.html/" and "*.iss/". A trailing slash restricts a pattern to
+⍝   DIRECTORIES, so those two never matched the files they are meant to keep out of GitHub's
+⍝   language statistics.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ →T.PassesIf''≡G.U.AddSlash''
+ →T.PassesIf'foo/'≡G.U.AddSlash'foo'
+ →T.PassesIf'foo/'≡G.U.AddSlash'foo/'
+ →T.PassesIf'foo\'≡G.U.AddSlash'foo\'
+
+ buff←G.U.GetGitAttributes
+ →T.PassesIf∨/(⊂'*.html linguist-vendored=true')≡¨buff
+ →T.PassesIf∨/(⊂'*.iss linguist-vendored=true')≡¨buff
+ →T.PassesIf~∨/'*.html/'⍷∊buff           ⍝ A file pattern must not end in a slash ...
+ →T.PassesIf~∨/'*.iss/'⍷∊buff            ⍝ ... though directory entries such as "Dist/" do
+
+ R←T._OK
+⍝Done

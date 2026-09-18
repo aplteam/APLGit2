@@ -1,0 +1,23 @@
+ R←Test_UC_026(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;result;stop;C
+⍝ Runs ]Init and answers "no". <UC.Init> had no :Else, so `r` was never assigned and the
+⍝ dispatcher ended in a VALUE ERROR rather than reporting that nothing was done.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+ stop←0
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ C←∆GetRefToCommTools
+ C.AddAutomation'YesOrNo' 'InitFolder@' 'n'
+
+ (rc msg result)←stop ∆UCMD'Init "',tempDir,'"'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp'Cancelled by user'≢∊result
+ →T.GoToTidyUp FilesAndDirs.IsDir tempDir,'/.git'   ⍝ Nothing was initialised
+
+ R←T._OK
+
+∆TidyUp:
+ C.Cleanup
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done

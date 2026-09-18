@@ -1,0 +1,26 @@
+ R←Test_Misc_010(stopFlag batchFlag);⎕TRAP;res
+⍝ Runs <U.RunProcess> against a process whose output ends in CRLF. The split tested for
+⍝ `⎕UCS 10 13` - that is LF,CR - while CRLF is 13,10, so plain CRLF output was split on LF alone
+⍝ and every line kept a trailing CR. Output containing a blank line matched and was split into
+⍝ garbage. An empty result also has to honour the documented "vector of lines".
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+ :If 'Win'≢A.GetOperatingSystem ⍬
+     R←T._WindowsOnly ⋄ →0
+ :EndIf
+
+ res←G.U.RunProcess'cmd.exe' '/c echo Hello'
+ →T.PassesIf 1=≢res.StdOut
+ →T.PassesIf'Hello'≡∊res.StdOut                 ⍝ No carriage return left over
+
+ res←G.U.RunProcess'cmd.exe' '/c echo a&echo.&echo b'
+ →T.PassesIf 3=≢res.StdOut                      ⍝ The blank line in the middle survives as a line
+ →T.PassesIf'a'≡,⊃res.StdOut
+ →T.PassesIf 0=≢2⊃res.StdOut                   ⍝ The blank line is a line of its own
+ →T.PassesIf'b'≡,⊃⌽res.StdOut
+
+ res←G.U.RunProcess'cmd.exe' '/c rem'
+ →T.PassesIf(0⍴⊂'')≡res.StdOut                  ⍝ Still a vector of lines, not a simple ''
+
+ R←T._OK
+⍝Done

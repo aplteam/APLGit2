@@ -1,0 +1,34 @@
+ R←Test_UC_030(stopFlag batchFlag);⎕TRAP;rc;msg;result;stop;C;ref
+⍝ Runs two user commands with no argument while NO project is open. Both paths used to end badly:
+⍝ * A command that goes through <GetSpaceAndFolder> asks "Act on the current directory?". That
+⍝   prompt carried no alias, so it could not be automated and this case could not be tested.
+⍝ * ]StashListContent establishes the project in <Run> itself. When nothing is open, that branch
+⍝   never assigned `r`, so the dispatcher ended in a VALUE ERROR instead of saying so.
+⍝ Uses the documented ∆OPEN_PROJECTS seam to say "nothing is open", so the projects this test run
+⍝ has opened are neither closed nor disturbed.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+ stop←0
+ ref←''
+
+ ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬      ⍝ Whatever the user commands execute
+ ref.##.U.∆OPEN_PROJECTS←0 2⍴''               ⍝ "No project is open"
+ C←∆GetRefToCommTools
+ C.AddAutomation'YesOrNo' 'ActOnCurrentDir@' 'n'
+
+ ⍝ The ordinary path: the user declines to act on the current directory
+ (rc msg result)←stop ∆UCMD'Status'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp~∨/'No argument provided'⍷∊result
+
+ ⍝ ]StashListContent resolves the project in <Run> itself
+ (rc msg result)←stop ∆UCMD'StashListContent'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp~∨/'No project specified'⍷∊result
+
+ R←T._OK
+
+∆TidyUp:
+ :Trap 0 ⋄ {}ref.##.U.⎕EX'∆OPEN_PROJECTS' ⋄ :EndTrap
+ C.Cleanup
+⍝Done

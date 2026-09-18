@@ -59,5 +59,11 @@
      →T.FailsIf qdmx.EM≢'Invalid left argument; must be one of: 3 4 9'
  :EndTrap
 
+
+ ⍝ A DYADIC operator is named in the middle, not at the end:
+ →T.PassesIf'foo'≡'o'##.APLGit2.FetchHeader,⊂'r←larg(LO foo RO)rarg'
+ ⍝ A script line may carry a trailing comment:
+ →T.PassesIf'foo'≡'n'##.APLGit2.FetchHeader,⊂':Namespace foo ⍝ a comment'
+ →T.PassesIf'foo'≡'c'##.APLGit2.FetchHeader,⊂':Class foo ⍝ a comment'
  R←T._OK
 ⍝Done

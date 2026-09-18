@@ -1,0 +1,37 @@
+ R←Test_API_029(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;qdmx
+⍝ Runs "GetMainOrMaster" on a project with "main", with both "main" and "master", and with neither.
+⍝ The result of ⍸ used to be handed to ⊃ as a PATH, so with both branches present the function
+⍝ returned a single character, and with neither it returned both names.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ (##.CiderConfig.HOME,'/TestData/CiderProject4.zip')ZipArchive.UnzipTo tempDir
+ →T.GoToTidyUp'main'≢G.GetMainOrMaster tempDir
+
+ ⍝ Both of them: "main" wins
+ {}tempDir G.U.RunGitCommand'branch master'
+ →T.GoToTidyUp'main'≢G.GetMainOrMaster tempDir
+
+ ⍝ Only "master" is left
+ {}tempDir G.U.RunGitCommand'checkout -q master'
+ {}tempDir G.U.RunGitCommand'branch -D main'
+ →T.GoToTidyUp'master'≢G.GetMainOrMaster tempDir
+
+ ⍝ Neither: an error rather than a wrong answer
+ {}tempDir G.U.RunGitCommand'checkout -q -b dev'
+ {}tempDir G.U.RunGitCommand'branch -D master'
+ :Trap 0
+     {}G.GetMainOrMaster tempDir
+     →T.GoToTidyUp 1
+ :Else
+     qdmx←⎕DMX
+     →T.GoToTidyUp~∨/'Neither a "main"'⍷qdmx.EM,qdmx.Message
+ :EndTrap
+
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done

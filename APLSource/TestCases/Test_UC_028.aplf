@@ -1,0 +1,31 @@
+ R←Test_UC_028(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;buff;stop;C
+⍝ Runs ]StashPush with "?", which lets the user pick what to stash. The test was "¯1≢ind" rather
+⍝ than "¯1≡ind", so every genuine selection was reported as "Cancelled by user" and nothing was
+⍝ ever stashed; a real quit indexed list[¯1;] instead. The selected paths were also taken from
+⍝ column 2 (the status letters) rather than column 3.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+ stop←0
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ (##.CiderConfig.HOME,'/TestData/CiderProject4.zip')ZipArchive.UnzipTo tempDir
+ (⊂' r←Counter' ' r←4711')⎕NPUT(tempDir,'/APLSource/Counter.aplf')1
+ (⊂'# APLGit2 test project' '' 'Changed as well')⎕NPUT(tempDir,'/README.md')1
+ →T.GoToTidyUp 2≠≢0 1 G.Status tempDir          ⍝ Two modified files to choose from
+
+ C←∆GetRefToCommTools
+ C.AddAutomation'Select' 'SelectForStash@' 1     ⍝ Take the first one
+
+ (rc msg buff)←stop ∆UCMD'StashPush "',tempDir,'" ?'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp∨/'Cancelled'⍷∊buff
+ →T.GoToTidyUp 0=≢G.StashList tempDir           ⍝ Something was stashed ...
+ →T.GoToTidyUp 1≠≢0 1 G.Status tempDir          ⍝ ... and exactly one file was left alone
+
+ R←T._OK
+
+∆TidyUp:
+ C.Cleanup
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done

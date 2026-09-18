@@ -1,0 +1,24 @@
+ R←Test_API_034(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;res
+⍝ Runs "Repack" from APL. It used to take `(folder args)` and call `args.Switch`, so it could not
+⍝ be called without fabricating a user command argument - although it is in `Public` and has an
+⍝ API cover. It now takes the folder, with an optional `(window depth)` as ⍺.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ (##.CiderConfig.HOME,'/TestData/CiderProject4.zip')ZipArchive.UnzipTo tempDir
+
+ res←G.Repack tempDir                   ⍝ Defaults
+ →T.GoToTidyUp 1≠≡,res
+ →T.GoToTidyUp~FilesAndDirs.IsDir tempDir,'/.git'
+
+ res←(10 50)G.Repack tempDir            ⍝ Window and depth given explicitly
+ →T.GoToTidyUp 1≠≡,res
+ →T.GoToTidyUp 0≠≢0 1 G.Status tempDir  ⍝ The repository is still intact and clean
+
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done

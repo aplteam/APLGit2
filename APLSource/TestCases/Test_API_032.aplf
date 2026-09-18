@@ -1,0 +1,26 @@
+ R←Test_API_032(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;buff;parms
+⍝ Runs "StashPush" with a message. The command used to be built as -m="..." and Git's option
+⍝ parser takes everything after the option letter as the value, so every stash was stored with
+⍝ a leading "=" in its message.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ (##.CiderConfig.HOME,'/TestData/CiderProject4.zip')ZipArchive.UnzipTo tempDir
+ (⊂' r←Counter' ' r←4711')⎕NPUT(tempDir,'/APLSource/Counter.aplf')1
+
+ parms←G.CreateStashPushParms
+ parms.folder←tempDir
+ parms.msg←'A message of my own'
+ {}G.StashPush parms
+
+ buff←∊G.StashList tempDir
+ →T.GoToTidyUp~∨/': A message of my own'⍷buff
+ →T.GoToTidyUp∨/'=A message'⍷buff
+
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done

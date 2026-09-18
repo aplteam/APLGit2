@@ -1,0 +1,22 @@
+ R←Test_API_036(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;buff;res
+⍝ Runs "ChangeLog" against a repository without any commits. Git says "does not have any commits
+⍝ yet", and that path used to return an empty VECTOR although the leading comment promises a
+⍝ matrix with four columns.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ (rc msg buff)←tempDir G.U.RunGitCommand'init'
+ →T.GoToTidyUp 0≠rc
+ (⊂' r←Foo' ' r←1')⎕NPUT tempDir,'/Foo.aplf'
+
+ res←tempDir G.ChangeLog tempDir,'/Foo.aplf'   ⍝ Absolute, so no project is needed
+ →T.GoToTidyUp 2≠⍴⍴res
+ →T.GoToTidyUp 0 4≢⍴res
+
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done

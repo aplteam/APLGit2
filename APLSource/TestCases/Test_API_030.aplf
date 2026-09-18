@@ -1,0 +1,30 @@
+ R←Test_API_030(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;buff;res;hash1;hash2
+⍝ Runs "CompareCommits" on two commits with identical trees. Git then reports no differences at
+⍝ all, and <DiffBetween> used to turn that into a RANK ERROR because ¨ was applied to an empty
+⍝ vector, which applies the function to the fill element.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ (##.CiderConfig.HOME,'/TestData/CiderProject4.zip')ZipArchive.UnzipTo tempDir
+ (rc msg buff)←tempDir G.U.RunGitCommand'commit -q --allow-empty -m "Nothing at all"'
+ →T.GoToTidyUp 0≠rc
+ hash1←G.GetLastCommit tempDir
+ (rc msg buff)←tempDir G.U.RunGitCommand'rev-parse HEAD~1'
+ →T.GoToTidyUp 0≠rc
+ hash2←∊buff
+
+ res←tempDir G.CompareCommits hash1 hash2
+ →T.GoToTidyUp~∧/0=≢¨2↑res              ⍝ Nothing to compare, so no files are left behind
+
+ ⍝ <DiffBetween> itself must return the documented shape, not crash
+ buff←tempDir G.DiffBetween hash1 hash2
+ →T.GoToTidyUp 2≠⍴⍴buff
+ →T.GoToTidyUp 0≠≢buff
+
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done

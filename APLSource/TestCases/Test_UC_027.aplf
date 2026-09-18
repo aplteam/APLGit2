@@ -1,0 +1,26 @@
+ R←Test_UC_027(stopFlag batchFlag);⎕TRAP;tempDir;target;rc;msg;result;stop
+⍝ Runs ]CloneRepo with -dry and a two-digit -depth=. Three defects met in this one call:
+⍝ * -depth= had no numeric default, so "10" arrived as text and <CloneRepo>'s `0≠depth` was a
+⍝   LENGTH ERROR (with -depth=5 it worked by luck)
+⍝ * -dry created the target folder before establishing that it had nothing to do
+⍝ * the command was sent through project establishment it does not need, so without an open
+⍝   project the user was asked whether to act on the current directory
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+ stop←0
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ target←tempDir,'/target'
+
+ (rc msg result)←stop ∆UCMD'CloneRepo aplteam/APLGit2 "',target,'" -dry -depth=10'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp~∨/'--depth 10'⍷∊result
+ →T.GoToTidyUp~∨/'clone'⍷∊result
+ →T.GoToTidyUp ⎕NEXISTS target          ⍝ A dry run must not create anything
+
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done

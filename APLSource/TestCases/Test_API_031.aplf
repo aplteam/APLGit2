@@ -1,0 +1,23 @@
+ R←Test_API_031(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;buff;res
+⍝ Runs "Status" with "verbose" on a DETACHED HEAD. Git does not print an "On branch" line then,
+⍝ so ⍸ returned an empty vector; ⍬⊃r hands back all of r, and the line that picks the branch name
+⍝ out of it used to fail with DOMAIN ERROR.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ (##.CiderConfig.HOME,'/TestData/CiderProject4.zip')ZipArchive.UnzipTo tempDir
+ (rc msg buff)←tempDir G.U.RunGitCommand'checkout -q HEAD~1'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp~∨/'HEAD detached'⍷∊2⊃tempDir G.U.RunGitCommand'status'
+
+ res←1 G.Status tempDir                 ⍝ Verbose: this is what crashed
+ →T.GoToTidyUp 2≠⍴⍴res
+ →T.GoToTidyUp~∨/'HEAD detached'⍷∊res
+
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done

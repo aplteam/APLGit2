@@ -1,0 +1,28 @@
+ R←Test_API_035(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;qdmx
+⍝ Runs "Diff" with an op-code that does not exist. The :Select had no :Else, so anything but
+⍝ "all" or "stage" silently behaved like "work".
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ (##.CiderConfig.HOME,'/TestData/CiderProject4.zip')ZipArchive.UnzipTo tempDir
+
+ :Trap 0
+     {}'nonsense'G.Diff tempDir
+     →T.GoToTidyUp 1
+ :Else
+     qdmx←⎕DMX
+     →T.GoToTidyUp~∨/'Invalid op-code'⍷qdmx.EM,qdmx.Message
+ :EndTrap
+
+ ⍝ ... while the documented op-codes still work
+ {}'all'G.Diff tempDir
+ {}'stage'G.Diff tempDir
+ {}'work'G.Diff tempDir
+
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done

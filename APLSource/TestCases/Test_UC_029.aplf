@@ -1,0 +1,27 @@
+ R←Test_UC_029(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;result;stop;status
+⍝ Runs ]Add with a file name that contains a slash, together with -project=. The dispatcher had a
+⍝ special case that took any argument containing a slash for the project folder - right for
+⍝ ]AddGitIgnore, wrong for ]Add, whose argument is a file. It also bypassed <GetSpaceAndFolder>,
+⍝ the only place where -project= is read, so that switch was silently ignored.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+ stop←0
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ (##.CiderConfig.HOME,'/TestData/CiderProject4.zip')ZipArchive.UnzipTo tempDir
+ (⊂' r←Counter' ' r←4711')⎕NPUT(tempDir,'/APLSource/Counter.aplf')1
+
+ (rc msg result)←stop ∆UCMD'Add APLSource/Counter.aplf -project="',tempDir,'"'
+ →T.GoToTidyUp 0≠rc
+
+ status←0 1 G.Status tempDir
+ →T.GoToTidyUp 1≠≢status
+ →T.GoToTidyUp'M'≠⊃status[1;1]                    ⍝ Staged, so the index column says "M"
+ →T.GoToTidyUp'APLSource/Counter.aplf'≢⊃status[1;3]
+
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done

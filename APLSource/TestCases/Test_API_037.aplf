@@ -1,0 +1,36 @@
+ R←Test_API_037(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;buff;log;res;parms
+⍝ Runs "Log" with -commit= and with -name= against a folder that is NOT an opened project.
+⍝ * -commit= compared the user's hash against the whole line, and the default format carries the
+⍝   SHORT hash, so a full 40-character hash - what every other Git tool hands you - never matched
+⍝   and the filter was silently skipped.
+⍝ * -name= was resolved with `space`, which is empty for a plain path, so <IdentifyObject> went
+⍝   looking in whatever project happened to be open.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ (##.CiderConfig.HOME,'/TestData/CiderProject4.zip')ZipArchive.UnzipTo tempDir
+ log←tempDir G.Log tempDir
+ →T.GoToTidyUp 2>≢log
+
+ ⍝ The FULL hash of the second-newest commit:
+ (rc msg buff)←tempDir G.U.RunGitCommand'rev-parse HEAD~1'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp 40≠≢∊buff
+ parms←⎕NS''
+ parms.commit←∊buff
+ res←parms G.Log tempDir
+ →T.GoToTidyUp(≢res)≥≢log               ⍝ Something must have been filtered out
+
+ ⍝ -name= must be resolved in THIS project, not in an open one
+ parms←⎕NS''
+ parms.name←'Counter'
+ res←parms G.Log tempDir
+ →T.GoToTidyUp 3≠≢res                   ⍝ Counter.aplf was changed by three commits
+
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done

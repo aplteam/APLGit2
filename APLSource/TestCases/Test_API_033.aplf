@@ -1,0 +1,20 @@
+ R←Test_API_033(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;res
+⍝ Runs "AddGitAttributes" twice. ⎕NPUT without a flag signals a FILE NAME ERROR when the file is
+⍝ already there, so the second call used to crash - after the user had confirmed.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ res←1 G.AddGitAttributes tempDir       ⍝ "quiet", so nothing is asked
+ →T.GoToTidyUp~FilesAndDirs.IsFile tempDir,'/.gitattributes'
+
+ res←1 G.AddGitAttributes tempDir       ⍝ Again: the file is there now
+ →T.GoToTidyUp~∨/'already exists'⍷res
+ →T.GoToTidyUp~FilesAndDirs.IsFile tempDir,'/.gitattributes'
+
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done
