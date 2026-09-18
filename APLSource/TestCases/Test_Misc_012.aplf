@@ -1,9 +1,11 @@
- R←Test_Misc_012(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;args;space;folder
+ R←Test_Misc_012(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;args;space;folder;qdmx
 ⍝ <UC.GetSpaceAndFolder> works out where a command acts from the "Project:" flag in that command's
 ⍝ own leading comments:
 ⍝ * "AddGitIgnore" used to be flagged 0 although its argument IS the project, so the argument was
 ⍝   ignored and .gitignore went to whichever project happened to be open.
 ⍝ * "Add" is flagged 0 because its argument is a file, so the project must come from -project=.
+⍝ * A command the table does not know about used to make the pick return the whole table, so
+⍝   the user was told "LENGTH ERROR" rather than that the build is out of step with the source.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
@@ -25,6 +27,17 @@
  →T.GoToTidyUp 0≠≢msg
  →T.GoToTidyUp tempDir≢folder
  →T.GoToTidyUp'APLSource/Counter.aplf'≢args._1    ⍝ The file name is left alone
+
+ ⍝ A command <List> does not know about:
+ args←⎕NS''
+ args._1←tempDir
+ :Trap 0
+     {}G.UC.GetSpaceAndFolder'NoSuchCommand'args
+     →T.GoToTidyUp 1                              ⍝ It must not get here
+ :Else
+     qdmx←⎕DMX
+     →T.GoToTidyUp~∨/'drifted apart'⍷qdmx.EM
+ :EndTrap
 
  R←T._OK
 

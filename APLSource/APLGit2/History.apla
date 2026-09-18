@@ -25,6 +25,8 @@
  '    * `]Init` remained silent when the user answered the question with "no"'
  '    * `]Add` and `]AddGitIgnore` did not honour -project='
  '    * `Status` crashed on a detached HEAD'
+ '    * A command the injected command table offers but `UC.List` does not know about ended in a'
+ '      LENGTH ERROR rather than in a message saying that `Admin.Make` needs to be run'
  '    * `]OpenGitShell` on Linux looked for the first three terminal emulators only, and printed'
  '      a stray line into the session'
  '    * `Log`, `LatestRelease`, `ListIssues`, `RefLog`, `DiffBetween`, `GetMainOrMaster`,'

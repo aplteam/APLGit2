@@ -1,4 +1,4 @@
- (r space folder)←GetSpaceAndFolder(Cmd args)
+ (r space folder)←GetSpaceAndFolder(Cmd args);list;i
  r←0 0⍴''
  space←folder←''
  :If (⊂⎕C Cmd)∊,⊆'stashpush'
@@ -7,7 +7,13 @@
      args._2←args._1
      args._1←folder
  :ElseIf ~(⊂Cmd)∊'Version' 'CloneRepo'
-     :If ({⍵⊃⍨⍸⍵.Name≡¨⊂Cmd}List ⍬)._Project
+     list←List ⍬
+     i←⍸list.Name≡¨⊂Cmd
+    ⍝ No hit means that the command table in the user command script offers something <List> does
+    ⍝ not know about; without this the pick would return the whole table and `:If` would report a
+    ⍝ LENGTH ERROR, which tells nobody anything.
+     ('Unknown command <',Cmd,'>: the command table and <UC.List> have drifted apart, so <Admin.Make> needs to be run')Assert 1=≢i
+     :If ((⊃i)⊃list)._Project
      :AndIf 0≢args._1
          (space folder)←GetSpaceAndFolder_ args._1
          ('Project <',args._1,'> not found on disk')Assert 0<≢folder
