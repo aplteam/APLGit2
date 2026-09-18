@@ -1,18 +1,18 @@
- R←Test_Misc_011(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;C;ref;res
+ R←Test_Misc_011(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;C;res
 ⍝ Quits the project selection that <EstablishProject> offers when nothing was specified.
 ⍝ <U.SelectProject> tested for that with "¯1≡i::'' ''" - a double colon, which makes it an ERROR
 ⍝ GUARD rather than a condition. Quitting therefore fell through to l[¯1;] and gave an INDEX
-⍝ ERROR, while a normal selection installed a catch-all that swallowed any later error.
-⍝ Uses the documented ∆OPEN_PROJECTS seam, so no project is opened or closed.
+⍝ ERROR, while a normal selection installed a catch-all that swallowed any later error.\\
+⍝ Uses the documented ∆OPEN_PROJECTS seam, so no project is opened or closed. Note that the seam
+⍝ and the automation must live where the function under test looks for them: this test calls the
+⍝ API directly, so both belong to `G`, NOT to whatever the user commands execute.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
- ref←''
 
  tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
  (##.CiderConfig.HOME,'/TestData/CiderProject4.zip')ZipArchive.UnzipTo tempDir
- ref←⎕SE.APLGit2.##.UC.GetRefToAPLGit2 ⍬        ⍝ Whatever the user commands execute
- ref.##.U.∆OPEN_PROJECTS←2 2⍴'#.Fake1'tempDir'#.Fake2'tempDir
- C←∆GetRefToCommTools
+ G.U.∆OPEN_PROJECTS←2 2⍴'#.Fake1'tempDir'#.Fake2'tempDir
+ C←G.CommTools
  C.AddAutomation'Select' 'SelectPrjForAPLGIT2@' 'q'   ⍝ "q" = quit
 
  res←G.EstablishProject''
@@ -22,7 +22,7 @@
  R←T._OK
 
 ∆TidyUp:
- :Trap 0 ⋄ {}ref.##.U.⎕EX'∆OPEN_PROJECTS' ⋄ :EndTrap
+ :Trap 0 ⋄ {}G.U.⎕EX'∆OPEN_PROJECTS' ⋄ :EndTrap
  C.Cleanup
  (rc msg)←FilesAndDirs.RmDirByForce tempDir
  msg Assert rc=0

@@ -24,7 +24,7 @@
 
  ⍝ -name= must be resolved in THIS project, not in an open one
  parms←⎕NS''
- parms.name←'Counter'
+ parms.name←'Counter.aplf'   ⍝ Not an open project, so it must be the file name
  res←parms G.Log tempDir
  →T.GoToTidyUp 3≠≢res                   ⍝ Counter.aplf was changed by three commits
 

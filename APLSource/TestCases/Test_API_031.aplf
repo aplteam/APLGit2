@@ -9,7 +9,7 @@
  (##.CiderConfig.HOME,'/TestData/CiderProject4.zip')ZipArchive.UnzipTo tempDir
  (rc msg buff)←tempDir G.U.RunGitCommand'checkout -q HEAD~1'
  →T.GoToTidyUp 0≠rc
- →T.GoToTidyUp~∨/'HEAD detached'⍷∊2⊃tempDir G.U.RunGitCommand'status'
+ →T.GoToTidyUp~∨/'HEAD detached'⍷∊3⊃tempDir G.U.RunGitCommand'status'
 
  res←1 G.Status tempDir                 ⍝ Verbose: this is what crashed
  →T.GoToTidyUp 2≠⍴⍴res

@@ -15,9 +15,9 @@
 
  res←G.U.RunProcess'cmd.exe' '/c echo a&echo.&echo b'
  →T.PassesIf 3=≢res.StdOut                      ⍝ The blank line in the middle survives as a line
- →T.PassesIf'a'≡,⊃res.StdOut
+ →T.PassesIf(,'a')≡,⊃res.StdOut
  →T.PassesIf 0=≢2⊃res.StdOut                   ⍝ The blank line is a line of its own
- →T.PassesIf'b'≡,⊃⌽res.StdOut
+ →T.PassesIf(,'b')≡,⊃⌽res.StdOut
 
  res←G.U.RunProcess'cmd.exe' '/c rem'
  →T.PassesIf(0⍴⊂'')≡res.StdOut                  ⍝ Still a vector of lines, not a simple ''
