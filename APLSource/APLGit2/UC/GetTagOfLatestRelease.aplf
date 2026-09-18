@@ -4,7 +4,8 @@
 ⍝ Project: 1
  r←''
  wsPathRef←⎕NULL
- :If 0<≢lop←⎕SE.Cider.ListOpenProjects 0                ⍝ List Of Projects
+ :If 9=⎕SE.⎕NC'Cider'                                   ⍝ Cider might not be installed at all
+ :AndIf 0<≢lop←⎕SE.Cider.ListOpenProjects 0             ⍝ List Of Projects
  :AndIf (≢lop)≥ind←lop[;2]⍳⊂path
      wsPathRef←⍎⊃lop[ind;]                              ⍝ [1] is the namespace, [2] the path
  :EndIf

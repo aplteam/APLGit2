@@ -12,7 +12,9 @@
          (exe name)←⎕SE.CompareFiles.EstablishCompareEXE default
      :Else
          qdmx←⎕DMX
-         ⎕←'Comparison with "CompareFiles" crashed'{0=≢⍵:⍺ ⋄ ⍺,' with "',⍵,'"'}qdmx.EM
+        ⍝ 911 is CompareFiles' own <Assert>, so this is one of its diagnoses - typically that no
+        ⍝ comparison utility is installed - rather than a crash. Anything else must get through.
+         ⎕←'Cannot compare'{0=≢⍵:⍺ ⋄ ⍺,': "',⍵,'"'}qdmx.EM
          (exe name)←'' ''
      :EndTrap
  :EndIf

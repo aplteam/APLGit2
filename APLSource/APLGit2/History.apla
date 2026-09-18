@@ -26,6 +26,8 @@
  '    * `]Init` remained silent when the user answered the question with "no"'
  '    * `]Add` and `]AddGitIgnore` did not honour -project='
  '    * `Status` crashed on a detached HEAD'
+ '    * `]GetTagOfLatestRelease` crashed with a VALUE ERROR rather than asking for -username='
+ '      when Cider is not installed at all'
  '    * A command the injected command table offers but `UC.List` does not know about ended in a'
  '      LENGTH ERROR rather than in a message saying that `Admin.Make` needs to be run'
  '    * `]OpenGitShell` on Linux looked for the first three terminal emulators only, and printed'
