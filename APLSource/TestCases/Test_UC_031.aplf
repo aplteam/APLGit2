@@ -1,0 +1,30 @@
+ R←Test_UC_031(stopFlag batchFlag);⎕TRAP;tempDir;newFolder;rc;msg;result;stop
+⍝ Runs ]Status with and without -allUntracked on a project that has a folder which is entirely
+⍝ new. Git names such a folder but not the files within it, which is what made <CompareCommits>
+⍝ miss them when comparing the working area with the last commit.\\
+⍝ Works on a private copy of the fixture because it adds a folder to the project.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+ stop←0
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ (##.CiderConfig.HOME,'/TestData/CiderProject4.zip')ZipArchive.UnzipTo tempDir
+ newFolder←tempDir,'/APLSource/NewStuff'
+ ⎕MKDIR newFolder
+ (⊂' r←New' ' r←42')⎕NPUT(newFolder,'/New.aplf')1
+
+ (rc msg result)←stop ∆UCMD'Status "',tempDir,'" -noAPLnames'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp~(⊂'APLSource/NewStuff/')∊result[;3]        ⍝ The folder, and nothing within it
+
+ (rc msg result)←stop ∆UCMD'Status "',tempDir,'" -noAPLnames -allUntracked'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp~(⊂'APLSource/NewStuff/New.aplf')∊result[;3]
+ →T.GoToTidyUp(⊂'APLSource/NewStuff/')∊result[;3]         ⍝ Now the folder itself is not reported
+
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done

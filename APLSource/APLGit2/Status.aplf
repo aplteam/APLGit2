@@ -1,9 +1,10 @@
- r←{x}Status y;rc;more;path;⎕TRAP;short;space;ind;branch;msg;cmd;aplNames;verbose;noAplNames
+ r←{x}Status y;rc;more;path;⎕TRAP;short;space;ind;branch;msg;cmd;aplNames;verbose;noAplNames;allUntracked
 ⍝ Reports all unstaged/uncommited/untracked files.\\
 ⍝ `y` must be one of:
 ⍝   * Fully qualfied name of a namespace that is an opened Cider project
 ⍝   * Fully qualified path to a Git-managed project
-⍝ `x`, if specified, must be a one- or two-element vector of Booleans: `verbose` and `noAplNames`
+⍝ `x`, if specified, must be a vector of up to three Booleans: `verbose`, `noAplNames` and
+⍝ `allUntracked`
 ⍝ * `verbose` defaults to 0
 ⍝   * verbose←1 gives a full report whith headers, usually useful only for the user command
 ⍝   * verbose←0 returns a matrix with 3 columns:
@@ -11,11 +12,13 @@
 ⍝     [;2] working area indicators (one of ADM)
 ⍝     [;3] the path
 ⍝ * `noAPLnames` defaults to 0. When set, no fourth column with APL names is returned
+⍝ * `allUntracked` defaults to 0. When set, Git lists the files within an untracked folder rather
+⍝   than just the folder itself. <CompareCommits> needs this, the user command does not
  ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
- x←{0<⎕NC ⍵:⍎⍵ ⋄ 0 0}'x'
- (verbose noAplNames)←x,(≢x)↓0 0
+ x←{0<⎕NC ⍵:⍎⍵ ⋄ 0 0 0}'x'
+ (verbose noAplNames allUntracked)←x,(≢x)↓0 0 0
  (space path)←EstablishProject y
- cmd←'status',(~verbose)/' --short'
+ cmd←'status',((~verbose)/' --short'),allUntracked/' -uall'
  (rc more r)←path U.RunGitCommand cmd
  more U.Assert 0=rc
  ((≢'fatal:')↓more)U.Assert'fatal:'{⍺≢(≢⍺)↑⍵}more

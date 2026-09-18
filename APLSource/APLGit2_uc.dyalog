@@ -61,7 +61,7 @@ MinimumVersionOfDyalog←'18.2'
      table⍪←'StashListContent' '2s -noAPLnames' 1 'List all files captured in a stash'
      table⍪←'StashPop' '1s -n=' 1 'Apply a stash to the working area & remove from stash stack, by default the last one'
      table⍪←'StashPush' '999s -m= -u' 1 'Save your local modifications to a new stash entry and roll them back to HEAD (in the working tree and in the index)'
-     table⍪←'Status' '1s -verbose -view -noAPLnames' 1 'Reports all untracked files and/or all uncommitted changes'
+     table⍪←'Status' '1s -verbose -view -noAPLnames -allUntracked' 1 'Reports all untracked files and/or all uncommitted changes'
      table⍪←'Version' '' 0 'Returns the version number as a text vector'
 ⍝ >>>>> EndTableInject
      :For row :In ⍳≢table

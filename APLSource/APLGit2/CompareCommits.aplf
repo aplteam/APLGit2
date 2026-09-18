@@ -50,7 +50,7 @@
      ⎕←'  ',folder U.GetCommitCaption hash1
      ⎕←'  ',folder U.GetCommitCaption hash2
      :If (,'.')≡,hash1
-         list←0 1 Status folder
+         list←0 1 1 Status folder            ⍝ "allUntracked": a new folder must not hide its files
          :If 0<≢list
              list[;2]←CombineStatus¨↓list[;1 2]  ⍝ Staged or not makes no difference to the working area
          :EndIf

@@ -1,0 +1,28 @@
+ R←Test_API_038(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;list;newFolder
+⍝ Runs "Status" with the third flag, "allUntracked". Git reports a folder that is entirely new as
+⍝ a single entry ("?? APLSource/NewStuff/"), and that entry has no extension, so <CompareCommits>'
+⍝ filter for APL source files dropped it and every file inside went uncompared. With the flag Git
+⍝ lists the files rather than the folder.\\
+⍝ Works on a private copy of the fixture because it adds a folder to the project.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ (##.CiderConfig.HOME,'/TestData/CiderProject4.zip')ZipArchive.UnzipTo tempDir
+ newFolder←tempDir,'/APLSource/NewStuff'
+ ⎕MKDIR newFolder
+ (⊂' r←New' ' r←42')⎕NPUT(newFolder,'/New.aplf')1
+
+ list←0 1 G.Status tempDir
+ →T.GoToTidyUp~(⊂'APLSource/NewStuff/')∊list[;3]        ⍝ The folder, and no sign of what is in it
+
+ list←0 1 1 G.Status tempDir
+ →T.GoToTidyUp~(⊂'APLSource/NewStuff/New.aplf')∊list[;3]
+ →T.GoToTidyUp(⊂'APLSource/NewStuff/')∊list[;3]         ⍝ Now the folder itself is not reported
+
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done
