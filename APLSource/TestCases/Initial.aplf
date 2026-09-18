@@ -8,7 +8,7 @@
 ⍝ related test cases together without giving each of them a group of its own:
 ⍝ * 001-023  One test case per API function
 ⍝ * 024-028  Whatever needs the ready-made fixture Proj_4
-⍝ * 029-040  Regression tests for the defects found in the 2026-09 review
+⍝ * 029-041  Regression tests for the defects found in the 2026-09 review
 ⍝ * 100-102  Establishing a project from a name or a path
 ⍝ * 131-133  CompareCommits
 ⍝ * 140-144  Squash

@@ -1,0 +1,17 @@
+ R←Test_API_041(stopFlag batchFlag);⎕TRAP
+⍝ Runs <HandleRenames> on the three shapes a path from `git status --short` can have. The take was
+⍝ computed as "¯2+b⍳1" with no floor, so a path that begins with "->" took from the END of the
+⍝ string: '-> new.aplf' used to give ('f' 'new.aplf'). Git does not emit such a path, so this is
+⍝ robustness rather than a defect met in the field.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ ⍝ No rename: both are the path itself
+ →T.PassesIf('APLSource/Counter.aplf' 'APLSource/Counter.aplf')≡G.HandleRenames'APLSource/Counter.aplf'
+ ⍝ A rename: old and new, without the blanks around the arrow
+ →T.PassesIf('old.aplf' 'new.aplf')≡G.HandleRenames'old.aplf -> new.aplf'
+ ⍝ Nothing before the arrow: an empty old path, not the tail of the string
+ →T.PassesIf('' 'new.aplf')≡G.HandleRenames'-> new.aplf'
+
+ R←T._OK
+⍝Done
