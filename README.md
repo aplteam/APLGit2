@@ -78,6 +78,7 @@ Names marked with `]` are available as user commands; the others are API functio
  ]CloneRepo               Clones a repository, by default from GitHub into the current dir
  ]Commit                  Performs a commit on the current branch
  ]CompareCommits          Takes two hashes and compares all changes between them
+ ]CompareVersions         Compares two versions of a file or an APL object
   CurrentBranch           Reports the current branch
  ]Diff                    Returns files in the working directory that differ from HEAD
   EstablishProject        Works out the project to act on
@@ -111,7 +112,7 @@ Names marked with `]` are available as user commands; the others are API functio
  ]Version                 Returns APLGit2's version number as a text vector
 ```
 
-Two names in that list are asymmetric:
+Some names in that list are asymmetric:
 
-* `CurrentBranch` is an API function but not a user command. It is used internally a great deal, and user commands like `]ListBranches` and `]Status` already report the current branch anyway.
+* The six without a `]` - `CurrentBranch`, `EstablishProject`, `GetPathFromProject`, `GetProjectFromPath`, `IsGitInstalled` and `Methods` - are API functions but not user commands. They are used internally a great deal, and user commands like `]ListBranches` and `]Status` already report the current branch anyway.
 * `]CloneRepo` is a user command only: cloning is interactive by nature, so there is no API function for it.

@@ -6,9 +6,7 @@
 ⍝ Additionally `y` must come with a second: a Boolean that when it is 1 is treated as "amend".
 ⍝ This would result in a `commit --amend --no-edit`, effectively adding the latest changes to the last commit\\
 ⍝ The optional `msg` can be a commit message. This  may be empty but will become three dots (`...`) then.\\
-⍝ Returns a two-element vector:
-⍝  1. The name of the branch
-⍝  2. The hash of the commit as a simple text string
+⍝ Returns what Git reports about the commit, as a vector of lines.
  ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
  msg←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'msg'
  'Right argument is invalid (empty)'U.Assert 0<≢y
