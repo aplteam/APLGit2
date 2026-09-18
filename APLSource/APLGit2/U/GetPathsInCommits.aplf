@@ -8,7 +8,7 @@
 ⍝ When a path cannot be established `filename` itself is returned: `git show` then reports
 ⍝ the problem.
  paths←(≢hashes)⍴⊂filename
- (rc msg buff)←folder RunGitCommand'-c core.quotepath=off log --follow --name-only --format="⍙%H" -- "',filename,'"'
+ (rc msg buff)←folder RunGitCommand'log --follow --name-only --format="⍙%H" -- "',filename,'"'
  buff←(0<≢¨buff)/buff
  :If 0=rc
  :AndIf 0<≢buff

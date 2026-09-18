@@ -1,6 +1,8 @@
  (rc msg result)←path RunGitCommand command;cmd;buff
  path←{'/'@(⍸'\'=⍵)⊣⍵}path
- cmd←'-C "',path,'" ',command
+ ⍝ Without "core.quotepath=off" Git escapes any non-ASCII character in a path (octal, and the
+ ⍝ whole path in double quotes), so APL names like "Cleanup_UC∆Stash1" would not survive
+ cmd←'-c core.quotepath=off -C "',path,'" ',command
  buff←RunProcess'git'cmd
  (rc msg result)←buff.(ExitCode StdErr StdOut)
  :Select rc

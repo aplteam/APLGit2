@@ -1,0 +1,25 @@
+ R←Test_API_039(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;list;filename
+⍝ Checks that Git does not escape non-ASCII characters in a path. With "core.quotepath" at its
+⍝ default Git reports such a path octal-escaped and in double quotes, which turns a name like
+⍝ "Cleanup_UC∆Stash1.aplf" into something no caller can use. <RunGitCommand> therefore passes
+⍝ "-c core.quotepath=off" with every call.\\
+⍝ The private copy has "core.quotepath" switched ON deliberately: that is what Git does without
+⍝ a global setting, and it proves the command line wins over the repository configuration.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ (##.CiderConfig.HOME,'/TestData/CiderProject4.zip')ZipArchive.UnzipTo tempDir
+ {}tempDir G.U.RunGitCommand'config core.quotepath true'
+ filename←'APLSource/Counter∆1.aplf'
+ (⊂' r←Counter∆1' ' r←1')⎕NPUT(tempDir,'/',filename)1
+
+ list←0 1 G.Status tempDir
+ →T.GoToTidyUp~(⊂filename)∊list[;3]
+
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done
