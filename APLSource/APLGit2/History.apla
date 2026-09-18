@@ -22,6 +22,8 @@
  '    * `]Init` remained silent when the user answered the question with "no"'
  '    * `]Add` and `]AddGitIgnore` did not honour -project='
  '    * `Status` crashed on a detached HEAD'
+ '    * `]OpenGitShell` on Linux looked for the first three terminal emulators only, and printed'
+ '      a stray line into the session'
  '    * `Log`, `LatestRelease`, `ListIssues`, `RefLog`, `DiffBetween`, `GetMainOrMaster`,'
  '      `FetchFromIndex` and `StashPush` with a message all had defects of their own'
  '    * Errors in user commands are reported with a diagnosis now rather than not at all'

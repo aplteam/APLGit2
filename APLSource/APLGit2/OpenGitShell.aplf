@@ -21,8 +21,7 @@
          success←1
      :EndIf
  :Case 'lin'
-     terms←'x-terminal-emulator' 'konsole' 'gnome-terminal'
-     'xfce4-terminal' 'xterm'
+     terms←'x-terminal-emulator' 'konsole' 'gnome-terminal' 'xfce4-terminal' 'xterm'
      term←⊃⎕SH'command -v ',(⊃,/terms,¨⊂' '),'2>/dev/null'
      :If ~0∊⍴term
          {}⎕SH'cd "',path,'" && setsid ',term,' >/dev/null 2>&1 &'
