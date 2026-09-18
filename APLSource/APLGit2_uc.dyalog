@@ -11,7 +11,7 @@
    ⍝ Everything between "⍝ >>>>> Start*" and "⍝ >>>>> End*" is injected as part of
    ⍝ the build process of the package - don't edit this!
       ⍝ >>>>> StartListInject
-MinimumVersionOfDyalog←'18.0'
+MinimumVersionOfDyalog←'18.2'
 ⍝ Returns a vector of namespaces, one per user command, carrying `Name`, `Desc`, `Group`,
 ⍝ `Parse` and `_Project`.\\
 ⍝ `_Project` is 1 for commands that accept the project as an argument; those that do not
