@@ -1,0 +1,34 @@
+ R←Test_API_040(stopFlag batchFlag);⎕TRAP;tempDir;rc;msg;msg2;buff;subject
+⍝ Commits with a message that carries everything which used to be a problem: quotes of both
+⍝ kinds, a backtick and a "$". The message used to travel on the command line, where it must be
+⍝ enclosed by quotes, so <MassageMsg> replaced every quote in it by a backtick - and on Linux and
+⍝ Mac OS the shell would have expanded "$HOME" and executed whatever sat between backticks. The
+⍝ message now goes into a file which is passed with -F, so it arrives verbatim.\\
+⍝ Both ways of committing are covered: with and without --amend.
+⍝ Works on a private copy of the fixture because it commits.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ (##.CiderConfig.HOME,'/TestData/CiderProject4.zip')ZipArchive.UnzipTo tempDir
+ (⊂' r←Counter' ' r←4711')⎕NPUT(tempDir,'/APLSource/Counter.aplf')1
+ {}tempDir G.U.RunGitCommand'add APLSource/Counter.aplf'
+
+ msg←'He said "hi", it''s $HOME and a tick ` - 100% done'
+ {}msg G.Commit tempDir
+ (rc buff subject)←tempDir G.U.RunGitCommand'log -1 --format=%s'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp msg≢⊃subject
+
+ msg2←'Amended, and still with "quotes" and $PATH'
+ {}msg2 G.Commit tempDir 1
+ (rc buff subject)←tempDir G.U.RunGitCommand'log -1 --format=%s'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp msg2≢⊃subject
+
+ R←T._OK
+
+∆TidyUp:
+ (rc msg)←FilesAndDirs.RmDirByForce tempDir
+ msg Assert rc=0
+⍝Done

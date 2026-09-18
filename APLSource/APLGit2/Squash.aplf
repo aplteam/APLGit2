@@ -1,4 +1,4 @@
- r←{x}Squash y;msg;noOf;folder;currentBranch;buff;rc;more;commits;historyPath;space;noOf_;caption
+ r←{x}Squash y;msg;noOf;folder;currentBranch;buff;rc;more;commits;historyPath;space;noOf_;caption;tfn
 ⍝ Squashes some commits of the current branch into a single one.\
 ⍝ You can provide as a right argument:\
 ⍝  * A char vector; treated as commit message
@@ -80,9 +80,9 @@
      (rc more buff)←folder U.RunGitCommand('reset --soft HEAD~',⍕noOf_)
      ('Reset failed; RC=',(⍕rc),' ',more)U.Assert 0=rc
      buff U.Assert 0=≢buff
-     msg←U.MassageMsg msg
-     msg←'-m "',msg,'"'
-     (rc more buff)←folder U.RunGitCommand('commit ',msg)
+     tfn←U.WriteMessageFile msg
+     (rc more buff)←folder U.RunGitCommand('commit -F "',tfn,'"')
+     F.DeleteFile tfn
      ('Committing after resetting failed; RC=',(⍕rc),' ',more,'; the soft reset is still in place, see "git reflog"')U.Assert 0=rc
      r←noOf_
  :EndIf

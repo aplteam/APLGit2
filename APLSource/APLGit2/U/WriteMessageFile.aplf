@@ -1,0 +1,10 @@
+ filename←WriteMessageFile msg
+⍝ Writes `msg` to a temporary file and returns the name of that file, so that Git can be handed a
+⍝ commit message with `-F` rather than on the command line.\\
+⍝ On the command line the message must be enclosed by quotes, so a quote within it would end the
+⍝ argument; on Linux and Mac OS the shell would on top of that expand anything starting with `$`
+⍝ and execute whatever sits between backticks. A file has none of these problems.\\
+⍝ Deleting the file again is the caller's business.
+ filename←##.F.EnforceSlash'txt'##.F.GetTempFilename2'APLGit2_msg'
+ (⊆msg)⎕NPUT filename 1
+⍝Done

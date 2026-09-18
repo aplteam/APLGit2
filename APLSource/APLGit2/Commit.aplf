@@ -1,4 +1,4 @@
-  r←{msg}Commit y;project;buff;rc;⎕TRAP;cb;path;cmd;msg_;space;msg;amendFlag
+  r←{msg}Commit y;project;buff;rc;⎕TRAP;cb;path;cmd;tfn;msg_;space;msg;amendFlag
 ⍝ Commit changes.\\
 ⍝ `y` must be one of:
 ⍝   * Fully qualified name of a namespace that is an opened Cider project
@@ -14,11 +14,12 @@
  (buff amendFlag)←2↑(⊆y),0
  (space path)←EstablishProject buff
  cb←CurrentBranch path
+ tfn←''
  :If amendFlag
      cmd←'commit --amend --no-edit'
      :If 0<≢msg
-         msg_←U.MassageMsg msg
-         cmd,←' -m "',msg_,'"'
+         tfn←U.WriteMessageFile msg
+         cmd,←' -F "',tfn,'"'
      :EndIf
  :Else
      msg←{0=≢⍵:'...' ⋄ ⍵},msg
@@ -26,14 +27,18 @@
      :AndIf 0=≢msg~'.'
          'Cancelled by user'U.Assert CommTools.YesOrNo'NoMsgOnCommit@No meaningful message provided on "',cb,'"; continue anyway?'
      :EndIf
-     msg_←U.MassageMsg msg
-     cmd←'commit -m "',msg_,'"'
+     tfn←U.WriteMessageFile msg
+     cmd←'commit -F "',tfn,'"'
  :EndIf
+ msg_←msg                       ⍝ <RunGitCommand> overwrites `msg` with what Git has to say
  (rc msg buff)←path U.RunGitCommand cmd
+ :If 0<≢tfn
+     F.DeleteFile tfn
+ :EndIf
  :If ∨/'nothing to commit, working tree clean'⍷∊buff
      r←buff
  :Else
-     (cmd,⊃,/(⎕UCS 13),¨⊆buff)U.Assert 0=rc
+     (cmd,' ⍝ Message: ',msg_,⊃,/(⎕UCS 13),¨⊆buff)U.Assert 0=rc
      r←buff
  :EndIf
 ⍝Done
