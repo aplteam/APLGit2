@@ -1,4 +1,9 @@
 (
+ '* 1.3.0 ⋄ 2026-09-23'
+ '  * `FetchFromIndex` offers all modified and deleted files now rather than just APL source,'
+ '    and takes the APL names from `Status` rather than asking Link a second time (#14)'
+ '  * Bug fix: Status tried to get an APL name even for deleted objects, triggering a confusing'
+ '    Link warning (#18)'
  '* 1.2.0 ⋄ 2026-09-19'
  '  * `CompareCommits` missed files living in a newly introduced but yet untracked folder'
  '  * `Status` now accepts a third flag in ⍺: all untracked files'
