@@ -1,5 +1,5 @@
- r←{x}Status y;rc;more;path;⎕TRAP;short;space;ind;branch;msg;cmd;aplNames;verbose;noAplNames;allUntracked
-⍝ Reports all unstaged/uncommited/untracked files.\\
+ r←{x}Status y;rc;more;path;⎕TRAP;short;space;ind;branch;msg;cmd;aplNames;verbose;noAplNames;allUntracked;thoseExist;list
+⍝ Reports all unstaged/uncommited/untracked/deleted files.\\
 ⍝ `y` must be one of:
 ⍝   * Fully qualfied name of a namespace that is an opened Cider project
 ⍝   * Fully qualified path to a Git-managed project
@@ -11,9 +11,10 @@
 ⍝     [;1] index indicators (one of ADM)
 ⍝     [;2] working area indicators (one of ADM)
 ⍝     [;3] the path
-⍝ * `noAPLnames` defaults to 0. When set, no fourth column with APL names is returned
+⍝     [;4] absolute name in th WS (if appropriate)
+⍝ * `noAPLnames` defaults to 0. When set, no fourth column with APL names is returned.
 ⍝ * `allUntracked` defaults to 0. When set, Git lists the files within an untracked folder rather
-⍝   than just the folder itself. <CompareCommits> needs this, the user command does not
+⍝   than just the folder itself. <CompareCommits> needs this, the user command does not.
  ⎕TRAP←(811 'E' '⎕DMX.EM ⎕signal 811')(0 'N')
  x←{0<⎕NC ⍵:⍎⍵ ⋄ 0 0 0}'x'
  (verbose noAplNames allUntracked)←x,(≢x)↓0 0 0
@@ -38,7 +39,11 @@
  :Else
      :If 0<≢r←{(↑2↑¨⍵),3↓¨⍵}⍣(0<≢r)⊢r
      :AndIf ~noAplNames
-         r,←space∘GetItemName¨(⊂path,'/'),¨(⊃∘⌽∘HandleRenames)¨r[;3]
+         r,←⊂''
+         list←(⊂path,'/'),¨(⊃∘⌽∘HandleRenames)¨r[;3]
+         :If 0<≢thoseExist←⍸⎕NEXISTS list
+             r[thoseExist;4]←space∘GetItemName¨list[thoseExist]
+         :EndIf
      :EndIf
  :EndIf
 ⍝Done
