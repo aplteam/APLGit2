@@ -1,6 +1,7 @@
 (
- 'Bring back APL objects that have been modified in the working area (or deleted from it)'
- 'and restore the version from the index.'
+ 'Bring back files that have been modified in the working area (or deleted from it) and'
+ 'restore the version kept in the index.'
  ''
- 'It will present a list of possible candidates to the user for selection.'
+ 'It will present a list of possible candidates to the user for selection. APL objects are'
+ 'listed by their APL name, every other file by its path relative to the root of the project.'
 )
