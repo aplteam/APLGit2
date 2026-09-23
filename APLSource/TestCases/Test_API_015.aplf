@@ -1,0 +1,39 @@
+ R←Test_API_015(stopFlag batchFlag);⎕TRAP;C;warnWas;logWas;res
+⍝ Runs "FetchFromIndex" on a modified APL object, on a deleted one, and on a modified file that
+⍝ is not APL source at all. Until 1.2.1 the command filtered its candidates down to APL source,
+⍝ so something like README.md could not be brought back with it, and it asked Link for the APL
+⍝ name of every candidate a second time - including the deleted ones, which cannot be named and
+⍝ which only made Link complain. It now takes both the paths and the names from <Status>.\\
+⍝ Acts on the fixture, because the objects must be known to Link; it therefore restores it.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+ →0/⍨0<≢0 1 G.Status ∆Folder4     ⍝ The fixture must be clean: the tidy-up would destroy anything else
+ C←G.CommTools
+ warnWas←⎕SE.Link.U.WARN
+ logWas←⎕SE.Link.U.WARNLOG
+ ⎕SE.Link.U.WARN←1                ⍝ Whether the user has warnings switched on must not matter here
+
+ (⊂' r←Counter' ' r←4714')⎕NPUT(∆Folder4,'/APLSource/Counter.aplf')1    ⍝ " M" APL object, modified
+ ⎕NDELETE ∆Folder4,'/APLSource/Utils/Helper.aplf'                       ⍝ " D" APL object, deleted
+ (⊂'# Proj_4' '' 'Changed by a test case')⎕NPUT(∆Folder4,'/README.md')1 ⍝ " M" not APL source at all
+
+ C.AddAutomation'Select' 'SelectFilesToRestore@' 'a'                    ⍝ "a" for "all"
+ ⎕SE.Link.U.WARNLOG←0⍴⊂''
+ res←G.FetchFromIndex'#.Proj_4'∆Folder4
+ →T.GoToTidyUp∨/∨/¨'Helper.aplf'∘⍷¨⎕SE.Link.U.WARNLOG   ⍝ Link was asked to name a file that is gone
+
+ ⍝ All three were on offer, each of them named as well as it can be:
+ →T.GoToTidyUp~(⊂'#.Proj_4.Counter')∊,res               ⍝ An APL object by its APL name ...
+ →T.GoToTidyUp~(⊂'README.md')∊,res                      ⍝ ... anything else by its path ...
+ →T.GoToTidyUp~(⊂'APLSource/Utils/Helper.aplf')∊,res    ⍝ ... and so is what Link cannot name anymore
+
+ →T.GoToTidyUp 0≠≢0 1 G.Status ∆Folder4                 ⍝ All three came back from the index
+
+ R←T._OK
+
+∆TidyUp:
+ C.Cleanup
+ {}∆Folder4 G.U.RunGitCommand'reset -q --hard'   ⍝ Leave the fixture as we found it ...
+ ⎕SE.Link.U.WARN←warnWas                         ⍝ ... and Link as we found it, too
+ ⎕SE.Link.U.WARNLOG←logWas
+⍝Done

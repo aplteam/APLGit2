@@ -1,0 +1,43 @@
+ R←Test_API_042(stopFlag batchFlag);⎕TRAP;warnWas;logWas;list;ind
+⍝ Runs "Status" on files that are gone: Link must not be asked to name them.
+⍝ Link finds the file that belongs to a linked directory by its path alone, whether or not it
+⍝ still exists, and then reads it in order to establish the name. A file that is gone cannot be
+⍝ read, so Link warns about it - in the session, and in `⎕SE.Link.U.WARNLOG`. The name could not
+⍝ have been established anyway, which makes the call pointless as well as confusing. Both
+⍝ flavours of deletion are covered, because both leave nothing on disk:
+⍝ * APLSource/Tools/Helper.aplf   "D " deleted and staged
+⍝ * APLSource/Utils/Helper.aplf   " D" deleted, not staged\\
+⍝ Acts on the fixture, because the files must be known to Link; it therefore restores it.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+ →0/⍨0<≢0 1 G.Status ∆Folder4     ⍝ The fixture must be clean: the tidy-up would destroy anything else
+ warnWas←⎕SE.Link.U.WARN
+ logWas←⎕SE.Link.U.WARNLOG
+ ⎕SE.Link.U.WARN←1                ⍝ Whether the user has warnings switched on must not matter here
+
+ (⊂' r←Counter' ' r←4713')⎕NPUT(∆Folder4,'/APLSource/Counter.aplf')1
+ {}∆Folder4 G.U.RunGitCommand'rm APLSource/Tools/Helper.aplf'
+ ⎕NDELETE ∆Folder4,'/APLSource/Utils/Helper.aplf'
+
+ ⎕SE.Link.U.WARNLOG←0⍴⊂''
+ list←G.Status ∆Folder4
+ →T.GoToTidyUp∨/∨/¨'Helper.aplf'∘⍷¨⎕SE.Link.U.WARNLOG   ⍝ Link was asked about a file that is gone
+ →T.GoToTidyUp 2≠≢ind←⍸∨/¨'Helper.aplf'∘⍷¨list[;3]
+ →T.GoToTidyUp~∧/0=≢¨list[ind;4]                        ⍝ ... and no name came back for them anyway
+
+ ⍝ Whatever is still there does get a name, so this is not a blanket "ask nobody":
+ →T.GoToTidyUp 1≠≢ind←⍸∨/¨'Counter.aplf'∘⍷¨list[;3]
+ →T.GoToTidyUp'#.Proj_4.Counter'≢⊃list[ind;4]
+
+ ⍝ Proof that the check above can fail at all: asked directly, Link does warn.
+ ⎕SE.Link.U.WARNLOG←0⍴⊂''
+ {}⎕SE.Link.GetItemName ∆Folder4,'/APLSource/Utils/Helper.aplf'
+ →T.GoToTidyUp~∨/∨/¨'Helper.aplf'∘⍷¨⎕SE.Link.U.WARNLOG
+
+ R←T._OK
+
+∆TidyUp:
+ {}∆Folder4 G.U.RunGitCommand'reset -q --hard'   ⍝ Leave the fixture as we found it ...
+ ⎕SE.Link.U.WARN←warnWas                         ⍝ ... and Link as we found it, too
+ ⎕SE.Link.U.WARNLOG←logWas
+⍝Done
