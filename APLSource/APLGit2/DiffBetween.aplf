@@ -16,6 +16,6 @@
  more U.Assert 0=rc
  r←0 2⍴⊂''
  :If 0<≢buff
-     r←↑{i←⍵⍳' ' ⋄ ((i-1)↑⍵)(A.DLB i↓⍵)}¨buff
+     r←↑{i←⍵⍳' ' ⋄ ((i-1)↑⍵)(U.UnquotePath A.DLB i↓⍵)}¨buff
  :EndIf
 ⍝Done

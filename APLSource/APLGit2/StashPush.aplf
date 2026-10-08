@@ -17,7 +17,7 @@
  cmd←'stash push '
  :If 0<≢parms.files
      parms.files←⊆parms.files
-     cmd,←⊃{⍺,' ',⍵}/{'"',(⍵~'"'),'"'}¨FilesAndDirs.EnforceSlash¨parms.files
+     cmd,←⊃{⍺,' ',⍵}/U.QuotePath¨FilesAndDirs.EnforceSlash¨parms.files
  :EndIf
  cmd,←' ',((0<≢parms.msg)/'-m "',(parms.msg~'"'),'" '),(parms.addUntracked/'-u ')
  (rc more r)←parms.folder U.RunGitCommand cmd

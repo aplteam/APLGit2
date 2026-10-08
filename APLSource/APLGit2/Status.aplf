@@ -38,11 +38,14 @@
      r←⍪(⊂path{0<≢⍵:'Namespace: ',⍵ ⋄ 'Folder: ',⍺}space),⊆r
  :Else
      :If 0<≢r←{(↑2↑¨⍵),3↓¨⍵}⍣(0<≢r)⊢r
-     :AndIf ~noAplNames
-         r,←⊂''
-         list←(⊂path,'/'),¨(⊃∘⌽∘HandleRenames)¨r[;3]
-         :If 0<≢thoseExist←⍸⎕NEXISTS list
-             r[thoseExist;4]←space∘GetItemName¨list[thoseExist]
+         ⍝ Git reports a path that holds a blank in double-quotes, a renamed file on both sides
+         r[;3]←{p←U.UnquotePath¨HandleRenames ⍵ ⋄ ≡/p:⊃p ⋄ ⊃{⍺,' -> ',⍵}/p}¨r[;3]
+         :If ~noAplNames
+             r,←⊂''
+             list←(⊂path,'/'),¨(⊃∘⌽∘HandleRenames)¨r[;3]
+             :If 0<≢thoseExist←⍸⎕NEXISTS list
+                 r[thoseExist;4]←space∘GetItemName¨list[thoseExist]
+             :EndIf
          :EndIf
      :EndIf
  :EndIf

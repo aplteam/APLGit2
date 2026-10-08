@@ -8,13 +8,13 @@
 ⍝ When a path cannot be established `filename` itself is returned: `git show` then reports
 ⍝ the problem.
  paths←(≢hashes)⍴⊂filename
- (rc msg buff)←folder RunGitCommand'log --follow --name-only --format="⍙%H" -- "',filename,'"'
+ (rc msg buff)←folder RunGitCommand'log --follow --name-only --format="⍙%H" -- ',QuotePath filename
  buff←(0<≢¨buff)/buff
  :If 0=rc
  :AndIf 0<≢buff
      groups←(+\'⍙'=⊃¨buff)⊆buff                ⍝ One group per commit: its hash, then the path
      groups←(1<≢¨groups)/groups
-     log←{(1↓⊃⍵)(⊃⌽⍵)}¨groups                   ⍝ (fullHash path), most recent commit first
+     log←{(1↓⊃⍵)(UnquotePath⊃⌽⍵)}¨groups        ⍝ (fullHash path), most recent commit first
      :For i :In ⍳≢hashes
          hash←i⊃hashes
          :If 0<≢ind←⍸(⊂hash)≡¨(≢hash)↑¨⊃¨log

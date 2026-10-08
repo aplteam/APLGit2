@@ -1,4 +1,13 @@
 (
+ '* 1.3.1 ⋄ 2026-10-08'
+ '  * Bug fixes'
+ '    * `Add` did not cope with a path that Git had already put into double-quotes'
+ '      because of a blank somewhere in it'
+ '    * A path that comes back from Git is unquoted now (`U.UnquotePath`), and every path that goes'
+ '      into a Git command is quoted by `U.QuotePath`. A blank anywhere in a path used to make'
+ '      `FetchFromIndex`, `ChangeLog` and `CompareVersions` fail, let `CompareCommits` skip the'
+ '      file silently, and made `Status` as well as `StashListContent` report the path in'
+ '      double-quotes and without its APL name'
  '* 1.3.0 ⋄ 2026-09-23'
  '  * `FetchFromIndex` offers all modified and deleted files now rather than just APL source,'
  '    and takes the APL names from `Status` rather than asking Link a second time (#14)'

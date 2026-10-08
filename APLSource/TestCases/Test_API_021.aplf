@@ -1,0 +1,52 @@
+ R←Test_API_021(stopFlag batchFlag);⎕TRAP;qdmx;folder;status;ind;raw
+⍝ Runs "Status" and "Add" on a path that holds a blank.\\
+⍝ Git reports such a path in double-quotes, and <Status> used to pass those quotes on to its
+⍝ caller. `]Commit` hands `status[ind;3]` straight to <Add> (see `UC.Commit[24]`), which put
+⍝ quotes around it a second time, and `git add ""APLSource/Has Blanks.txt""` fails with
+⍝ "fatal: pathspec 'APLSource/Has' did not match any files".\\
+⍝ Gets a scratch project of its own: none of the fixtures carries a file with a blank in its
+⍝ path, and neither Cider nor Link are needed here.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ folder←FilesAndDirs.GetTempSubDir'APLGit2-',⊃⎕SI
+ 3 ⎕MKDIR folder,'/APLSource'
+ (⊂'r←Plain' 'r←1')⎕NPUT folder,'/APLSource/Plain.aplf'
+ (⊂'Some text' 'and some more')⎕NPUT folder,'/APLSource/Has Blanks.txt'
+ {}∆Initialize folder
+ (⊂'r←Plain' 'r←2')⎕NPUT(folder,'/APLSource/Plain.aplf')1
+ (⊂'Other text' 'and some more')⎕NPUT(folder,'/APLSource/Has Blanks.txt')1
+
+ raw←3⊃folder G.U.RunGitCommand'status --short'
+ →T.GoToTidyUp~∨/∨/¨'"APLSource/Has Blanks.txt"'∘⍷¨raw   ⍝ The premise
+
+ status←0 1 G.Status folder
+ →T.GoToTidyUp 2≠≢status
+ →T.GoToTidyUp 1≠≢ind←⍸∨/¨'Has Blanks'∘⍷¨status[;3]
+ →T.GoToTidyUp'APLSource/Has Blanks.txt'≢⊃status[ind;3]   ⍝ <Status> unquoted it
+
+ :Trap 0
+     folder G.Add status[;3]            ⍝ Both files at once, just like `]Commit` does
+ :Else
+     qdmx←⎕DMX
+     →T.GoToTidyUp 1                    ⍝ <Add> asserts on Git's exit code, so it signals 811
+ :EndTrap
+
+ status←0 1 G.Status folder
+ →T.GoToTidyUp 2≠≢status
+ →T.GoToTidyUp~∧/'M'=status[;1]         ⍝ Both are staged now ...
+ →T.GoToTidyUp~∧/' '=status[;2]         ⍝ ... and nothing is left in the working area
+
+ ⍝ A path that still carries Git's quotes must not end up quoted twice either
+ :Trap 0
+     folder G.Add⊂'"APLSource/Has Blanks.txt"'
+ :Else
+     qdmx←⎕DMX
+     →T.GoToTidyUp 1
+ :EndTrap
+
+ R←T._OK
+
+∆TidyUp:
+ {}FilesAndDirs.RmDir folder
+⍝Done

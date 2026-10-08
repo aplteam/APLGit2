@@ -1,4 +1,4 @@
- {r}←{x}Add fileList;path;rc;msg;buff;space
+{r}←{x}Add fileList;path;rc;msg;buff;space
 ⍝ Stage files defined by `fileList` which defaults to "." (all unstaged files).\\
 ⍝ Alternatively you may specify a specific file (string) or a list of files (vector of strings).
 ⍝ It can also be a wildcard expression that catches a number of files like *.txt or invoice_??.txt.\\
@@ -24,7 +24,7 @@
  :If (,'.')≡,fileList
      (rc msg buff)←path U.RunGitCommand'add ',fileList
  :Else
-     fileList←⊃,/' ',¨{' '∊⍵:'"',⍵,'"' ⋄ ⍵}¨fileList
+     fileList←⊃,/' ',¨U.QuotePath¨fileList
      (rc msg buff)←path U.RunGitCommand'add ',fileList
  :EndIf
  msg U.Assert 0=rc

@@ -1,0 +1,14 @@
+ UnquotePath←{
+⍝ Takes a path the way Git reported it and returns the path itself.\\
+⍝ Git puts a path into double-quotes as soon as it holds a character that needs escaping, and
+⍝ a blank is enough for that: `git status --short` reports "APLSource/Has Blanks.aplf". Note
+⍝ that "core.quotepath=off" only stops the octal escaping of non-ASCII characters, not this.\\
+⍝ Within the quotes Git escapes a double-quote as well as a backslash with a backslash, and
+⍝ both come back unescaped here.\\
+⍝ A path that is not quoted is returned untouched, so this can be applied to all of them.\\
+⍝ Note that a rename, which Git reports as "old -> new" with each of the two paths quoted
+⍝ separately, must be split by `HandleRenames` first.
+     2>≢⍵:⍵
+     ~∧/'"'=(⊃⍵),⊃⌽⍵:⍵
+     '\\(["\\])'⎕R'\1'⊣¯1↓1↓⍵
+ }

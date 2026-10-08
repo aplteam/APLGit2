@@ -1,0 +1,11 @@
+ QuotePath←{
+⍝ Takes a path and returns it ready to become part of a Git command: in double-quotes.\\
+⍝ Quoting is not just about blanks: on Windows the command line is split before Git ever
+⍝ sees it, while everywhere else the command goes through a shell, where a path holding
+⍝ `$`, `&`, `;` or a bracket would be interpreted. It also stops the shell from expanding
+⍝ a wildcard against the wrong directory - Git resolves a pathspec against the project.\\
+⍝ Any double-quotes around the path are removed first: a path that came from Git is quoted
+⍝ already (see `UnquotePath`), and `git add ""APLSource/Has Blanks.aplf""` fails.
+     0=≢⍵:⍵
+     '"',(⍵~'"'),'"'
+ }

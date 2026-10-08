@@ -31,7 +31,7 @@
      more U.Assert 0=rc
      ((≢'fatal:')↓more)U.Assert'fatal:'{⍺≢(≢⍺)↑⍵}more
  :EndIf
- r←(F.AddTrailingSep path)∘,¨r
+ r←(F.AddTrailingSep path)∘,¨U.UnquotePath¨r
  :If ~noAPLnames
      r←⍪r
      r,←⊂''

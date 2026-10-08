@@ -18,7 +18,7 @@
              :EndIf
          :Else
              ⍝ A commit knows a file renamed in the working area only under its old name:
-             (rc more buff1)←folder U.RunGitCommand('show  --raw ',hash1,':',oldFile)
+             (rc more buff1)←folder U.RunGitCommand('show  --raw ',U.QuotePath(hash1,':',oldFile))
              :If rc=128
              :AndIf op∊'AD?'
                  buff1←,⊂'>>> Not available <<<'
@@ -26,7 +26,7 @@
                  ('Cannot read ',oldFile,' from ',hash1,'; RC=',(⍕rc),' ',more)Assert 0
              :EndIf
          :EndIf
-         (rc more buff2)←folder U.RunGitCommand('show  --raw ',hash2,':',oldFile)
+         (rc more buff2)←folder U.RunGitCommand('show  --raw ',U.QuotePath(hash2,':',oldFile))
          :If rc=128
          :AndIf op∊'AD?'
              buff2←,⊂'>>> Not available <<<'

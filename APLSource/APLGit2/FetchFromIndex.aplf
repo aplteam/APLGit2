@@ -16,7 +16,7 @@
      :OrIf 0=≢ind
          r←'Cancelled by user'
      :Else
-         cmd←'restore --worktree ',⊃,/{' '∊⍵:' "',⍵,'"' ⋄ ' ',⍵}¨files[ind]
+         cmd←'restore --worktree ',⊃,/' ',¨U.QuotePath¨files[ind]
          (rc msg result)←folder U.RunGitCommand cmd
          (cmd,⊃,/((⎕UCS 13),¨⊆msg))Assert 0=rc
          r←⍪(⊂'*** Restored from the index:'),mat[ind;1]

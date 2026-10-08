@@ -6,7 +6,7 @@
 ⍝ For what `x` can actually be see `EstablishProject`.\\
  x←{0<⎕NC ⍵:⍎⍵ ⋄ ''}'x'
  (filename path)←x IdentifyObject y
- (rc msg res)←path U.RunGitCommand'show :"',(filename~'"'),'"'
+ (rc msg res)←path U.RunGitCommand'show ',U.QuotePath(':',filename)
  msg Assert rc=0
  :If 0=≢res
      r←''
